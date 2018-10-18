@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1"/>
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Milestone">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Milestone">
+
+    <meta name="theme-color" content="#4C7FF0">
+    
+    <title>App Quản Lý 1P30S</title>
+
+    <!-- page stylesheets -->
+    <!-- end page stylesheets -->
+
+    <!-- build:css({.tmp,app}) styles/app.min.css -->
+    <link rel="stylesheet" href="vendor/template-admin/css-template/bootstrap.css"/>
+    <link rel="stylesheet" href="vendor/template-admin/css-template/pace-theme-minimal.css"/>
+    <link rel="stylesheet" href="vendor/template-admin/css-template/font-awesome.css"/>
+    <link rel="stylesheet" href="vendor/template-admin/css-template/animate.css"/>
+    <link rel="stylesheet" href="vendor/template-admin/css-template/app.css" id="load_styles_before"/>
+    <link rel="stylesheet" href="vendor/template-admin/css-template/app.skins.css"/>
+    <!-- endbuild -->
+  </head>
+  <body>
+
+    <div class="app no-padding no-footer layout-static">
+      <div class="session-panel">
+        <div class="session">
+          <div class="session-content">
+            <div class="card card-block form-layout">
+              <form role="form" action="/" id="validate" method="POST"  >
+                <div class="text-xs-center m-b-3">
+                    <img src="images/logo-icon.png" height="80" alt="" class="m-b-1"/>
+                    <h5>
+                    Chào Mừng Bạn Đến Với Trang Quản Trị
+                    </h5>
+                    <p class="text-muted">
+                      Đăng Nhập Tài Khoản Để Tiếp Tục
+                    </p>
+                  </div>
+                <fieldset class="form-group">
+                  <label for="username">
+                     username
+                  </label>
+                  <input type="text" class="form-control form-control-lg" id="username" placeholder="username" name="username" required/>
+                </fieldset>
+                <fieldset class="form-group">
+                  <label for="password">
+                     password
+                  </label>
+                  <input type="password" class="form-control form-control-lg" id="password" placeholder="********" name="password" required/>
+                </fieldset>
+              
+                <button class="btn btn-primary btn-block btn-lg" type="submit">
+                  Đăng Nhập
+                </button>
+              </form>
+            </div>
+          </div>
+          <footer class="text-xs-center p-y-1">
+            <p>
+              <a href="extra-forgot.html">
+                Forgot password?
+              </a>
+            </p>
+          </footer>
+        </div>
+
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      window.paceOptions = {
+        document: true,
+        eventLag: true,
+        restartOnPushState: true,
+        restartOnRequestAfter: true,
+        ajax: {
+          trackMethods: [ 'POST','GET']
+        }
+      };
+    </script>
+
+    <!-- build:js({.tmp,app}) scripts/app.min.js -->
+    <script src="vendor/template-admin/js-template/jquery.js"></script>
+    <script src="vendor/template-admin/js-template/pace.js"></script>
+    <script src="vendor/template-admin/js-template/tether.js"></script>
+    <script src="vendor/template-admin/js-template/bootstrap.js"></script>
+    <script src="vendor/template-admin/js-template/fastclick.js"></script>
+    <script src="vendor/template-admin/js-template//constants.js"></script>
+    <script src="vendor/template-admin/js-template/main.js"></script>
+    <!-- endbuild -->
+
+    <!-- page scripts -->
+    <script src="vendor/template-admin/js-template/jquery.validate.min.js"></script>
+    <!-- end page scripts -->
+
+    <!-- initialize page scripts -->
+    <script type="text/javascript">
+      $('#validate').validate();
+    </script>
+    <!-- end initialize page scripts -->
+    
+  </body>
+</html>

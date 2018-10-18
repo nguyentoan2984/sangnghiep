@@ -1,0 +1,196 @@
+
+<section class="content-header">
+    <h1 class="text-primary">
+      <strong>Giám sát trực tuyến nhân viên</strong>
+    </h1>
+    <br>
+    <div class="box">
+      <div class="box-body">
+          <div><h5 class="text-primary"><strong>Chọn thông tin giám sát</strong></h5></div>
+           
+            <div class="row">
+                <div class="col-xs-6">
+                    <label class="col-xs-6">Đơn vị cần giám sát </label>
+                    <select class="col-xs-6" 
+                    ng-options="option.OFFICENAME for option in donVi_Config track by option.ORDERINDEX"
+                    ng-model="selectedOption"
+                    ng-click="getstaffsMonitor(selectedOption)"
+                    >
+                    <option  value="" disabled  >Đơn vị cần cấu hình</option>
+
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="box">
+                <div class="box-body">
+                        <div class="row">
+                                <div class="col-xs-2"><strong class="text-primary" >Vượt giới hạn</strong> </div>
+                                <div  class="col-xs-4">
+                                    <label class="p-3 mb-2 bg-primary text-white"  >
+                                            Vượt giới hạn phục vụ :  {{sumSERVICETIMEMAX }}
+
+                                          
+                                    </label>
+                                </div>
+                                
+                                <div  class="col-xs-4">
+                                        <label class="p-3 mb-2 bg-warning text-dark"  >
+                                             Vượt giới hạn nghỉ giửa 2 số liên tiếp :  {{sumDISCOUNTITIMEMAX }}
+                                        </label>
+                                    </div>
+                            </div>
+
+       <br>
+                        <div class="row">
+                                <div class="col-xs-6"><strong class="text-primary">Số liệu giám sát kèm theo</strong> </div>
+                            </div>
+                <br>
+                    <div class="row">
+                            <div class="col-xs-6">
+                                    <label class="col-xs-6">Dịch vụ </label>
+                                    <select class="col-xs-6" 
+                                    ng-options="option.SERVICENAME for option in listServiceStaffs track by option.SERVICEID"
+                                    ng-model="selectedService"
+                                    ng-click="getstaffsServiceMonitor(selectedService)"
+                                    >
+                                    <option value="" disabled>Chọn dịch vụ</option>>
+                                    </select>
+                            </div>
+
+                            <div class="col-xs-4">
+                                    <label class="col-xs-6"> Quầy </label>
+                                    <select class="col-xs-6" 
+                                    ng-options="option.COUNTERID for option in listCounter track by option.COUNTERID"
+                                    ng-model="selectedCounter"
+                                    ng-click="getstaffsCounterMonitor(selectedCounter)"
+                                    >
+                                    <option value="" disabled>Chọn quầy</option>>
+                    
+                                    </select>
+                             </div>
+                     </div>
+                     <br>
+                     <div class="row">
+                            <div class="col-xs-6 ">
+                                    <div class="row">
+                                            <div class=" col-xs-offset-3">
+                                                    <input type="checkbox" value="" ng-model="checkbox1Nhanvien" ng-click="check1Nhanvien()" >
+                                                    <label >Tìm theo thời gian phục vụ vượt quá giới hạn </label>
+                                            </div>
+                                     </div>
+                                     <div class="row">
+                                            <div class=" col-xs-offset-3">
+                                                    <input type="checkbox" value="" ng-model="checkbox2Nhanvien" ng-click="check2Nhanvien()">
+                                                    <label >Tìm theo thời gian nghỉ giửa 2 số vượt giới hạn </label>
+                                            </div>
+                                     </div>
+                             </div>
+
+                             <div class="col-xs-6 ">
+                                    <div class="col-xs-offset-6 col-xs-6 ">
+                                            <img height="60" width="100" src="/images/warning.jpg" alt="" ng-show="warningShowNhanvien">
+                                        </div>
+                                </div>
+                    </div>
+              
+                </div>
+         </div>
+
+    <div class="row">
+        <div class="col-xs-12 ">
+            <div class="box">
+                <div class="box-body">
+                    <table id="example2" class="table table-bordered bordered table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Nhân viên</th>
+                                <th>Quầy</th>
+                                <th>Số đang phục vụ</th>
+                                <th>Phục vụ hiện tại</th>
+                                <th>Phục vụ lâu nhất</th>
+                                <th>Phục vụ trung bình</th>
+                                <th>Nghỉ giửa 2 số thứ tự</th>
+                                <th>Chờ trung bình</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr  ng-repeat="list in liststaffsService" >
+                                <td ng-show=
+                                "(checkbox1Nhanvien == false  && checkbox2Nhanvien==false )?true: 
+                                    ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ||
+                                    (checkbox2Nhanvien==true  && list.TG_OFF_2SO > list.DISCOUNTITIMEMAX==true))
+                                ?true:false "
+                                >{{list.Nhanvien}}</td>
+
+                                <td ng-show=
+                                "(checkbox1Nhanvien == false  && checkbox2Nhanvien == false )?true: 
+                                    ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ||
+                                    (checkbox2Nhanvien==true  && list.TG_OFF_2SO > list.DISCOUNTITIMEMAX==true))
+                                ?true:false "
+                                >{{list.Quay}}</td>
+
+                                <td ng-show=
+                                "(checkbox1Nhanvien == false  && checkbox2Nhanvien==false )?true: 
+                                    ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ||
+                                    (checkbox2Nhanvien==true  && list.TG_OFF_2SO > list.DISCOUNTITIMEMAX==true))
+                                ?true:false "
+                                >{{list.SODANGPHUCVU}}</td>
+
+                                <td  ng-style="{'background-color':
+                                ((checkbox1Nhanvien == false  && checkbox2Nhanvien==false && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true ) ||
+                                (checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ?'blue':'white')}"
+                                ng-show=
+                                "(checkbox1Nhanvien == false  && checkbox2Nhanvien==false )?true: 
+                                    ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ||
+                                    (checkbox2Nhanvien==true  && list.TG_OFF_2SO > list.DISCOUNTITIMEMAX==true))
+                                ?true:false "
+                                >{{list.TG_PV_HIENTAI / 60 | number:2}}</td>
+
+                                <td ng-show=
+                                "(checkbox1Nhanvien == false  && checkbox2Nhanvien==false )?true: 
+                                    ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ||
+                                    (checkbox2Nhanvien==true  && list.TG_OFF_2SO > list.DISCOUNTITIMEMAX==true))
+                                ?true:false "
+                                >{{list.MAXSERVETIME / 60 | number:2}}</td>
+
+                                <td ng-show=
+                                "(checkbox1Nhanvien == false  && checkbox2Nhanvien==false )?true: 
+                                    ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ||
+                                    (checkbox2Nhanvien==true  && list.TG_OFF_2SO > list.DISCOUNTITIMEMAX==true))
+                                ?true:false "
+                                >{{list.AVGSERVETIME / 60 | number:2}}</td>
+
+                                <td  ng-style="{'background-color':
+                                ((checkbox1Nhanvien == false  && checkbox2Nhanvien==false &&list.TG_OFF_2SO>list.DISCOUNTITIMEMAX==true ) ||
+                                (checkbox2Nhanvien==true && list.TG_OFF_2SO>list.DISCOUNTITIMEMAX==true) ?'yellow':'white')}"
+                                ng-show=
+                                "(checkbox1Nhanvien == false  && checkbox2Nhanvien==false )?true: 
+                                    ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ||
+                                    (checkbox2Nhanvien==true  && list.TG_OFF_2SO > list.DISCOUNTITIMEMAX==true))
+                                ?true:false "
+                                >{{list.TG_OFF_2SO / 60 | number:2}}</td>
+
+                                <td ng-show=
+                                "(checkbox1Nhanvien == false  && checkbox2Nhanvien==false )?true: 
+                                    ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true) ||
+                                    (checkbox2Nhanvien==true  && list.TG_OFF_2SO > list.DISCOUNTITIMEMAX==true))
+                                ?true:false "
+                                >{{list.AVGWAITTIME / 60 | number:2}}</td>
+                                
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+ </section>
+
+<!-- /.content -->
