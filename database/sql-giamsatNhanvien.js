@@ -1,6 +1,6 @@
 const queryDb = require('./db');
 const databaseInfo = require('./databaseInfo');
-const { hash, compare } = require('bcrypt');
+// const { hash, compare } = require('bcrypt');
 const moment=require('moment');
 class giamsatNhanvien {
     static async getstaffsMonitor(OFFICEID,allService) {
