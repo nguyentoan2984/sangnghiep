@@ -41,14 +41,27 @@ app.factory('giamsatNhanvien', function ($resource) {
         delete: { method: 'DELETE',params: {id: '@id'},isArray: true }
     })
 });
-
+app.factory('canhbao', function ($resource) {
+    return $resource('/canhbao', {  }, {
+        query: { method: 'GET', isArray: true },
+        save: { method: 'POST' ,isArray: true},
+        update: { method: 'PUT',isArray: true },
+        delete: { method: 'DELETE',params: {id: '@id'},isArray: true }
+    })
+});
+app.factory('checkboxWarning', function ($resource) {
+    return $resource('/checkboxWarning', {  }, {
+        save: { method: 'POST' ,isArray: true},
+        update: { method: 'PUT',isArray: true },
+    })
+});
 
 app.controller('admin_Controller', ['$scope', '$location', '$resource','$interval','$mdToast','$mdDialog','$timeout','donviInfo',
 'counter','staffs','DTOptionsBuilder',
 'DTColumnBuilder','DTColumnDefBuilder',
-'giamsatDichvu','giamsatNhanvien',
+'giamsatDichvu','giamsatNhanvien','canhbao','checkboxWarning',
 function ($scope, $location, $resource,$interval,$mdToast, $mdDialog, $timeout,donviInfo,counter,staffs,DTOptionsBuilder,
-DTColumnBuilder,DTColumnDefBuilder,giamsatDichvu,giamsatNhanvien) {
+DTColumnBuilder,DTColumnDefBuilder,giamsatDichvu,giamsatNhanvien,canhbao,checkboxWarning) {
 // datatables
 
 
@@ -76,40 +89,46 @@ let dataTables_Template=['pages/admin/datatables-cauhinhNhanvien.html',
 $scope.template=dataTables_Template[0];
 
 $scope.load_datatables_cauhinhNhanvien = function(){
+    $scope.officeService_Config=[]
     timer.stop();
     $scope.staffs_grid1=[]
     $scope.staffs_grid2=[]
     $scope.template=dataTables_Template[0];
 };
 $scope.load_datatables_giamsathNhanvien = function(){
+   
     timer.stop();
     autoload_service=null
+    $scope.warningShowNhanvien=false
     $scope.liststaffsService = []
     $scope.listServiceStaffs = []
-    $scope.liststaffsService =[]
+    $scope.listCounter=[]
     $scope.template=dataTables_Template[1];
    
 };
 $scope.load_datatables_giamsathDichvu = function(){
+   
     timer.stop();
     autoload_service=null
+    $scope.warningShow=false
     $scope.listmonitorService = []
     $scope.listService = result=[]
     $scope.template=dataTables_Template[2];
 };
 $scope.load_datatables_cauhinhMuccanhbao = function(){
+    $scope.officeService_Config=[]
     timer.stop();
+    $scope.waning_Info={}
     $scope.template=dataTables_Template[3];
 };
 
 
 
   ///////////////// cau hinh nhan vien cua don vi//////////////////
-  
-  let OFFICEID ="empty"
-  let OFFICENAME="empty"
-  let SERVICEID="empty"
-  let COUNTERID="empty"
+  let OFFICEID=""
+  let SERVICEID=""
+  let COUNTERID=""
+  let selectedOption_Config={}
   $scope.allCheck1=false
   $scope.allCheck2=false
 
@@ -124,88 +143,117 @@ $scope.load_datatables_cauhinhMuccanhbao = function(){
    }
    load_donvi_Config();
 ///////////////// Service config//////////////////
-   $scope.selectdonvi=function (selectedOption){
-        if (!selectedOption) return
-        if (OFFICEID==selectedOption.OFFICEID ) return
-    $scope.officeService_Config=[]
-    $scope.officeCounter_Config=[]
-    $scope.staffs_grid1=[]
-    $scope.staffs_grid2=[]
-    SERVICEID="empty"
-    COUNTERID="empty"
-    OFFICENAME=selectedOption.OFFICENAME
-       if(selectedOption.OFFICEID!=="" && selectedOption.OFFICEID!==null && selectedOption.OFFICEID!== undefined)
-           {             OFFICEID =selectedOption.OFFICEID
-                        donviInfo.save({selectedOption}, function (result) {
-                        $scope.officeService_Config = result
+   $scope.selectdonvi=function (selectedOption,option){
+     if (!selectedOption) return
+        ( selectedOption_Config==selectedOption)?null:(
+            $scope.officeService_Config=[],
+            $scope.officeCounter_Config=[],
+            $scope.staffs_grid1=[],
+            $scope.staffs_grid2=[],
+            $scope.waning_Info={}
+        );  
+            OFFICENAME=selectedOption.OFFICENAME
+            OFFICEID =selectedOption.OFFICEID
+            selectedOption_Config=selectedOption     
+            donviInfo.save({selectedOption}, function (result) {
+            $scope.officeService_Config = result
+                    if(option==1) callcheckboxWarning(OFFICEID)
                                 }, function () {
                                     alert("Kết nối dữ liệu đơn vị " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
                                     return
                                     }
                         );
-                    }
-            else{
-                alert(" Bạn vui lòng chọn đơn vị cần cấu hình")
-            }
+         
    }
 ///////////////// Counter config//////////////////
 $scope.selectService=function (selectedOption){
     if (!selectedOption) return
-    if (SERVICEID==selectedOption.SERVICEID ) return
-    $scope.officeCounter_Config=[]
-    if(selectedOption.SERVICEID!=="" && selectedOption.SERVICEID!==null && selectedOption.SERVICEID!== undefined)
+    ( selectedOption_Config==selectedOption)?null:(
+        $scope.officeCounter_Config=[],
+        $scope.staffs_grid1=[],
+        $scope.staffs_grid2=[]
+    );  
     counter.save({selectedOption,OFFICEID}, function (result) {
-     $scope.staffs_grid1=[]
-     $scope.staffs_grid2=[]
-     SERVICEID=selectedOption.SERVICEID
      $scope.officeCounter_Config = result
+     selectedOption_Config=selectedOption
+     
               }, function () {
-                  alert("Không load được các quầy vui lòng chọn lại các dịch vụ")
+                alert("Kết nối dữ liệu đơn vị " + OFFICEID + "-" + OFFICENAME + "-" + selectedOption.SERVICENAME+  " không thành công"  )
                   return
                  }
       );
-         else{
-             alert(" Bạn vui lòng chọn đơn vị cần cấu hình")
-         }
+        
 }
 ////////////////// load nhan vien //////////
 $scope.selectServiceCounter=function (selectedOption){
-    if (!selectedOption) return
-    if (COUNTERID==selectedOption.COUNTERID ) return
-    if (selectedOption.COUNTERID!=="" && selectedOption.COUNTERID!==null && selectedOption.COUNTERID!== undefined)
-        {
-            $scope.staffs_grid1=[]
-            $scope.staffs_grid2=[]
-            $scope.showAlert("Loading")
-                staffs.save({selectedOption,OFFICEID,TABLE:"GRID2"}, function (result) {
-              
-                for (let i = 0; i < result.length; i++) { 
-                  result[i].checkBox=false
-                }
-                COUNTERID=selectedOption.COUNTERID
-                $scope.staffs_grid2 = result
-
-                staffs.save({selectedOption,OFFICEID,TABLE:"GRID1"}, function (result) {
+    // if (!selectedOption) return
+    //         ( selectedOption_Config==selectedOption)?null:(
+    //             $scope.staffs_grid1=[],
+    //             $scope.staffs_grid2=[]
+    //         );  
+    //         ( selectedOption_Config==selectedOption)?null:(
+    //             $scope.showAlert("Loading")
+    //         );   
+    //     staffs.save({selectedOption,OFFICEID,TABLE:"GRID2"}, function (result) {
+    //             for (let i = 0; i < result.length; i++) { 
+    //             result[i].checkBox=false
+    //             }
+    //             $scope.staffs_grid2 = result
+             
+    //             staffs.save({selectedOption,OFFICEID,TABLE:"GRID1"}, function (result) {
+    //                     for (let i = 0; i < result.length; i++) { 
+    //                         result[i].checkBox=false
+    //                     }
+    //                     $scope.staffs_grid1 = result
+    //                     COUNTERID=selectedOption.COUNTERID
+    //                     selectedOption_Config=selectedOption
+    //                     cancelLoading()
+    //                             }, function () {
+    //                                 alert("Không load được danh sách các nhân viên")
+    //                                 return
+    //                                 }
+    //                     );
+    //         }, function () {
+    //             alert("Không load được danh sách các nhân viên")
+    //             return
+    //             }
+    //     );
+    
+        if (!selectedOption) return
+        if (COUNTERID==selectedOption.COUNTERID ) return
+        if (selectedOption.COUNTERID!=="" && selectedOption.COUNTERID!==null && selectedOption.COUNTERID!== undefined)
+            {
+                $scope.staffs_grid1=[]
+                $scope.staffs_grid2=[]
+                $scope.showAlert("Loading")
+                    staffs.save({selectedOption,OFFICEID,TABLE:"GRID2"}, function (result) {
                     for (let i = 0; i < result.length; i++) { 
-                        result[i].checkBox=false
-                      }
+                      result[i].checkBox=false
+                    }
                     COUNTERID=selectedOption.COUNTERID
-                    $scope.staffs_grid1 = result
-                    cancelLoading()
+                    $scope.staffs_grid2 = result
+    
+                    staffs.save({selectedOption,OFFICEID,TABLE:"GRID1"}, function (result) {
+                        for (let i = 0; i < result.length; i++) { 
+                            result[i].checkBox=false
+                          }
+                        COUNTERID=selectedOption.COUNTERID
+                        $scope.staffs_grid1 = result
+                        cancelLoading()
+                                }, function () {
+                                    alert("Không load được danh sách các nhân viên")
+                                    return
+                                    }
+                        );
                             }, function () {
                                 alert("Không load được danh sách các nhân viên")
                                 return
                                 }
                     );
-                        }, function () {
-                            alert("Không load được danh sách các nhân viên")
-                            return
-                            }
-                );
-          }
-            else{
-                alert(" Bạn vui lòng chọn đơn vị cần cấu hình")
-            }
+              }
+                else{
+                    alert(" Bạn vui lòng chọn đơn vị cần cấu hình")
+                }
 }
 /////////////////////////////
     $scope.capSo = function(){
@@ -261,7 +309,6 @@ $scope.selectServiceCounter=function (selectedOption){
                             $scope.staffs_grid1.splice(index, 1)
                             arrayUpdate[i].checkBox=false
                             $scope.staffs_grid2.push(arrayUpdate[i])
-                           
                           }
                        $scope.reloadData
                        cancelLoading()
@@ -304,6 +351,102 @@ $scope.selectServiceCounter=function (selectedOption){
                                     }
                         );
     }
+    ////////////////////// warning////////////////
+    function callcheckboxWarning(OFFICEID){
+        checkboxWarning.save({OFFICEID}, function (result) {
+            if(result[0].control=="noOk") 
+            {
+                $scope.showSimpleToast(" load dữ liệu không thành công") 
+                cancelLoading()
+            } 
+            else{
+                $scope.waningcheckbox_Info={
+                    sound:result[0].BYSOUND,
+                    picture:result[0].BYIMG,
+                }
+                $scope.showSimpleToast(" load dữ liệu thành công") 
+                cancelLoading()
+            }
+                    }, function () {
+                        alert("Load dữ liệu cảnh báo " + OFFICEID + "-" + " không thành công")
+                        return
+                        }
+            );
+    }
+ $scope.updatecheckbox=function(selectedOption){
+    checkboxWarning.update({OFFICEID,selectedOption}, function (result) {
+        if(result[0].control=="noOk") 
+        {
+            $scope.showSimpleToast(" cập nhật dữ liệu không thành công") 
+            cancelLoading()
+        } 
+        else{
+         
+            $scope.showSimpleToast(" cập nhật dữ liệu thành công") 
+            cancelLoading()
+        }
+                }, function () {
+                    alert("Load dữ liệu cảnh báo " + OFFICEID + "-" + " không thành công")
+                    return
+                    }
+        );
+ }   
+$scope.selectServiceWarning=function (selectedOption){
+    if (!selectedOption) return
+        ( selectedOption_Config==selectedOption)?null:(
+            $scope.waning_Info=[]
+        );  
+        ( selectedOption_Config==selectedOption)?null:(
+            $scope.showAlert("Loading")
+        );
+            SERVICEID=selectedOption.SERVICEID
+            SERVICENAME=selectedOption.SERVICENAME
+            canhbao.save({selectedOption,OFFICEID}, function (result) {
+                if(result[0].control=="noOk") 
+                {
+                    $scope.showSimpleToast(" load dữ liệu không thành công") 
+                    cancelLoading()
+                } 
+                else{
+                    $scope.waning_Info={
+                        timeWait_max:Number(result[0].WAITTIMEMAX),
+                        timeService_max:Number(result[0].SERVICETIMEMAX),
+                        time_2so:Number(result[0].DISCOUNTITIMEMAX),
+                    }
+                    $scope.showSimpleToast(" load dữ liệu thành công") 
+                    selectedOption_Config=selectedOption
+                    cancelLoading()
+                }
+              
+                        }, function () {
+                            alert("Load dữ liệu cảnh báo " + OFFICEID + "-" + OFFICENAME + SERVICENAME + " không thành công")
+                            return
+                            }
+                );
+    
+}
+
+$scope.saveserviceWarning=function(selectedOption,index){
+        $scope.showAlert("Loading")
+    canhbao.update({selectedOption,OFFICEID,SERVICEID,index}, function (result) {
+        if(result[0].control=="noOk") 
+            {
+                $scope.showSimpleToast(" cập nhật không thành công") 
+                cancelLoading()
+            } 
+            else {
+             
+                $scope.showSimpleToast(" cập nhật thành công") 
+                cancelLoading()
+            }
+                   }, function () {
+                       alert("cập nhật dữ liệu cảnh báo " + OFFICEID + "-" + OFFICENAME  +"-"+ SERVICENAME + " không thành công")
+                       cancelLoading()
+                       return
+                       }
+           );
+}
+
 
     /////////////giam sat dich vu//////////
     let autoload_service=""
@@ -351,17 +494,11 @@ $scope.selectServiceCounter=function (selectedOption){
         check1_checkbox()
     }
 
-
   $scope.getserviceMonitor =function (selectedOption){
-    
         if (!selectedOption) return
-        if (selectedOption_Monitor==selectedOption ) return
-        $scope.listService = []
-        SERVICEID="empty"
-        if(selectedOption.OFFICEID!=="" && selectedOption.OFFICEID!==null && selectedOption.OFFICEID!== undefined)
-                {  
-         ( selectedOption_Monitor==selectedOption  &&  autoload_service=="DonvimonitorService")?null:$scope.showAlert("Loading");
-                    
+        ( selectedOption_Monitor==selectedOption  &&  autoload_service=="DonvimonitorService")?null:($scope.listService = [],$scope.listmonitorService =[]);
+        ( selectedOption_Monitor==selectedOption  &&  autoload_service=="DonvimonitorService")?null:$scope.showAlert("Loading  "+ selectedOption.OFFICENAME);
+         console.log(selectedOption_Monitor)
                             timer.stop();
                             selectedOption_Monitor=selectedOption
                             autoload_service="DonvimonitorService"
@@ -373,53 +510,39 @@ $scope.selectServiceCounter=function (selectedOption){
                                     timer.start()
                                     cancelLoading()
                                     }, function () {
-                                        alert("Không load được dịch vụ vui lòng chọn lại đơn vị cần cấu hình")
+                                        alert("Không load được danh sách giám sát các dịch vụ trực tuyến")
                                         return
                                         }
                                 );
-                         
-                }       
-                        else{
-                            alert(" Bạn vui lòng chọn đơn vị cần cấu hình")
-                        }
-                           
    }
-
-  
 
   $scope.getoneserviceMonitor = function(selectedOption){
     if (!selectedOption) return
-    if (selectedOption_Monitor==selectedOption ) return
-    if(selectedOption.SERVICEID!=="" && selectedOption.SERVICEID!==null && selectedOption.SERVICEID!== undefined)
-      {     
-        ( selectedOption_Monitor==selectedOption  &&  autoload_service=="ServicemonitorService")?null:$scope.showAlert("Loading");
+        ( selectedOption_Monitor==selectedOption  &&  autoload_service=="ServicemonitorService")?null:($scope.listmonitorService =[]);
+        ( selectedOption_Monitor==selectedOption  &&  autoload_service=="ServicemonitorService")?null:$scope.showAlert("Loading " + selectedOption.SERVICENAME);
+            console.log(selectedOption)
             timer.stop();
             selectedOption_Monitor=selectedOption
             autoload_service="ServicemonitorService"
-            selectedOption.OFFICEID=OFFICEID
             SERVICEID =selectedOption.SERVICEID
-            giamsatDichvu.save({selectedOption,allService:SERVICEID}, function (result) {
-            $scope.listmonitorService = result
-            check1_checkbox()
-            timer.start()
-            cancelLoading()
-            
-                    }, function () {
-                        alert("Không load được dịch vụ vui lòng chọn lại đơn vị cần cấu hình")
-                        return
-                        }
-            );
-      }
-        else{
-            alert(" Bạn vui lòng chọn đơn vị cần cấu hình")
-        }
+            selectedOption.OFFICEID=OFFICEID
+        giamsatDichvu.save({selectedOption,allService:SERVICEID}, function (result) {
+        $scope.listmonitorService = result
+        check1_checkbox()
+        timer.start()
+        cancelLoading()
+                }, function () {
+                    alert("Không load được danh sách giám sát dịch vụ trực tuyến")
+                    return
+                    }
+        );
+    
 }
 
   /////////////giam sat nhân viên//////////
   $scope.warningShowNhanvien =false
   $scope.checkbox1Nhanvien =false
   $scope.checkbox2Nhanvien =false
-  let selectedOption_staffsMonitor={}
  
     function check2_checkbox ()
         {
@@ -461,18 +584,13 @@ $scope.selectServiceCounter=function (selectedOption){
   }
   $scope.getstaffsMonitor=function (selectedOption){
     
-     if (!selectedOption) return
-     if (selectedOption_Monitor==selectedOption ) return
-     timer.stop();
-   
-     $scope.listServiceStaffs = []
-     $scope.listCounter =[]
-     SERVICEID="empty"
-     if(selectedOption.OFFICEID!=="" && selectedOption.OFFICEID!==null && selectedOption.OFFICEID!== undefined)
-        {
-            ( selectedOption_Monitor==selectedOption  &&  autoload_service=="DonvimonitorNhanvien")?null:$scope.showAlert("Loading");
+    if (!selectedOption) return
+    ( selectedOption_Monitor==selectedOption  &&  autoload_service=="DonvimonitorNhanvien")?null:( $scope.liststaffsService = [], $scope.listServiceStaffs = [], $scope.listCounter=[] );      
+    ( selectedOption_Monitor==selectedOption  &&  autoload_service=="DonvimonitorNhanvien")?null:$scope.showAlert("Loading " + selectedOption.OFFICENAME);
+    console.log(selectedOption)      
+            timer.stop();
             selectedOption_Monitor=selectedOption
-                autoload_service="DonvimonitorNhanvien"
+            autoload_service="DonvimonitorNhanvien"
             giamsatNhanvien.save({selectedOption,allService:{CONTROL:"DONVI",SERVICEID:SERVICEID}}, function (result) {
                 OFFICEID =selectedOption.OFFICEID
                 $scope.liststaffsService = result
@@ -481,72 +599,57 @@ $scope.selectServiceCounter=function (selectedOption){
                 timer.start()
                 cancelLoading()
                     }, function () {
-                        alert("Không load được dịch vụ vui lòng chọn lại đơn vị cần cấu hình")
+                        alert("Không load được danh sách nhân viên cần giám sát của đơn vị")
                         return
                         }
             );
-        }
-         else{
-             alert(" Bạn vui lòng chọn đơn vị cần cấu hình")
-         }
 }
 $scope.getstaffsServiceMonitor=function (selectedOption){
-    
-     if (!selectedOption) return
-     if (selectedOption_Monitor==selectedOption ) return
-     timer.stop()
-     $scope.listCounter =[]
-     selectedOption.OFFICEID=OFFICEID
-     SERVICEID =selectedOption.SERVICEID
-     if(selectedOption.SERVICEID!=="" && selectedOption.SERVICEID!==null && selectedOption.SERVICEID!== undefined)
-       {
-        ( selectedOption_Monitor==selectedOption  &&  autoload_service=="ServicemonitorNhanvien")?null:$scope.showAlert("Loading");
+    if (!selectedOption) return
+        ( selectedOption_Monitor==selectedOption  &&  autoload_service=="ServicemonitorNhanvien")?null:( $scope.liststaffsService = [], $scope.listCounter=[] );     
+        ( selectedOption_Monitor==selectedOption  &&  autoload_service=="ServicemonitorNhanvien")?null:$scope.showAlert("Loading "+ selectedOption.SERVICENAME);
+                 console.log(selectedOption) 
+                    timer.stop()            
                     selectedOption_Monitor=selectedOption
                     autoload_service="ServicemonitorNhanvien"
-                giamsatNhanvien.save({selectedOption,allService:{CONTROL:"SERVICE",SERVICEID:SERVICEID}}, function (result) {
-                    $scope.liststaffsService = result
-                    $scope.listCounter = result[result.length-1].arrayCounter
-                    check2_checkbox()
-                    timer.start()
-                    cancelLoading()
-                        }, function () {
-                            alert("Không load được dịch vụ vui lòng chọn lại đơn vị cần cấu hình")
-                            return
-                            }
-                );
-            }
-                else{
-                    alert(" Bạn vui lòng chọn đơn vị cần cấu hình")
-                }
+                    selectedOption.OFFICEID=OFFICEID
+                    SERVICEID =selectedOption.SERVICEID
+            giamsatNhanvien.save({selectedOption,allService:{CONTROL:"SERVICE",SERVICEID:SERVICEID}}, function (result) {
+            $scope.liststaffsService = result
+            $scope.listCounter = result[result.length-1].arrayCounter
+            check2_checkbox()
+            timer.start()
+            cancelLoading()
+                }, function () {
+                    alert("Không load được danh sách nhân viên cần giám sát dịch vụ ")
+                    return
+                    }
+        );
+          
 }
 $scope.getstaffsCounterMonitor=function (selectedOption){
      if (!selectedOption) return
-     if (selectedOption_Monitor==selectedOption ) return
-     timer.stop()
-    $scope.liststaffsService=[]
-     selectedOption.OFFICEID=OFFICEID
-     SERVICEID =selectedOption.SERVICEID
-     COUNTERID=selectedOption.COUNTERID
-     if(selectedOption.COUNTERID!=="" && selectedOption.COUNTERID!==null && selectedOption.COUNTERID!== undefined)
-      { 
+        ( selectedOption_Monitor==selectedOption  &&  autoload_service=="CountermonitorNhanvien")?null:( $scope.liststaffsService = [] );     
         ( selectedOption_Monitor==selectedOption  &&  autoload_service=="CountermonitorNhanvien")?null:$scope.showAlert("Loading"); 
-        selectedOption_Monitor=selectedOption
+                        timer.stop()               
+                        selectedOption_Monitor=selectedOption
                         autoload_service="CountermonitorNhanvien"
+                        selectedOption.OFFICEID=OFFICEID
+                        SERVICEID =selectedOption.SERVICEID
+                        COUNTERID=selectedOption.COUNTERID
                     giamsatNhanvien.save({selectedOption,allService:{CONTROL:"COUNTER",SERVICEID:SERVICEID,COUNTERID:COUNTERID}}, function (result) {
                         $scope.liststaffsService = result
                         check2_checkbox()
                         timer.start()
                         cancelLoading()
                             }, function () {
-                                alert("Không load được dịch vụ vui lòng chọn lại đơn vị cần cấu hình")
+                                alert("Không load được danh sách nhân viên cần giám sát của quầy ")
                                 return
                                 }
                     );
-        }
-                    else{
-                        alert(" Bạn vui lòng chọn đơn vị cần cấu hình")
-                    }
+      
 }
+
 /////////////////////autoReload////////////////////
     function Timer(fn, t) {
         var timerObj = setInterval(fn, t);

@@ -8,7 +8,7 @@ module.exports=function(app,jsonParser,checkApi) {
         let {allService}= req.body
         giamsatDichvu.getserviceMonitor(OFFICEID,allService)
         .then(result => {
-            console.log(result)
+            // console.log(result)
             res.send(JSON.stringify(result))
             })
         .catch(err => {

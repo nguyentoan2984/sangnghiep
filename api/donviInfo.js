@@ -2,7 +2,7 @@
 module.exports=function(app,jsonParser,checkApi) {  
     const donviInfo = require('../database/sql-donviInfo');
    
-    app.get('/donviInfo', function (req, res) {
+    app.get('/donviInfo',checkApi, function (req, res) {
         donviInfo.get_donviInfo()
         .then(result => {
             console.log(result.recordset)
@@ -15,13 +15,13 @@ module.exports=function(app,jsonParser,checkApi) {
         });
      });
 
-     app.post('/donviInfo',jsonParser, function (req, res) {
+     app.post('/donviInfo',jsonParser,checkApi, function (req, res) {
         let {OFFICEID}= req.body.selectedOption
          console.log(OFFICEID)
 
                     donviInfo.get_officeServiceInfo(OFFICEID)
                     .then(result => {
-                        console.log(result.recordset)
+                        // console.log(result.recordset)
                         res.send(JSON.stringify(result.recordset))
                         })
                     .catch(err => {
@@ -31,13 +31,13 @@ module.exports=function(app,jsonParser,checkApi) {
         });
     });
 
-        app.post('/counter',jsonParser, function (req, res) {
+        app.post('/counter',jsonParser,checkApi, function (req, res) {
             let {SERVICEID}= req.body.selectedOption
             let {OFFICEID}= req.body
-             console.log(OFFICEID)
+            //  console.log(OFFICEID)
                         donviInfo.get_counterService(SERVICEID,OFFICEID)
                         .then(result => {
-                            console.log(result.recordset)
+                            // console.log(result.recordset)
                             res.send(JSON.stringify(result.recordset))
                             })
                         .catch(err => {
@@ -49,10 +49,10 @@ module.exports=function(app,jsonParser,checkApi) {
                 let {COUNTERID}= req.body.selectedOption
                 let {OFFICEID}= req.body
                 let {TABLE}= req.body
-                 console.log(req.body)
+                //  console.log(req.body)
                             donviInfo.get_staffsOffice(COUNTERID,OFFICEID,TABLE)
                             .then(result => {
-                                console.log(result.recordset)
+                                // console.log(result.recordset)
                                 res.send(JSON.stringify(result.recordset))
                                 })
                             .catch(err => {
@@ -65,11 +65,11 @@ module.exports=function(app,jsonParser,checkApi) {
                     let {OFFICEID}= req.body
                     let {arrayUpdate}= req.body
                     let {TABLE}= req.body
-                     console.log(arrayUpdate)
+                    //  console.log(arrayUpdate)
                                 donviInfo.update_staffs(OFFICEID,COUNTERID,arrayUpdate,TABLE)
                                 .then(result => {
-                                    console.log(result.recordset)
-                                    res.send(JSON.stringify(result.recordset))
+                                    // console.log(result)
+                                    res.send(JSON.stringify(result))
                                     })
                                 .catch(err => {
                                     console.log(err)

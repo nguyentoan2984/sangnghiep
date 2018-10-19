@@ -1,3 +1,4 @@
+<form novalidate name="formWarning">
 
 <section class="content-header">
     <h1 class="text-primary">
@@ -12,7 +13,9 @@
             <select class="col-xs-6" 
             ng-options="option.OFFICENAME for option in donVi_Config track by option.ORDERINDEX"
             ng-model="selectedOption"
-            ng-click="selectdonvi(selectedOption)"
+            ng-click="selectdonvi(selectedOption,option=1)"
+            name="donvi"
+            required
             >
             <option  value="" disabled  >Đơn vị cần cấu hình</option>
 
@@ -26,11 +29,7 @@
         
       </div>
     </div>
-    <!-- <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a href="#">Tables</a></li>
-    <li class="active">Data tables</li>
-  </ol> -->
+
   </section>
 
   
@@ -51,7 +50,9 @@
                                             <select class="col-xs-8" 
                                             ng-options="option.SERVICENAME for option in officeService_Config track by option.SERVICEID"
                                             ng-model="selectedService"
-                                            ng-click="selectService(selectedService)"
+                                            ng-click="selectServiceWarning(selectedService)"
+                                            name="dicvhu"
+                                            required
                                             >
                                             <option value="" disabled>Chọn dịch vụ</option>>
                                             </select>
@@ -66,33 +67,63 @@
 
                             <div class="row">
                                     <div class="col-xs-12">
-                                                <label class="col-xs-10">Thời gian chờ phục tối đa</label>
-                                                <input class="col-xs-2" type="number">
+                                                <label class="col-xs-8">Thời gian chờ phục tối đa</label>
+                                                <input class="col-xs-4"  type="number" ng-model="waning_Info.timeWait_max" ng-value="waning_Info.timeWait_max"   name="timeWait_max"
+                                                required>
                                             </div>
                                 </div>
                     <br>
                                 <div class="row">
                                         <div class="col-xs-12">
-                                                    <label class="col-xs-10">Thời gian phục vụ tối đa</label>
-                                                    <input class="col-xs-2" type="number">
+                                                    <label class="col-xs-8">Thời gian phục vụ tối đa</label>
+                                                    <input class="col-xs-4" type="number" ng-model="waning_Info.timeService_max" ng-value="waning_Info.time_max" name="timeService_max"
+                                                    required>
                                                 </div>
                                  </div>
                      <br>
                                  <div class="row">
                                          <div class="col-xs-12">
-                                                     <label class="col-xs-10">Thời gian nghỉ giữa 2 số tối đa</label>
-                                                     <input class="col-xs-2" type="number">
+                                                     <label class="col-xs-8">Thời gian nghỉ giữa 2 số tối đa</label>
+                                                     <input class="col-xs-4" type="number" ng-model="waning_Info.time_2so" ng-value="waning_Info.time_2so" name="time_2so"
+                                                     required>
                                                  </div>
                                   </div>      
                     <br>
                                   <div class="row">
                                         <div class="col-xs-offset-2 col-xs-4">
-                                                    <button class="btn btn-primary"> Lưu</button>
+                                                    <button class="btn btn-primary" 
+                                                    ng-disabled="formWarning.donvi.$error.required + 
+                                                    formWarning.dichvu.$error.required +
+                                                    formWarning.timeWait_max.$error.required +
+                                                    formWarning.timeService_max.$error.required +
+                                                    formWarning.time_2so.$error.required" 
+                                                    ng-click="saveserviceWarning(waning_Info,index=0)"
+                                                    > Lưu</button>
                                                 </div>
                                         <div class=" col-xs-4">
-                                                <button class="btn btn-primary"> Áp dụng tất cả dịch vụ</button>
+                                                <button class="btn btn-primary"
+                                                ng-disabled="formWarning.donvi.$error.required + 
+                                                formWarning.dichvu.$error.required +
+                                                formWarning.timeWait_max.$error.required +
+                                                formWarning.timeService_max.$error.required +
+                                                formWarning.time_2so.$error.required"
+                                                ng-click="saveserviceWarning(waning_Info,index=1)"
+                                                > Áp dụng tất cả dịch vụ</button>
                                             </div>
                                     </div>
+                        <br>
+                                 <div class="row">
+                                        <div class="col-xs-12"
+                                        ng-show="formWarning.donvi.$error.required + 
+                                        formWarning.dichvu.$error.required +
+                                        formWarning.timeWait_max.$error.required +
+                                        formWarning.timeService_max.$error.required +
+                                        formWarning.time_2so.$error.required"
+                                        
+                                        > <p class="text-danger">Vui lòng chọn đầy đủ các trường dữ liệu</p> </div>
+                                
+                                </div>
+                                    
                                   
 
                         </div>
@@ -109,7 +140,12 @@
                                                 <label for="switch-id">Âm Thanh</label>
                                         </div>
                                         <div class=" col-xs-6" class="switch">
-                                                <input type="checkbox" class="switch" id="switch-id"> 
+                                                <input type="checkbox" class="switch" ng-model="waningcheckbox_Info.sound" 
+                                                ng-value="waningcheckbox_Info.sound"
+                                                ng-click="updatecheckbox(waningcheckbox_Info)"
+                                                ng-disabled="formWarning.donvi.$error.required"
+                                              
+                                                > 
                                         </div>
                                 </div>
 
@@ -118,7 +154,11 @@
                                                 <label for="switch-id">Hình ảnh</label>
                                         </div>
                                         <div class=" col-xs-6" >
-                                                <input type="checkbox" class="switch" id="switch-id"> 
+                                                <input type="checkbox" class="switch" ng-model="waningcheckbox_Info.picture"
+                                                 ng-value="waningcheckbox_Info.picture"
+                                                 ng-click="updatecheckbox(waningcheckbox_Info)"
+                                                 ng-disabled="formWarning.donvi.$error.required"
+                                                 > 
                                         </div>
                                 </div>
                                
@@ -128,6 +168,7 @@
     </div>
     <!-- /.row -->
   </section>
+  </form>
   
 
 <!-- /.content -->

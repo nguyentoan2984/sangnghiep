@@ -16,12 +16,7 @@ class donviInfo {
     }
     
     static async get_officeServiceInfo(OFFICEID) {
-        let database ={
-            user: 'bquser',
-            password: 'bqpassword',
-            ip: '45.117.171.3', 
-            name: 'BQDB' 
-           }
+        let database =databaseInfo
         const selectSql =
             `SELECT IPDATABASE,DATABASENAME,USERNAME,PASSWORD  FROM dbo.OFFICE
             WHERE  OFFICEID='${OFFICEID}'`;
@@ -42,12 +37,7 @@ class donviInfo {
       
     }
     static async get_counterService(SERVICEID,OFFICEID) {
-        let database ={
-            user: 'bquser',
-            password: 'bqpassword',
-            ip: '45.117.171.3', 
-            name: 'BQDB' 
-           }
+        let database =databaseInfo
         const selectSql =
             `SELECT IPDATABASE,DATABASENAME,USERNAME,PASSWORD  FROM dbo.OFFICE
             WHERE  OFFICEID='${OFFICEID}'`;
@@ -71,12 +61,7 @@ class donviInfo {
       
     }
     static async get_staffsOffice(COUNTERID,OFFICEID,TABLE) {
-        let database ={
-            user: 'bquser',
-            password: 'bqpassword',
-            ip: '45.117.171.3', 
-            name: 'BQDB' 
-           }
+        let database =databaseInfo
         const selectSql =
             `SELECT IPDATABASE,DATABASENAME,USERNAME,PASSWORD  FROM dbo.OFFICE
             WHERE  OFFICEID='${OFFICEID}'`;
@@ -114,12 +99,7 @@ class donviInfo {
     }
    
     static async update_staffs(OFFICEID,COUNTERID,arrayUpdate,TABLE) {
-        let database ={
-            user: 'bquser',
-            password: 'bqpassword',
-            ip: '45.117.171.3', 
-            name: 'BQDB' 
-           }
+        let database =databaseInfo
         let selectSql =
             `SELECT IPDATABASE,DATABASENAME,USERNAME,PASSWORD  FROM dbo.OFFICE
             WHERE  OFFICEID='${OFFICEID}'`;
@@ -146,9 +126,8 @@ class donviInfo {
             }
               
      if(result.rowsAffected===0) throw new Error ("co loi xay ra trong qua trình insert database")
-    console.log(result)
-    console.log("ghicong");
         }
+            return
         
     }
 
