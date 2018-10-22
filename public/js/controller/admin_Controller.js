@@ -511,7 +511,6 @@ $scope.saveserviceWarning=function(selectedOption,index){
                                     check1_checkbox()
                                     timer.start()
                                     cancelLoading()
-                                    console.log(result)
                                     }, function () {
                                         alert("Không load được danh sách giám sát các dịch vụ trực tuyến")
                                         return
