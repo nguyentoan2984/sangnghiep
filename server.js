@@ -48,7 +48,7 @@ const checkApi = (req, res, next) => {
     verify(token, SK, (err, obj) => {
         if (err) return           res.send(JSON.stringify({ nook }));
         const { username } = obj;
-        sign({ username }, SK, { expiresIn: 60*5*100 }, (errSign, token) => {
+        sign({ username }, SK, { expiresIn: 600*5*100 }, (errSign, token) => {
             res.cookie('token', token);
             next();
         });

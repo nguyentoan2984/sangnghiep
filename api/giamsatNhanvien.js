@@ -4,7 +4,7 @@ module.exports=function(app,jsonParser,checkApi) {
    
     app.post('/giamsatNhanvien',jsonParser,checkApi, function (req, res) {
         let {OFFICEID}= req.body.selectedOption
-        console.log(req.body)
+        // console.log(req.body)
         let {allService}= req.body
         giamsatNhanvien.getstaffsMonitor(OFFICEID,allService)
         .then(result => {

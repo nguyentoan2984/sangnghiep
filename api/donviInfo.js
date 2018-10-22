@@ -17,7 +17,6 @@ module.exports=function(app,jsonParser,checkApi) {
 
      app.post('/donviInfo',jsonParser,checkApi, function (req, res) {
         let {OFFICEID}= req.body.selectedOption
-         console.log(OFFICEID)
 
                     donviInfo.get_officeServiceInfo(OFFICEID)
                     .then(result => {

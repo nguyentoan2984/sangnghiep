@@ -86,7 +86,7 @@ let dataTables_Template=['pages/admin/datatables-cauhinhNhanvien.html',
 'pages/admin/datatables-cauhinhMuccanhbao.html'
 ];
 
-$scope.template=dataTables_Template[0];
+$scope.template=dataTables_Template[2];
 
 $scope.load_datatables_cauhinhNhanvien = function(){
     $scope.officeService_Config=[]
@@ -315,6 +315,7 @@ $scope.selectServiceCounter=function (selectedOption){
                        $scope.showSimpleToast("cập nhật thành công")
                                 }, function () {
                                     alert("Không thực hiện được việc update nhân viên")
+                                    cancelLoading()
                                     return
                                     }
                         );
@@ -347,6 +348,7 @@ $scope.selectServiceCounter=function (selectedOption){
 
                                 }, function () {
                                     alert("Không thực hiện được việc update nhân viên")
+                                    cancelLoading()
                                     return
                                     }
                         );
@@ -427,7 +429,7 @@ $scope.selectServiceWarning=function (selectedOption){
 }
 
 $scope.saveserviceWarning=function(selectedOption,index){
-        $scope.showAlert("Loading")
+        $scope.showAlert("processing")
     canhbao.update({selectedOption,OFFICEID,SERVICEID,index}, function (result) {
         if(result[0].control=="noOk") 
             {
@@ -498,7 +500,7 @@ $scope.saveserviceWarning=function(selectedOption,index){
         if (!selectedOption) return
         ( selectedOption_Monitor==selectedOption  &&  autoload_service=="DonvimonitorService")?null:($scope.listService = [],$scope.listmonitorService =[]);
         ( selectedOption_Monitor==selectedOption  &&  autoload_service=="DonvimonitorService")?null:$scope.showAlert("Loading  "+ selectedOption.OFFICENAME);
-         console.log(selectedOption_Monitor)
+        //  console.log(selectedOption_Monitor)
                             timer.stop();
                             selectedOption_Monitor=selectedOption
                             autoload_service="DonvimonitorService"
@@ -520,7 +522,7 @@ $scope.saveserviceWarning=function(selectedOption,index){
     if (!selectedOption) return
         ( selectedOption_Monitor==selectedOption  &&  autoload_service=="ServicemonitorService")?null:($scope.listmonitorService =[]);
         ( selectedOption_Monitor==selectedOption  &&  autoload_service=="ServicemonitorService")?null:$scope.showAlert("Loading " + selectedOption.SERVICENAME);
-            console.log(selectedOption)
+            // console.log(selectedOption)
             timer.stop();
             selectedOption_Monitor=selectedOption
             autoload_service="ServicemonitorService"
@@ -587,7 +589,7 @@ $scope.saveserviceWarning=function(selectedOption,index){
     if (!selectedOption) return
     ( selectedOption_Monitor==selectedOption  &&  autoload_service=="DonvimonitorNhanvien")?null:( $scope.liststaffsService = [], $scope.listServiceStaffs = [], $scope.listCounter=[] );      
     ( selectedOption_Monitor==selectedOption  &&  autoload_service=="DonvimonitorNhanvien")?null:$scope.showAlert("Loading " + selectedOption.OFFICENAME);
-    console.log(selectedOption)      
+    // console.log(selectedOption)      
             timer.stop();
             selectedOption_Monitor=selectedOption
             autoload_service="DonvimonitorNhanvien"
@@ -608,7 +610,7 @@ $scope.getstaffsServiceMonitor=function (selectedOption){
     if (!selectedOption) return
         ( selectedOption_Monitor==selectedOption  &&  autoload_service=="ServicemonitorNhanvien")?null:( $scope.liststaffsService = [], $scope.listCounter=[] );     
         ( selectedOption_Monitor==selectedOption  &&  autoload_service=="ServicemonitorNhanvien")?null:$scope.showAlert("Loading "+ selectedOption.SERVICENAME);
-                 console.log(selectedOption) 
+                //  console.log(selectedOption) 
                     timer.stop()            
                     selectedOption_Monitor=selectedOption
                     autoload_service="ServicemonitorNhanvien"
@@ -694,6 +696,8 @@ $scope.getstaffsCounterMonitor=function (selectedOption){
             .textContent(string)
             .position('bottom right' )
             .hideDelay(3000)
+            .toastClass(string)
+          
         );
       };
 

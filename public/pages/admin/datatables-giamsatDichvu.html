@@ -118,7 +118,11 @@
                             
                                 <td ng-style="{'background-color':
                                     ((checkbox1 == false  && checkbox2==false && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true  ) ||
-                                    (checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true ) ?'blue':'white')}"
+                                    (checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true ) ?'blue':'white'),
+                                    'color':
+                                    ((checkbox1 == false  && checkbox2==false && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true  ) ||
+                                    (checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true ) ?'white':'black')
+                                    }"
                                     ng-show=
                                 "(checkbox1 == false && checkbox2==false )?true: 
                                     ((checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true) ||
@@ -137,7 +141,6 @@
                                     ng-style="{'background-color':
                                     ((checkbox1 == false  && checkbox2==false && list.AVGWAITTIME>list.WAITTIMEMAX  ) ||
                                     (checkbox2==true && list.AVGWAITTIME>list.WAITTIMEMAX ) ?'yellow':'white')}"
-                                 
                                     ng-show=
                                 "(checkbox1 == false && checkbox2==false )?true: 
                                         ((checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true) ||

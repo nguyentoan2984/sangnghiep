@@ -7,7 +7,7 @@ class giamsatDichvu {
     static async getserviceMonitor(OFFICEID,allService) {
         let dateNow =new Date();
         dateNow = moment(dateNow).format('DD-MM-YYYY'); 
-        dateNow="12/10/2018" 
+        // dateNow="12/10/2018" 
         let returnArray=[]
         let arrayService=[]
         let database =databaseInfo
@@ -56,7 +56,7 @@ class giamsatDichvu {
                     let sodangphucvu= Number (resultInfo.recordset[0].SODANGPHUCVU)
     //////////thời gian phuc vu hien tai
                  selectSqlInfo=  `BEGIN
-                 SELECT      DATEDIFF("SECOND",dbo.CUSTOMERS.SERVINGTIME,'2018-10-12 08:59:00') as TG_PV_HIENTAI
+                 SELECT      DATEDIFF("SECOND",dbo.CUSTOMERS.SERVINGTIME,GETDATE()) as TG_PV_HIENTAI
                  FROM		dbo.CUSTOMERS 
                  WHERE		dbo.CUSTOMERS.CUSTOMERNO ='${sodangphucvu}'					
                             AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}' 
@@ -68,7 +68,7 @@ class giamsatDichvu {
     //  /////////thoi gian chờ lâu nhất//////////
                 selectSqlInfo=  `BEGIN
                 SELECT
-                        MAX(DATEDIFF("SECOND", dbo.CUSTOMERS.TOCOUNTERTIME, '2018-10-12 08:59:00')) AS MAXWAITTIME 
+                        MAX(DATEDIFF("SECOND", dbo.CUSTOMERS.TOCOUNTERTIME, GETDATE())) AS MAXWAITTIME 
                 FROM    dbo.CUSTOMERS
                 WHERE   dbo.CUSTOMERS.STATUS = '3' AND dbo.CUSTOMERS.SERVICEID ='${num.SERVICEID}' 
                         AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) ='${dateNow}' 

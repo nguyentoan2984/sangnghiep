@@ -6,7 +6,7 @@ class giamsatNhanvien {
     static async getstaffsMonitor(OFFICEID,allService) {
         let dateNow =new Date();
         dateNow = moment(dateNow).format('DD-MM-YYYY'); 
-        dateNow="12/10/2018" 
+        // dateNow="12/10/2018" 
         let returnArray=[]
         let arrayService=[]
         let arrayCounter=[]
@@ -55,6 +55,7 @@ class giamsatNhanvien {
                                     arrayCounter.push(num)   
                                     }
                                 }
+                             
             }
         if (allService.CONTROL=="SERVICE")
             {
@@ -86,6 +87,7 @@ class giamsatNhanvien {
                                  arrayCounter.push(num)   
                                  }
                              }
+                           
              }
         if (allService.CONTROL=="COUNTER")
                     {
@@ -93,6 +95,7 @@ class giamsatNhanvien {
                         objCounter.COUNTERID= Number(allService.COUNTERID)
                         objCounter.SERVICEID= Number(allService.SERVICEID)
                         arrayCounter.push(objCounter) 
+                       
                     }
 
  //////////// lấy ra các thông tin nhan vien đe giam sat/////////////       
@@ -110,7 +113,9 @@ class giamsatNhanvien {
                         FROM		dbo.STAFFS,dbo.CUSTOMERS			
                         WHERE		dbo.STAFFS.COUNTERID='${num.COUNTERID}'   
                                     AND dbo.CUSTOMERS.STATUS = '1' 
-                                    AND dbo.STAFFS.COUNTERID=dbo.CUSTOMERS.COUNTERID`
+                                    AND dbo.STAFFS.COUNTERID=dbo.CUSTOMERS.COUNTERID
+                                    AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}'
+                                    `
                    let resultInfo = await queryDb(selectSqlInfo,database1);       
                     obj.Nhanvien = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].Nhanvien 
                    
@@ -128,7 +133,7 @@ class giamsatNhanvien {
               
     //////////thời gian phuc vu hien tai
                  selectSqlInfo=  `BEGIN 
-                 SELECT     DATEDIFF("SECOND",dbo.CUSTOMERS.SERVINGTIME, '2018-10-12 08:59:00') as TG_PV_HIENTAI 
+                 SELECT     DATEDIFF("SECOND",dbo.CUSTOMERS.SERVINGTIME, GETDATE()) as TG_PV_HIENTAI 
                  FROM		dbo.CUSTOMERS 
                  WHERE		dbo.CUSTOMERS.CUSTOMERNO ='${sodangphucvu}'    
                             AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) ='${dateNow}' 
@@ -166,7 +171,7 @@ class giamsatNhanvien {
    
    // //  ////////thoi gian nghỉ giửa 2 số thứ tự//////////
                 selectSqlInfo=  `BEGIN
-                SELECT		DATEDIFF("SECOND", dbo.CUSTOMERS.FINISHTIME,'2018-10-12 08:59:00') AS 'TG_OFF_2SO'  
+                SELECT		DATEDIFF("SECOND", dbo.CUSTOMERS.FINISHTIME,GETDATE()) AS 'TG_OFF_2SO'  
                 FROM    	dbo.CUSTOMERS
                 WHERE		dbo.CUSTOMERS.CUSTOMERNO='${sodangphucvu}' AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}' 
                 END`;
