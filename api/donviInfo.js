@@ -2,7 +2,7 @@
 module.exports=function(app,jsonParser,checkApi) {  
     const donviInfo = require('../database/sql-donviInfo');
    
-    app.get('/donviInfo',checkApi, function (req, res) {
+    app.get('/donviInfo', function (req, res) {
         donviInfo.get_donviInfo()
         .then(result => {
             console.log(result.recordset)
@@ -15,7 +15,7 @@ module.exports=function(app,jsonParser,checkApi) {
         });
      });
 
-     app.post('/donviInfo',jsonParser,checkApi, function (req, res) {
+     app.post('/donviInfo',jsonParser, function (req, res) {
         let {OFFICEID}= req.body.selectedOption
 
                     donviInfo.get_officeServiceInfo(OFFICEID)

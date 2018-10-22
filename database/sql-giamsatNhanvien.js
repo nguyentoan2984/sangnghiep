@@ -5,8 +5,8 @@ const moment=require('moment');
 class giamsatNhanvien {
     static async getstaffsMonitor(OFFICEID,allService) {
         let dateNow =new Date();
-        dateNow = moment(dateNow).format('DD-MM-YYYY'); 
-        // dateNow="12/10/2018" 
+        dateNow = moment(dateNow).format('DD/MM/YYYY'); 
+      
         let returnArray=[]
         let arrayService=[]
         let arrayCounter=[]

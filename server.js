@@ -65,11 +65,14 @@ giamsatNhanvien(app,jsonParser,checkApi);
 const canhbao = require('./api/cauhinhCanhbao');
 canhbao(app,jsonParser,checkApi);
 /// route
-
 app.get('/', (req, res) =>{
+    res.render('capsotructuyen');
+  });
+
+app.get('/admin', (req, res) =>{
   res.render('signin');
 });
-app.post('/',urlparser, (req, res) =>{
+app.post('/admin',urlparser, (req, res) =>{
     let {username,password}=req.body;
     let nook ={ control:"noOk" };
     let ok ={ control:"Ok" };
@@ -148,7 +151,7 @@ app.get('/captcha', function (req, res) {
     res.type('svg');
     // res.status(200).send(captcha.data);
     res.send(JSON.stringify( {captcha} ));
-    console.log(captcha.data);
+    // console.log(captcha.data);
 });
 
 

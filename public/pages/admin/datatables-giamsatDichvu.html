@@ -105,14 +105,14 @@
                                 <td ng-show=
                                 "(checkbox1 == false && checkbox2==false )?true: 
                                     ((checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true) ||
-                                    (checkbox2==true && list.AVGWAITTIME>list.WAITTIMEMAX==true))
+                                    (checkbox2==true && list.MAXWAITTIME>list.WAITTIMEMAX==true))
                                 ?true:false "
                                 >{{list.SERVICEID + "-" + list.SERVICENAME }}</td>
                                     
                                 <td ng-show=
                                 "(checkbox1 == false && checkbox2==false )?true: 
                                     ((checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true) ||
-                                    (checkbox2==true && list.AVGWAITTIME>list.WAITTIMEMAX==true))
+                                    (checkbox2==true && list.MAXWAITTIME>list.WAITTIMEMAX==true))
                                 ?true:false "
                                 >{{list.SODANGPHUCVU==null ? 0:list.SODANGPHUCVU }}</td>
                             
@@ -126,32 +126,32 @@
                                     ng-show=
                                 "(checkbox1 == false && checkbox2==false )?true: 
                                     ((checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true) ||
-                                    (checkbox2==true && list.AVGWAITTIME>list.WAITTIMEMAX==true))
+                                    (checkbox2==true && list.MAXWAITTIME>list.WAITTIMEMAX==true))
                                 ?true:false "
                                 >{{ (list.TG_PV_HIENTAI / 60) | number:2 }}</td>
                             
                                 <td ng-show=
                                 "(checkbox1 == false && checkbox2==false )?true: 
                                     ((checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true) ||
-                                    (checkbox2==true && list.AVGWAITTIME>list.WAITTIMEMAX==true))
+                                    (checkbox2==true && list.MAXWAITTIME>list.WAITTIMEMAX==true))
                                 ?true:false "
                                 >{{list.AVGSERVETIME  / 60    | number:2 }}</td>
                              
                                 <td 
                                     ng-style="{'background-color':
-                                    ((checkbox1 == false  && checkbox2==false && list.AVGWAITTIME>list.WAITTIMEMAX  ) ||
-                                    (checkbox2==true && list.AVGWAITTIME>list.WAITTIMEMAX ) ?'yellow':'white')}"
+                                    ((checkbox1 == false  && checkbox2==false && list.MAXWAITTIME>list.WAITTIMEMAX  ) ||
+                                    (checkbox2==true && list.MAXWAITTIME>list.WAITTIMEMAX ) ?'yellow':'white')}"
                                     ng-show=
                                 "(checkbox1 == false && checkbox2==false )?true: 
                                         ((checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true) ||
-                                        (checkbox2==true && list.AVGWAITTIME>list.WAITTIMEMAX==true))
+                                        (checkbox2==true && list.MAXWAITTIME>list.WAITTIMEMAX==true))
                                 ?true:false "
                                 >{{list.MAXWAITTIME  / 60     | number:2 }}</td>
                                
                                 <td ng-show=
                                 "(checkbox1 == false && checkbox2==false )?true: 
                                         ((checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true) ||
-                                        (checkbox2==true && list.AVGWAITTIME>list.WAITTIMEMAX==true))
+                                        (checkbox2==true && list.MAXWAITTIME>list.WAITTIMEMAX==true))
                                  ?true:false "
                                 >{{list.AVGWAITTIME  / 60     | number:2 }}</td>
 
