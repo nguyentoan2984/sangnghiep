@@ -64,6 +64,8 @@ const giamsatNhanvien = require('./api/giamsatNhanvien');
 giamsatNhanvien(app,jsonParser,checkApi);
 const canhbao = require('./api/cauhinhCanhbao');
 canhbao(app,jsonParser,checkApi);
+const laysotructuyen = require('./api/laysotructuyen');
+laysotructuyen(app,jsonParser,checkApi);
 /// route
 app.get('/', (req, res) =>{
     res.render('capsotructuyen');

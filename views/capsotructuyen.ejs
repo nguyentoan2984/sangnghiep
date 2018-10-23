@@ -86,7 +86,7 @@
                     <select class="col-xs-6" 
                     ng-options="option.OFFICENAME for option in donVi_Config track by option.ORDERINDEX"
                     ng-model="selectedOption"
-                    ng-click="getserviceMonitor(selectedOption)">
+                    ng-click="selectdonvi(selectedOption)">
                     <option  value="" disabled  >Đơn vị cần giao dịch</option>
                 </select>
                   </div>
@@ -95,14 +95,33 @@
                   <label class="col-sm-4 control-label">Dịch Vụ</label>
                   <div class="col-sm-8">
                     <select class="col-xs-6"  
-                    ng-options="option.SERVICENAME for option in listService track by option.SERVICEID"
+                    ng-options="option.SERVICENAME for option in officeService_callNumber track by option.SERVICEID"
                       ng-model="selectedService"
-                      ng-click="getoneserviceMonitor(selectedService)">
+                      ng-click="selectServiceNumber(selectedService)">
                  
               <option value="" disabled>Chọn dịch vụ</option>>
               </select>
                   </div>
                 </div>
+
+
+                <div class="form-group" ng-show="showNumber">
+                  <label class="col-sm-4 control-label">Số lượng đang chờ</label>
+                  <div class="col-sm-8">
+                   <label class=" control-label  text-primary">{{  waitCustomer }} khách hàng</label> 
+                  </div>
+                  
+                </div>
+
+                <div class="form-group" ng-show="showNumber">
+                  <label class="col-sm-4 control-label">Phục vụ trung bình</label>
+                  <div class="col-sm-8">
+                  <label class=" control-label text-primary" >  {{ avgService}}  phút</label> 
+                  </div>
+                  
+                </div>
+
+
 
                 <div><b>2. Thông tin khách hàng đăng ký giao dịch</b> </div>
                 <br>
