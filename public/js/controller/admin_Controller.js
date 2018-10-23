@@ -466,7 +466,7 @@ $scope.saveserviceWarning=function(selectedOption,index){
       if ($scope.checkbox1 == false  && $scope.checkbox2==false )
           for (let num of  $scope.listmonitorService ) {
               if (num.TG_PV_HIENTAI>num.SERVICETIMEMAX)   {$scope.sumSERVICETIMEMAX +=1 ;$scope.warningShow =true}
-              if (num.AVGWAITTIME>num.WAITTIMEMAX)  {$scope.sumWAITTIMEMAX +=1;$scope.warningShow =true}
+              if (num.MAXWAITTIME>num.WAITTIMEMAX)  {$scope.sumWAITTIMEMAX +=1;$scope.warningShow =true}
           }
       if ($scope.checkbox1 == true)
         
@@ -479,7 +479,7 @@ $scope.saveserviceWarning=function(selectedOption,index){
       if ($scope.checkbox2 == true)
       
           for(let num of $scope.listmonitorService ){
-              if ( num.AVGWAITTIME>num.WAITTIMEMAX) 
+              if ( num.MAXWAITTIME>num.WAITTIMEMAX) 
                   {
                       {$scope.sumWAITTIMEMAX +=1 ;$scope.warningShow =true}
                   }
@@ -511,6 +511,7 @@ $scope.saveserviceWarning=function(selectedOption,index){
                                     check1_checkbox()
                                     timer.start()
                                     cancelLoading()
+                                    // console.log(result)
                                     }, function () {
                                         alert("Không load được danh sách giám sát các dịch vụ trực tuyến")
                                         return
