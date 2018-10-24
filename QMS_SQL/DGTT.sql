@@ -84,8 +84,10 @@ SELECT*FROM dbo.RATINGS
 ---Insert kết quả đánh giá vào bảng [dbo].[RATINGS]
 ---kq: staffid =51   CUSTOMERNO=1019
 
+BEGIN
 INSERT INTO dbo.RATINGS
-           (VOTETIME
+           (ID
+		   ,VOTETIME
            ,STAFFID
            ,CustomerNo
            ,BEST
@@ -94,7 +96,8 @@ INSERT INTO dbo.RATINGS
            ,POOR
            )
      VALUES
-           (GETDATE()			--<VOTETIME, datetime,>
+           (@MA_NEXT
+		   ,GETDATE()			--<VOTETIME, datetime,>
            ,'51'			--<STAFFID, char(2),>
            ,'1019'			---<CustomerNo, int,>
            ,'1'			---<BEST, smallint,>
@@ -102,13 +105,14 @@ INSERT INTO dbo.RATINGS
            ,'0'			---<AVERAGE, smallint,>
            ,'0'			---<POOR, smallint,>
            )
-SELECT IDENT_CURRENT (ID) as LastID
-GO
 
----lay ma id vua tao o tren
-SELECT dbo.RATINGS.ID AS ratingsid
-FROM   dbo.RATINGS
-WHERE  
+END
+
+----LAY MA SO ID VUA TAO 
+
+SELECT Max(ID) as LastID FROM dbo.RATINGS
+----KQ ID =1114
+
 
 /*
 	RATINGSID = “@ID bảng [dbo].[RATINGS] tạo bước trên”
@@ -132,10 +136,9 @@ INSERT INTO dbo.RATINGSINFO
            ,SERIAL)
      VALUES
            (@ID														----<ID, uniqueidentifier,>
-           ,														----<RATINGSID, bigint,>
+           ,'1114'														----<RATINGSID, bigint,>
            ,'0D7F6D78-741F-94FB-970C-39E8A143AF2F'					----<REGISTRATIONFORMID, uniqueidentifier,>
            ,'JhdWyH'												-----<SERIAL, nvarchar(6),>
 		   )
 END
 GO
-

@@ -102,8 +102,8 @@ class giamsatNhanvien {
                     let objStaffs ={}  
                     const selectSqlStaffs=`
                     SELECT 		dbo.STAFFS.StaffIDOffice AS 'MNV',
-                    dbo.STAFFS.StaffID AS StaffID,
-                    dbo.STAFFS.COUNTERID AS COUNTERID,
+                    dbo.STAFFS.StaffID AS 'StaffID',
+                    dbo.STAFFS.COUNTERID AS 'COUNTERID',
                     CONCAT(dbo.STAFFS.LASTNAME,' ',dbo.STAFFS.FIRSTNAME) AS 'Nhanvien'
                         FROM		dbo.STAFFS,dbo.COUNTERSERVICE			
                         WHERE		dbo.STAFFS.COUNTERID='${num.COUNTERID}'   
@@ -176,10 +176,13 @@ class giamsatNhanvien {
    
    // //  ////////thoi gian nghỉ giửa 2 số thứ tự//////////
                 selectSqlInfo=  `BEGIN
-                SELECT		DATEDIFF("SECOND", dbo.CUSTOMERS.FINISHTIME,GETDATE()) AS 'TG_OFF_2SO'  
+                SELECT	
+                	DATEDIFF("SECOND", MAX(dbo.CUSTOMERS.FINISHTIME),GETDATE()) AS 'TG_OFF_2SO'
                 FROM    	dbo.CUSTOMERS
-                WHERE		dbo.CUSTOMERS.CUSTOMERNO='${sodangphucvu}' AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}' 
-                END`;
+                WHERE   	dbo.CUSTOMERS.STATUS = '3' AND dbo.CUSTOMERS.STAFFID='${StaffID}'		
+                            AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}'	
+                END
+                    `;
                 resultInfo = await queryDb(selectSqlInfo,database1);
                 // if (!resultInfo.rowsAffected[0]) throw new Error('không load được thông tin giam sat dich vụ ');
                 obj.TG_OFF_2SO = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].TG_OFF_2SO 
