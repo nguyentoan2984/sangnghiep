@@ -122,8 +122,6 @@ $scope.load_datatables_cauhinhMuccanhbao = function(){
     $scope.template=dataTables_Template[3];
 };
 
-
-
   ///////////////// cau hinh nhan vien cua don vi//////////////////
   let OFFICEID=""
   let SERVICEID=""

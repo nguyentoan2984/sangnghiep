@@ -1,0 +1,129 @@
+<br>
+
+<section class="col-sm-offset-3 col-sm-6">
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="text-primary" class="box-title"><b>Phiếu đăng ký cấp số trực tuyến</b> </h3>
+      </div>
+      <!-- /.box-header -->
+      <!-- form start -->
+      <form class="form-horizontal" novalidate name="formLaysotructuyen">
+        <div class="box-body">
+          <div ><b>1. Thông tin đăng ký giao dịch</b> </div>
+          <br>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Đơn vị cần giao dịch</label>
+            <div class="col-sm-8">
+              <select class="col-xs-6" 
+              ng-options="option.OFFICENAME for option in donVi_Config track by option.ORDERINDEX"
+              ng-model="selectedOption"
+              ng-click="selectdonvi(selectedOption)"
+              name="donvi"
+              required
+              >
+              <option  value="" disabled  >Đơn vị cần giao dịch</option>
+          </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Dịch Vụ</label>
+            <div class="col-sm-8">
+              <select class="col-xs-6"  
+              ng-options="option.SERVICENAME for option in officeService_callNumber track by option.SERVICEID"
+                ng-model="selectedService"
+                ng-click="selectServiceNumber(selectedService)"
+                name="dichvu"
+                required
+                >
+           
+        <option value="" disabled>Chọn dịch vụ</option>>
+        </select>
+            </div>
+          </div>
+
+
+          <div class="form-group" ng-show="showNumber">
+            <label class="col-sm-4 control-label">Số lượng đang chờ</label>
+            <div class="col-sm-8">
+             <label class=" control-label  text-primary">{{  waitCustomer }} khách hàng</label> 
+            </div>
+            
+          </div>
+
+          <div class="form-group" ng-show="showNumber">
+            <label class="col-sm-4 control-label">Phục vụ trung bình</label>
+            <div class="col-sm-8">
+            <label class=" control-label text-primary" >  {{ avgService}}  phút</label> 
+            </div>
+            
+          </div>
+
+
+
+          <div><b>2. Thông tin khách hàng đăng ký giao dịch</b> </div>
+          <br>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Họ & Tên</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="Nhập họ"> </input>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" placeholder="Nhập tên"> </input>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Địa Chỉ</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Địa chỉ khách hàng"> </input>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Email</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" placeholder="Email khách hàng"> </input>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">CMND</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control" placeholder="Số chứng minh nhân dân/thẻ căn cước"> </input>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Di động</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control" placeholder="Số điện thoại di động liên hệ"> </input>
+            </div>
+          </div>
+          <div><b>3. Chọn mã xác thực</b> </div>
+          <br>
+          <div class="form-group">
+            <div class="col-xs-4"   ng-bind-html="maCaptcha">
+            </div>
+
+            <div class="col-xs-4">
+              <input type="text" class="form-control" placeholder="Nhập mã captcha" 
+               name="captcha"
+               required> </input>
+            </div>
+            <div class="col-xs-4">
+              <button ng-click="getCaptcha()" type="button" class="btn btn-primary">Đổi mã khác</button>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-body text-center">
+          <button class="btn btn-primary " type="button"  ng-click="capSo()"
+          ng-disabled="formLaysotructuyen.donvi.$error.required + 
+          formLaysotructuyen.dichvu.$error.required +
+          formLaysotructuyen.captcha.$error.required" 
+          
+          >Cấp Số</button>
+          <button class="btn btn-primary " type="button" > Reset</button>
+        </div>
+        <!-- /.box-footer -->
+      </form>
+    </div>
+    <!-- /.content -->
+</div>
+</section>

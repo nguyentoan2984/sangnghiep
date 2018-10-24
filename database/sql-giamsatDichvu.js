@@ -6,6 +6,7 @@ const moment=require('moment');
 class giamsatDichvu {
     static async getserviceMonitor(OFFICEID,allService) {
         let dateNow =new Date();
+   
         dateNow = moment(dateNow).format('DD/MM/YYYY'); 
         let returnArray=[]
         let arrayService=[]
@@ -57,7 +58,9 @@ class giamsatDichvu {
                    
     //////////thời gian phuc vu hien tai
                  selectSqlInfo=  `BEGIN
-                 SELECT      DATEDIFF("SECOND",dbo.CUSTOMERS.SERVINGTIME,GETDATE()) as TG_PV_HIENTAI
+                 SELECT      
+                 GETDATE() AS TIMESERVER,dbo.CUSTOMERS.SERVINGTIME AS SERVINGTIME,
+                 DATEDIFF("SECOND",dbo.CUSTOMERS.SERVINGTIME,GETDATE()) as TG_PV_HIENTAI
                  FROM		dbo.CUSTOMERS 
                  WHERE		dbo.CUSTOMERS.CUSTOMERNO ='${sodangphucvu}'	
                             AND dbo.CUSTOMERS.SERVICEID='${num.SERVICEID}'				
@@ -67,6 +70,8 @@ class giamsatDichvu {
                  resultInfo = await queryDb(selectSqlInfo,database1);
                 // if (!resultInfo.rowsAffected[0]) throw new Error('không load được thông tin giam sat dich vụ ');
                  obj.TG_PV_HIENTAI = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].TG_PV_HIENTAI 
+                 obj.TIMESERVER = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].TIMESERVER
+                //  obj.SERVINGTIME = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].SERVINGTIME
     //  /////////thoi gian chờ lâu nhất//////////
                 selectSqlInfo=  `BEGIN
                 SELECT

@@ -29,7 +29,10 @@ app.factory('getNumber', function ($resource) {
 
 app.controller('callNumber_Controller', ['$scope', '$location', '$resource','$window','captcha','donviInfo','$sce','getNumber',
 function ($scope, $location, $resource,$window,captcha,donviInfo,$sce,getNumber) {
-    
+    let dataTables_Template=[
+    'pages/client/laysotructuyen.html'
+    ];
+    $scope.template=dataTables_Template[0];
  ////////// lấy số trực tuyến/////////////
  let selectedOption_Config={}
  $scope.showNumber=false
@@ -58,10 +61,11 @@ function ($scope, $location, $resource,$window,captcha,donviInfo,$sce,getNumber)
 
        $scope.selectdonvi=function (selectedOption){
         if (!selectedOption) return
-           ( selectedOption_Config==selectedOption)?null:(
-               $scope.officeService_callNumber=[]
+        //    ( selectedOption_Config==selectedOption)? null :(
+        //        $scope.officeService_callNumber=[]
              
-           );  
+        //    );  
+        if (selectedOption_Config==selectedOption) return
                OFFICENAME=selectedOption.OFFICENAME
                OFFICEID =selectedOption.OFFICEID
                selectedOption_Config=selectedOption     

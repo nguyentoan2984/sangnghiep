@@ -74,9 +74,10 @@
                                      </div>
                              </div>
                              <div class="col-xs-6 ">
-                                <div class="col-xs-offset-6 col-xs-6 ">
-                                        <img height="60" width="100" src="/images/warning.jpg" alt="" ng-show="warningShow">
-                                    </div>
+
+                                    <div class="col-xs-offset-6 col-xs-6 ">
+                                            <img height="60" width="100" src="/images/warning.jpg" alt="" ng-show="warningShow">
+                                        </div>
                             </div>
                     </div>
                 </div>
@@ -97,6 +98,7 @@
                                 <th>Phục vụ trung bình</th>
                                 <th>Chờ lâu nhất</th>
                                 <th>Chờ trung bình</th>
+                                <th>Time server</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -154,7 +156,14 @@
                                         (checkbox2==true && list.MAXWAITTIME>list.WAITTIMEMAX==true))
                                  ?true:false "
                                 >{{list.AVGWAITTIME  / 60     | number:2 }}</td>
-
+                               
+                                <td ng-show=
+                                "(checkbox1 == false && checkbox2==false )?true: 
+                                        ((checkbox1==true && list.TG_PV_HIENTAI>list.SERVICETIMEMAX==true) ||
+                                        (checkbox2==true && list.MAXWAITTIME>list.WAITTIMEMAX==true))
+                                 ?true:false "
+                                >{{list.TIMESERVER   }}</td>
+                             
                             </tr>
                         </tbody>
                     </table>

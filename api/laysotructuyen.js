@@ -6,7 +6,7 @@ module.exports=function(app,jsonParser,checkApi) {
         let{SERVICEID,OFFICEID}=req.params
         laysotructuyen.get_waitNumber(OFFICEID,SERVICEID)
         .then(result => {
-            console.log(result)
+            // console.log(result)
             res.send(JSON.stringify(result))
             })
         .catch(err => {

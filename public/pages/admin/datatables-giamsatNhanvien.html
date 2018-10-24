@@ -106,8 +106,9 @@
                     <table id="example2" class="table table-bordered bordered table-striped table-condensed">
                         <thead>
                             <tr>
+                                <th>MNV</th>
                                 <th>Nhân viên</th>
-                                <th>Quầy</th>
+                                <!-- <th>Quầy</th> -->
                                 <th>Số đang phục vụ</th>
                                 <th>Phục vụ hiện tại</th>
                                 <th>Phục vụ lâu nhất</th>
@@ -118,6 +119,12 @@
                         </thead>
                         <tbody>
                             <tr  ng-repeat="list in liststaffsService" >
+                                 <td ng-show=
+                                    "(checkbox1Nhanvien == false  && checkbox2Nhanvien==false )?true: 
+                                        ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ||
+                                        (checkbox2Nhanvien==true  && list.TG_OFF_2SO > list.DISCOUNTITIMEMAX==true))
+                                    ?true:false "
+                                    >{{list.MNV}}</td>
                                 <td ng-show=
                                 "(checkbox1Nhanvien == false  && checkbox2Nhanvien==false )?true: 
                                     ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ||
@@ -125,12 +132,12 @@
                                 ?true:false "
                                 >{{list.Nhanvien}}</td>
 
-                                <td ng-show=
+                                <!-- <td ng-show=
                                 "(checkbox1Nhanvien == false  && checkbox2Nhanvien == false )?true: 
                                     ((checkbox1Nhanvien==true && list.TG_PV_HIENTAI > list.SERVICETIMEMAX==true) ||
                                     (checkbox2Nhanvien==true  && list.TG_OFF_2SO > list.DISCOUNTITIMEMAX==true))
                                 ?true:false "
-                                >{{list.Quay}}</td>
+                                >{{list.Quay}}</td> -->
 
                                 <td ng-show=
                                 "(checkbox1Nhanvien == false  && checkbox2Nhanvien==false )?true: 

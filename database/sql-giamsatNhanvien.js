@@ -9,6 +9,7 @@ class giamsatNhanvien {
         let returnArray=[]
         let arrayService=[]
         let arrayCounter=[]
+        let arrayStaffs=[]
         let database =databaseInfo
         const selectSql =
             `SELECT IPDATABASE,DATABASENAME,USERNAME,PASSWORD  FROM dbo.OFFICE
@@ -33,7 +34,7 @@ class giamsatNhanvien {
                     result1 = await queryDb(selectSql1,database1);
                     if (!result1.rowsAffected[0]) throw new Error('không load được dịch vụ của đơn vị được chọn ');
                         arrayService=result1.recordset
-            //////////// lấy ra các counter cua array dich vu/////////////         
+ //////////// lấy ra các counter cua array dich vu/////////////         
                     for (let num of arrayService) {
                             let obj={} 
                             obj.SERVICEID=num.SERVICEID
@@ -54,7 +55,6 @@ class giamsatNhanvien {
                                     arrayCounter.push(num)   
                                     }
                                 }
-                             
             }
         if (allService.CONTROL=="SERVICE")
             {
@@ -94,38 +94,45 @@ class giamsatNhanvien {
                         objCounter.COUNTERID= Number(allService.COUNTERID)
                         objCounter.SERVICEID= Number(allService.SERVICEID)
                         arrayCounter.push(objCounter) 
-                       
                     }
 
- //////////// lấy ra các thông tin nhan vien đe giam sat/////////////       
-             for (let num of arrayCounter) {
-                let obj={}
-                // obj.SERVICENAME=num.SERVICENAME
-                // obj.SERVICEID=num.SERVICEID
-                // obj.SERVICENAME=num.SERVICENAME
-                  obj.Quay=num.COUNTERID
-              
- ///// nhan viên thuộc quầy.
-                   let selectSqlInfo=`
+ //////////// lấy ra các thông tin nhan vien đe giam sat/////////////     
+                      
+                for (let num of arrayCounter) {
+                    let objStaffs ={}  
+                    const selectSqlStaffs=`
                     SELECT 		dbo.STAFFS.StaffIDOffice AS 'MNV',
-                    CONCAT(dbo.STAFFS.StaffIDOffice,'-',dbo.STAFFS.LASTNAME,' ',dbo.STAFFS.FIRSTNAME) AS 'Nhanvien'
-                        FROM		dbo.STAFFS,dbo.CUSTOMERS			
+                    dbo.STAFFS.StaffID AS StaffID,
+                    dbo.STAFFS.COUNTERID AS COUNTERID,
+                    CONCAT(dbo.STAFFS.LASTNAME,' ',dbo.STAFFS.FIRSTNAME) AS 'Nhanvien'
+                        FROM		dbo.STAFFS,dbo.COUNTERSERVICE			
                         WHERE		dbo.STAFFS.COUNTERID='${num.COUNTERID}'   
-                                    AND dbo.CUSTOMERS.STATUS = '1' 
-                                    AND dbo.STAFFS.COUNTERID=dbo.CUSTOMERS.COUNTERID
-                                    AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}'
                                     `
-                   let resultInfo = await queryDb(selectSqlInfo,database1);       
-                    obj.Nhanvien = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].Nhanvien 
-                   
-                   
-       ///// so dang phuc vu          
-                 selectSqlInfo=  `SELECT dbo.CUSTOMERS.CUSTOMERNO AS 'SODANGPHUCVU'
+                    const resultStaffs = await queryDb(selectSqlStaffs,database1);  
+                    objStaffs.SERVICEID= num.SERVICEID
+                    objStaffs.COUNTERID=  ( resultStaffs.recordset[0]== undefined || resultStaffs.recordset[0]== null ) ? null : resultStaffs.recordset[0].COUNTERID 
+                    objStaffs.MNV=  ( resultStaffs.recordset[0]== undefined || resultStaffs.recordset[0]== null ) ? null : resultStaffs.recordset[0].MNV 
+                    objStaffs.StaffID=  ( resultStaffs.recordset[0]== undefined || resultStaffs.recordset[0]== null ) ? null : resultStaffs.recordset[0].StaffID 
+                    objStaffs.Nhanvien = ( resultStaffs.recordset[0]== undefined || resultStaffs.recordset[0]== null ) ? null : resultStaffs.recordset[0].Nhanvien 
+                    arrayStaffs.push(objStaffs)
+                }
+          
+            for (let num of arrayStaffs) {
+                let obj={}
+                let StaffID=String  (num.StaffID)
+                let idCOUNTER= Number  (num.COUNTERID)
+                let idservice= Number  (num.SERVICEID)
+                  obj.Quay=num.COUNTERID
+                  obj.MNV=num.MNV
+                  obj.Nhanvien=num.Nhanvien
+              
+    ////// so dang phuc vu /////////          
+                let selectSqlInfo=  `SELECT dbo.CUSTOMERS.CUSTOMERNO AS 'SODANGPHUCVU'
                     FROM    	dbo.CUSTOMERS 
-                    WHERE		dbo.CUSTOMERS.STATUS = '1' AND dbo.CUSTOMERS.COUNTERID = '${num.COUNTERID}' 
+                    WHERE		dbo.CUSTOMERS.STATUS = '1' AND dbo.CUSTOMERS.StaffID = '${StaffID}'
                                 AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}' 
                     `;
-                 resultInfo = await queryDb(selectSqlInfo,database1);
+               let  resultInfo = await queryDb(selectSqlInfo,database1);
                 // if (!resultInfo.rowsAffected[0]) throw new Error('không load được thông tin giam sat dich vụ ');
                 obj.SODANGPHUCVU = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].SODANGPHUCVU 
                 let sodangphucvu= Number(obj.SODANGPHUCVU)
@@ -141,13 +148,12 @@ class giamsatNhanvien {
                  resultInfo = await queryDb(selectSqlInfo,database1);
                 // if (!resultInfo.rowsAffected[0]) throw new Error('không load được thông tin giam sat dich vụ ');
                  obj.TG_PV_HIENTAI = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].TG_PV_HIENTAI 
-   
                  
-                 // //  /////////phục vụ lâu nhất//////////
+    /////////////phục vụ lâu nhất//////////
                 selectSqlInfo=  `BEGIN
                 SELECT 	    MAX(DATEDIFF("SECOND", dbo.CUSTOMERS.SERVINGTIME, dbo.CUSTOMERS.FINISHTIME)) AS MAXSERVETIME				
                 FROM    	dbo.CUSTOMERS
-                WHERE   	dbo.CUSTOMERS.STATUS = '3' AND dbo.CUSTOMERS.COUNTERID ='${num.COUNTERID}' AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}' 
+                WHERE   	dbo.CUSTOMERS.STATUS = '3' AND dbo.CUSTOMERS.StaffID ='${StaffID}' AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}' 
                 END`;
                 resultInfo = await queryDb(selectSqlInfo,database1);
                 // if (!resultInfo.rowsAffected[0]) throw new Error('không load được thông tin giam sat dich vụ ');
@@ -161,7 +167,7 @@ class giamsatNhanvien {
                             ROUND(AVG(DATEDIFF("SECOND", dbo.CUSTOMERS.TOCOUNTERTIME, dbo.CUSTOMERS.SERVINGTIME)), 0) AS AVGWAITTIME,	
                             MAX(DATEDIFF("SECOND", dbo.CUSTOMERS.SERVINGTIME, dbo.CUSTOMERS.FINISHTIME)) AS MAXSERVETIME				  
                 FROM    	dbo.CUSTOMERS
-                WHERE   	dbo.CUSTOMERS.STATUS = '3' AND dbo.CUSTOMERS.COUNTERID ='${num.COUNTERID}' AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}'
+                WHERE   	dbo.CUSTOMERS.STATUS = '3' AND dbo.CUSTOMERS.StaffID ='${StaffID}' AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}'
                 END`;
                 resultInfo = await queryDb(selectSqlInfo,database1);
                 // if (!resultInfo.rowsAffected[0]) throw new Error('không load được thông tin giam sat dich vụ ');
@@ -184,7 +190,7 @@ class giamsatNhanvien {
                     SERVICETIMEMAX,   
                     DISCOUNTITIMEMAX
                     FROM 	dbo.SYSTEMCONFIGSERVICEINFO
-                    WHERE   SERVICEID='${num.SERVICEID}' 
+                    WHERE   SERVICEID='${idservice}' 
                             AND OFFICEID='${OFFICEID}'
                     `;
                     resultInfo = await queryDb(selectSqlInfo,database); /// lấy database brand

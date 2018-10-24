@@ -3,7 +3,6 @@ const databaseInfo = require('./databaseInfo');
 // const { hash, compare } = require('bcrypt');
 const moment=require('moment');
 
-
 class laysotructuyen {
     static async get_waitNumber(OFFICEID,SERVICEID) {
         let database =databaseInfo
@@ -30,7 +29,8 @@ class laysotructuyen {
                    AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}' `;
          result   = await queryDb(selectSql,database1);
 //    if (!result1.rowsAffected[0]) throw new Error('không load được dịch vụ của đơn vị được chọn ');
-        obj.soluongdangcho = ( result.recordset[0].soluongdangcho== undefined || result.recordset[0].soluongdangcho== null ) ? 0 : result.recordset[0].soluongdangcho    
+        console.log(result.recordset)       
+obj.soluongdangcho = ( result.recordset[0].soluongdangcho== undefined || result.recordset[0].soluongdangcho== null ) ? 0 : result.recordset[0].soluongdangcho    
         selectSql =
         `BEGIN
         SELECT		
