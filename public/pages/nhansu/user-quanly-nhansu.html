@@ -1,0 +1,222 @@
+
+  <div class="app" ng-controller="nhansuController">
+    <!--sidebar panel-->
+    <div class="off-canvas-overlay" data-toggle="sidebar"></div>
+    <div class="sidebar-panel" >
+      <div class="brand">
+        <!-- toggle offscreen menu -->
+        <a href="javascript:;" data-toggle="sidebar" class="toggle-offscreen hidden-lg-up" >
+            <i class="material-icons">menu</i>
+          </a>
+        <!-- /toggle offscreen menu -->
+        <!-- logo -->
+        <a class="brand-logo">
+          <!-- <img class="expanding-hidden" src="images/logo.png" alt=""/> -->
+          <h6 > <strong>Hệ Thống Thức Ăn Nhanh 1P30S</strong></h6>
+        </a>
+        <!-- /logo -->
+      </div>
+      <div class="nav-profile dropdown">
+        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+          <div class="user-image">
+            <img src="images/avatar.jpg" class="avatar img-circle" alt="user" title="user" />
+          </div>
+          <div class="user-info expanding-hidden">
+            <strong ng-model="userLogin">{{userLogin}}</strong>
+
+            <small class="bold"> <strong ng-model="bophan_Login">{{bophan_Login}}</strong></small>
+          </div>
+        </a>
+        <div class="dropdown-menu">
+
+          <a class="dropdown-item" href="javascript:;">Settings</a>
+          <a class="dropdown-item" href="javascript:;">Upgrade</a>
+          <a class="dropdown-item" href="javascript:;">
+              <span>Notifications</span>
+              <span class="tag bg-primary">34</span>
+            </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="javascript:;">Help</a>
+          <a class="dropdown-item" ng-click="logout()">Logout</a>
+        </div>
+      </div>
+  
+
+      <!-- main navigation -->
+      <nav>
+        <hr >
+        <p class="nav-title"><strong> Quản Lý Cửa Hàng</strong></p>
+        <!-- Quan ly nhan vien -->
+        <ul class="nav" >
+          <!-- danh sach nhan vien -->
+          <li >
+            <a ng-click="load_dataTables_Cuahang()">
+                <i class="material-icons ">face</i>
+                <!-- <span class="badge bg-primary pull-right"> {{dsAllcuahang.length}}</span> -->
+                <span>Danh Sách Các Cửa Hàng</span>
+              </a>
+          </li>
+
+          <li >
+            <a ng-click="load_dataTables_Persons()">
+                <i class="material-icons ">face</i>
+                <!-- <span class="badge bg-primary pull-right"> {{dsCuahang.length}}</span> -->
+                <span>Danh Sách Nhân Viên</span>
+              </a>
+          </li>
+          <!-- /danh sach nhan vien -->
+          <!-- them nhan vien -->
+          <!-- <li class="open"> duoc thay the bằng <li> bên dưới-->
+          <li>
+            <a ng-click="load_dataTables_chamCong()">
+                <i class="material-icons">payment</i>
+                <span>Tải Chấm Công Chi Tiết Nhân Viên</span>
+              </a>
+           </li>
+          <!-- /them nhan vien -->
+          <li>
+            <a ng-click="load_dataTables_AllchamCong()">
+                <i class="material-icons">payment</i>
+                <span>Tổng Hợp Chấm Công Cửa Hàng</span>
+              </a>
+           </li>
+           <li>
+            <a ng-click="load_dataTables_phucap()">
+                <i class="material-icons">payment</i>
+                <span>Xét Duyệt BHXH Cho Nhân Viên</span>
+              </a>
+           </li>
+           <li>
+              <a ng-click="load_dataTables_khoantru()">
+                  <i class="material-icons">payment</i>
+                  <span>Các Khoản Trừ Của Nhân Viên</span>
+                </a>
+             </li>
+           
+         
+        </ul>
+        <!-- /Quan ly nhan vien -->
+       
+                                    <!-- <li>
+                                      <a href="javascript:;">
+                                        <i class="material-icons">cached</i>
+                                        <span>Hàng Tồn Kho</span>
+                                      </a>
+                                    </li> -->
+          <!-- doanh thu cua hang -->
+                                <!-- <li>
+                                  <a href="javascript:;">
+                                    <i class="material-icons text-danger">explore</i>
+                                    <span>Theo Dõi Doanh Thu Cửa Hàng</span>
+                                  </a>
+                                </li> -->
+          <!-- /doanh thu cua hang -->
+        </ul>
+          <ul class="nav">
+          <li >
+            <hr/>
+          </li>
+          <!-- static -->
+          <li >
+            <a href="http://1phut30giayvn.com.vn" target="_blank">
+              <!-- <i class="material-icons">navigation</i> -->
+              <span>738 Sư Vạn Hạnh, Phường 13, Quận 10</span>
+            </a>
+          </li>
+          <!-- /static -->
+          <li >
+            <a href="http://1phut30giayvn.com.vn" target="_blank">
+                <i class="material-icons  text-success">phone</i>
+                <span>Hotline: 0906.090.802</span>
+              </a>
+          </li>
+        </ul>
+        <!-- /Quan Ly Hang Hoa -->
+      </nav>
+      <!-- /main navigation -->
+    </div>
+    <!-- /sidebar panel -->
+ 
+
+
+    <!-- content panel -->
+    <div class="main-panel" >
+      <!-- top header -->
+      <nav class="header navbar" >
+        <div class="header-inner">
+          <div class="navbar-item navbar-spacer-right brand hidden-lg-up ">
+            <!-- toggle offscreen menu -->
+            <a href="javascript:;" data-toggle="sidebar " class="toggle-offscreen " >
+                <i class="material-icons ">menu</i>
+              </a>
+            <!-- /toggle offscreen menu -->
+            <!-- logo -->
+            <a class="brand-logo hidden-xs-down ">
+                <img src="images/logo_white.png " alt="logo "/>
+              </a>
+            <!-- /logo -->
+          </div>
+        </div>
+      </nav>
+      <!--/top header -->
+          
+  <!-- main area -->
+  <div class="container">
+    <div class="row">
+  <div class="main-content " >
+       <!-- main-content-view -->
+    <div class="content-view ">
+     <!-- card -->
+      <div class="card ">
+        <!-- <div class="card-header no-bg b-a-0 ">
+         <h4 align="center">Danh Sách Nhân Viên Cửa Hàng</h4>  
+        </div> -->
+           <!-- card-block -->
+                     
+        <div class="card-block "  ng-model="template" ng-include ="template">
+          <!-- include bảng vào đây -->
+        
+        </div>
+                      
+        <!-- /card-block -->
+      </div>
+      <!-- /card -->
+    </div>
+    <!-- /main-content-view -->
+  </div>     
+</div>   
+    <!-- bottom footer -->
+    <!-- <div class="content-footer ">
+      <nav class="footer-right ">
+        <ul class="nav ">
+          <li>
+            <a href="javascript:; ">Feedback</a>
+          </li>
+        </ul>
+      </nav>
+      <nav class="footer-left ">
+        <ul class="nav ">
+          <li>
+            <a href="javascript:; ">
+                <span>Copyright</span>
+                &copy; 2016 Your App
+              </a>
+          </li>
+          <li class="hidden-md-down ">
+            <a href="javascript:; ">Privacy</a>
+          </li>
+          <li class="hidden-md-down ">
+            <a href="javascript:; ">Terms</a>
+          </li>
+          <li class="hidden-md-down ">
+            <a href="javascript:; ">help</a>
+          </li>
+        </ul>
+      </nav>
+    </div> -->
+    <!-- /bottom footer -->
+  </div>
+  <!-- /main area -->
+</div>
+<!-- content panel -->
+ 

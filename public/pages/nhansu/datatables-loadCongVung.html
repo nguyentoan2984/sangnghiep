@@ -1,0 +1,67 @@
+
+<!-- được incluce vào trong trang user-quanly-cuahang -->
+  
+<form class="form-inline"  novalidate name="from_loadCong">
+    <div style="overflow-x:auto;">  
+<table  datatable="ng" dt-options="dtOptions_tables " dt-column-defs="dtColumnDefs" class="table  table-bordered bordered table-striped table-condensed">
+   <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h3 class="text-primary"> <i><strong>Tổng Hợp Chấm Công Cửa Hàng</strong></i> </h3>
+                <small>Vùng</small>
+                <select  name="objSelected_vung" class="form-control" ng-model="objSelected_Vung" ng-options="item.tenvung for item in dsVung" required >
+                      </select>
+            </div>
+        </div>
+        <hr>
+        <div class="row text-center">
+            <form>
+                <small ng-show="false">   <strong  class="text-primary">Từ Ngày</strong> </small>
+                <input ng-show="false" type="month" class="form-control " name="startDate" ng-model="date.startDate" ng-value="date.startDate" required>
+                <small><strong class="text-primary">Tháng Tính Lương</strong></small>
+                <input type="month" class="form-control " name="endDate" ng-model="date.endDate" ng-value="date.endDate" required>
+                <button class="btn btn-success" ng-click="loadCong_Allvung(date,objSelected_Vung)" 
+                            ng-hide="
+                                from_loadCong.objSelected_vung.$error.required 
+                         
+                                   " >Tìm Kiếm</button>
+            </form>
+        </div>
+        <thead>
+                <tr>
+                    <th class="text-center"> STT</th>
+                    <th class="text-center">  Bộ Phận</th>
+                    <th class="text-center"> Số Nhân Viên</th>
+                    <th class="text-center">PC.Điện Thoại</th>
+                    <th class="text-center">PC.Trách Nhiệm</th>
+                    <th class="text-center">PC.Chuyên cần</th>
+                    <th class="text-center">Thưởng</th>
+                    <th class="text-center">Lương</th>
+                    <th class="text-center">Phạt </th>
+                    <th class="text-center">Công Đoàn </th>
+                    <th class="text-center">Trừ Khác </th>
+                    <th class="text-center">Tổng Lương </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cong in chamCongNv">
+                    <td align="center">{{$index+1 }}</td>
+                    <td align="center">{{ cong.storename }}</td>
+                    <td align="center">{{ cong.soNv }}</td>
+                    <td align="center">{{ cong.PCdienthoai | number }}</td>
+                    <td align="center">{{ cong.PCtrachnhiem | number }}</td>
+                    <td align="center">{{ cong.PCchuyencan | number }}</td>
+                    <td align="center">{{ cong.PCthuong | number}}</td>
+                    <td align="center">{{ cong.luong | number }}</td>
+                    <td align="center">{{ cong.congdoan | number}}</td>
+                    <td align="center">{{ cong.phat | number}}</td>
+                    <td align="center">{{ cong.trukhac | number }}</td>
+                   
+                    <td align="center">{{ cong.tongluong | number }}</td>
+                   
+                </tr>
+            </tbody>
+</div>
+</table>
+</div>
+</form>

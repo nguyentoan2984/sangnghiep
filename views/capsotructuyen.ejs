@@ -19,6 +19,7 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="../../bower_components/angular/angular-material.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -62,17 +63,12 @@
       </nav>
     </header>
     <!-- Full Width Column -->
+    
     <div class="content-wrapper" ng-model="template" ng-include="template">
-      <div class="container">
-        <!-- Content Header (Page header) -->
-        <!-- <section class="content-header">
-            </section> -->
-        <!-- Main content -->
        
-      
-
-      <!-- /.container -->
     </div>
+  
+  
     <!-- /.content-wrapper -->
     <footer class="main-footer">
       <div class="container">
@@ -100,7 +96,12 @@
   <script type="text/javascript " src="../../bower_components/angular/angular-1.5.min.js "></script>
   <script type="text/javascript"  src="../../bower_components/angular/angular-resource.min.js "></script>
   <script type="text/javascript " src="../../bower_components/angular/angular-sanitize.js "></script>
- 
+  <script type="text/javascript " src="../../bower_components/angular/angular-ui-utils.min.js "></script>
+  <script type="text/javascript " src="../../bower_components/angular/angular-animate.min.js "></script>
+  <script type="text/javascript " src="../../bower_components/angular/angular-aria.min.js "></script>
+  <script type="text/javascript " src="../../bower_components/angular/angular-messages.min.js "></script>
+  <script type="text/javascript " src="../../bower_components/angular/angular-material.min.js "></script>
+  
   <script type="text/javascript " src="js/controller/callNumber_Controller.js "></script>
   <!-- AdminLTE for demo purposes -->
   <script src="../../dist/js/demo.js"></script>

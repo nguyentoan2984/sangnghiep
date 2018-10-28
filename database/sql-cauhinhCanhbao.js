@@ -18,10 +18,10 @@ class canhbao {
                    AND OFFICEID='${OFFICEID}'`
            ;
        let result = await queryDb(selectSql,database);
-       if (!result.rowsAffected[0]) throw new Error('không load được các thông số cảnh báo dịch vụ của đơn vị được chọn ');
-    obj.WAITTIMEMAX = ( result.recordset[0]== undefined || result.recordset[0]== null ) ? null : result.recordset[0].WAITTIMEMAX 
-    obj.SERVICETIMEMAX = ( result.recordset[0]== undefined || result.recordset[0]== null ) ? null : result.recordset[0].SERVICETIMEMAX 
-    obj.DISCOUNTITIMEMAX = ( result.recordset[0]== undefined || result.recordset[0]== null ) ? null : result.recordset[0].DISCOUNTITIMEMAX 
+    //    if (!result.rowsAffected[0]) throw new Error('không load được các thông số cảnh báo dịch vụ của đơn vị được chọn ');
+    obj.WAITTIMEMAX = ( result.recordset[0]== undefined || result.recordset[0]== null ) ? 0 : result.recordset[0].WAITTIMEMAX 
+    obj.SERVICETIMEMAX = ( result.recordset[0]== undefined || result.recordset[0]== null ) ? 0 : result.recordset[0].SERVICETIMEMAX 
+    obj.DISCOUNTITIMEMAX = ( result.recordset[0]== undefined || result.recordset[0]== null ) ? 0 : result.recordset[0].DISCOUNTITIMEMAX 
          arrayReturn.push(obj)
          return arrayReturn;
        }

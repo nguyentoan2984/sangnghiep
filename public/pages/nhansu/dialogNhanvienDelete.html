@@ -1,0 +1,58 @@
+<div>
+    <md-dialog aria-label="List dialog">
+    
+        <h3 class="text-center">Xoá Nhân Viên </h3>
+        <!-- action="/action_page.php" method="POST" -->
+        <form  novalidate name="formDeletenguyenlieu" >
+            <div class="form-row text-center">
+                <div class="form-group">
+                    <label>username</label>
+                    <input   type="text" name="user" class="form-control"  placeholder="" ng-model="confirm.user"  required>
+                </div>
+               
+            </div>
+            <div class="form-row text-center ">
+           
+             <div class="form-group ">
+                 <label>password</label>
+                 <input  type="password" name="password" class="form-control"  placeholder="" ng-model="confirm.password"  required>
+             </div>
+         </div>
+         <div class="form-row text-center ">
+            
+              <div class="form-group ">
+                  <label>Phòng Ban</label>
+                  <select  name="phongban" class="form-control" ng-model="objSelected_phongban" ng-options="item.phongban for item in dsbophan" required>
+                    
+                 </select>
+              </div>
+          </div>
+
+       
+          
+            <div class="form-row text-center">
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-primary" ng-click="DeleteDialog_nhanvien(confirm,objSelected_phongban)"
+                    ng-hide="formDeletenguyenlieu.user.$error.required +
+                     formDeletenguyenlieu.password.$error.required +
+                     formDeletenguyenlieu.phongban.$error.required 
+                    " >Delete</button>
+                </div>
+                <div class="form-group col-md-6">
+                <button  class="btn btn-primary" ng-click="closeDialog()">Cancel</button>
+            </div>
+       </div>
+            <div class="form-row" >
+                    <div class="alert alert-info" role="alert"
+                     ng-show="formDeletenguyenlieu.user.$error.required + 
+                     formDeletenguyenlieu.password.$error.required +
+                     formDeletenguyenlieu.phongban.$error.required 
+                           ">
+                    <p>Bạn phải nhập đầy đủ thông tin username và password mới có quyền được xoá.</p> 
+                   <p>Thực hiện hành động này đồng thời sẽ xoá toàn bộ các dữ liệu liên quan đến  
+                    nhân viên này .Cân nhắc trước khi xoá !!!!</p> 
+                    </div>
+                </div>
+        </form>
+    </md-dialog>
+ </div>    

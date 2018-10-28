@@ -7,7 +7,7 @@ class donviInfo {
     static async get_donviInfo() {
         let database =databaseInfo
         const selectSql =
-            `SELECT OFFICEID,OFFICENAME,ORDERINDEX  FROM dbo.OFFICE
+            `SELECT OFFICEID,OFFICENAME,ORDERINDEX,ADDRESS  FROM dbo.OFFICE
         WHERE  ISACTIVE=1
         ORDER BY ORDERINDEX`;
         const result = await queryDb(selectSql,database);

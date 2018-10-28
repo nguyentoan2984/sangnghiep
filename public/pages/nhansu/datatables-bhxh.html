@@ -1,0 +1,42 @@
+<!-- được incluce vào trong trang user-quanly-cuahang -->
+<form class="form-inline">
+    <div style="overflow-x:auto;">      
+<table datatable="ng" dt-options="dtOptions_tables" dt-column-defs="dtColumnDefs"  class="table  table-bordered bordered table-striped table-condensed">
+            <div class="container">
+                    <div class="row">
+                            <div class="col-md-12 text-center"  >
+                                    <h3 class="text-primary"> <i> <strong>Danh Sách Chế Độ BHXH</strong></i> </h3>
+                                    <!-- <small>Vùng</small>
+                                    <select  ng-click="selectVung(objSelected_Vung)" name="objSelected" class="form-control" ng-model="objSelected_Vung" ng-options="item.tenvung for item in dsVung" >
+                                          </select> -->
+                                        
+                                </div>
+                    </div>
+      <thead >
+        <tr>
+            <th class="text-center"  > STT</th>
+            <th class="text-center" >Mã Bảo Hiểm</th>
+            <th class="text-center" >Lương Bảo Hiểm</th>
+            <th class="text-center" >Trừ Bảo Hiểm (% Lương Bảo Hiểm)</th>
+            <th class="text-center" >Ghi Chú</th>
+            <th class="text-center" ><button type="button" ng-click="showDialogAdd_bhxh()" class="btn btn-info"
+                >Thêm</button></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="bhxh in  Arraymabaohiem">
+            <td align="center">{{ $index+1 }}</td>
+            <td align="center">{{ bhxh.mabaohiem }}</td>
+            <td align="center">{{ bhxh.luongbaohiem | number}}</td>
+            <td align="center">{{ bhxh.trubaohiem }}</td>
+            <td align="center">{{ bhxh.ghichu }}</td>
+            <td align="center">
+                <button type="button" ng-click="showDialogEdit_bhxh($index)" > <i class="material-icons text-success">edit</i></button>
+                <button type="button" ng-click="showDialogDelete_bhxh($index)" > <i class="material-icons text-danger">delete</i></button>
+             
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</form>

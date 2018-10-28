@@ -7,7 +7,7 @@ class giamsatDichvu {
     static async getserviceMonitor(OFFICEID,allService) {
         let dateNow =new Date();
    
-        dateNow = moment(dateNow).format('DD/MM/YYYY'); 
+        dateNow = moment(dateNow).utc().format('DD/MM/YYYY'); 
         let returnArray=[]
         let arrayService=[]
         let database =databaseInfo
@@ -70,7 +70,7 @@ class giamsatDichvu {
                  resultInfo = await queryDb(selectSqlInfo,database1);
                 // if (!resultInfo.rowsAffected[0]) throw new Error('không load được thông tin giam sat dich vụ ');
                  obj.TG_PV_HIENTAI = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].TG_PV_HIENTAI 
-                 obj.TIMESERVER = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].TIMESERVER
+                //  obj.TIMESERVER = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].TIMESERVER
                 //  obj.SERVINGTIME = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].SERVINGTIME
     //  /////////thoi gian chờ lâu nhất//////////
                 selectSqlInfo=  `BEGIN

@@ -1,0 +1,40 @@
+<!-- được incluce vào trong trang user-quanly-cuahang -->
+<form class="form-inline">
+        <div style="overflow-x:auto;">      
+    <table datatable="ng" dt-options="dtOptions_tables" dt-column-defs="dtColumnDefs"  class="table  table-bordered bordered table-striped table-condensed">
+                <div class="container">
+                        <div class="row">
+                                <div class="col-md-12 text-center"  >
+                                        <h3 class="text-primary"> <i> <strong>Xét Đào Tạo / Chưa Đào Tạo</strong></i> </h3>
+                                        <!-- <small>Vùng</small>
+                                        <select  ng-click="selectVung(objSelected_Vung)" name="objSelected" class="form-control" ng-model="objSelected_Vung" ng-options="item.tenvung for item in dsVung" >
+                                              </select> -->
+                                            
+                                    </div>
+                        </div>
+          <thead >
+            <tr>
+                <th class="text-center"  > STT</th>
+                <th class="text-center" >Mã Đào Tạo</th>
+                <th class="text-center" >Trừ Lương (% Lương )</th>
+                <th class="text-center" >Ghi Chú</th>
+                <th class="text-center" ><button type="button" ng-click="showDialogAdd_daotao()" class="btn btn-info"
+                    >Thêm</button></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="dt in  Arraymadaotao">
+                <td align="center">{{ $index+1 }}</td>
+                <td align="center">{{ dt.madaotao }}</td>
+                <td align="center">{{ dt.luongdaotao | number}}</td>
+                <td align="center">{{ dt.ghichu }}</td>
+                <td align="center">
+                    <button type="button" ng-click="showDialogEdit_daotao($index)" > <i class="material-icons text-success">edit</i></button>
+                    <button type="button" ng-click="showDialogDelete_daotao($index)" > <i class="material-icons text-danger">delete</i></button>
+                 
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </form>

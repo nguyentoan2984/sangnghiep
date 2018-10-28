@@ -1,0 +1,46 @@
+<!-- được incluce vào trong trang user-quanly-cuahang -->
+<form class="form-inline">
+    <div style="overflow-x:auto;">      
+<table datatable="ng" dt-options="dtOptions_tables " dt-column-defs="dtColumnDefs"  class="table  table-bordered bordered table-striped table-condensed">
+            <div class="container">
+                    <div class="row">
+                            <div class="col-md-12 text-center"  >
+                                    <h3 class="text-primary"> <i> <strong>Danh Sách Các Cửa Hàng</strong></i> </h3>
+                                    <small>Khu Vực</small>
+                                    <select  ng-click="selectKhuVuc(objSelected_KhuVuc)" name="objSelected" class="form-control" ng-model="objSelected_KhuVuc" ng-options="item.makhuvuc for item in dsKhuVuc" >
+                                          </select>
+                                        
+                                </div>
+                    </div>
+      <thead >
+        <tr>
+            <th class="text-center"  > STT</th>
+            <th class="text-center" >Cửa Hàng</th>
+            <th class="text-center" > Địa Chỉ</th>
+            <th class="text-center" >Điện Thoại</th>
+            <th class="text-center" >Mã Khu Vực</th>
+            <th class="text-center" >Mã Cửa Hàng</th>
+            <th class="text-center" >Mã Trạm</th>
+            <th class="text-center" >Phân Cấp</th>
+            <th class="text-center" >Chỉnh Sửa</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="cuahang in dsCuahang">
+            <td align="center">{{ $index+1 }}</td>
+            <td align="center">{{ cuahang.storename }}</td>
+            <td align="center" >{{ cuahang.diachi }}</td>
+            <td align="center">{{ cuahang.dienthoai }}</td>
+            <td align="center">{{ cuahang.makhuvuc }}</td>
+            <td align="center">{{ cuahang.macuahang }}</td>
+            <td align="center">{{ cuahang.tentram }}</td>
+            <td align="center">{{ cuahang.quyenquanly }}</td>
+            <td align="center">
+                <button type="button" ng-click="showDialog_EditCuahang($index)" > <i class="material-icons text-success">edit</i></button>
+             
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</form>

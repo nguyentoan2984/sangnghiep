@@ -1,0 +1,43 @@
+<div class="container" style="overflow-x:auto;">
+    <h3 class="text-center">Xét Bảo Hiểm Xã Hội</h3>
+    <form novalidate name="formBHXh">
+        <div class="row">
+            <div class="col-md-6 text-center">
+
+                <small> <strong  class="text-primary">Mã Bảo Hiểm</strong> </small>
+                <input onkeydown="return false" type="text" class="form-control " name="madaotao" ng-model="daotao.madaotao"  required>
+            </div>
+          
+        </div>
+
+        <div class="row text-center">
+            <div class="col-md-6 text-center">
+                <small> <strong  class="text-primary">Trừ Bảo Hiểm(% Lương Bảo Hiểm)</strong> </small>
+                <input type="number" class="form-control " name="luongdaotao" ng-model="daotao.luongdaotao"  required>
+            </div>
+            <div class="col-md-6 text-center">
+                <small> <strong  class="text-primary">Ghi Chú</strong> </small>
+                <input type="text" class="form-control " name="ghichu" ng-model="daotao.ghichu"  required>
+            </div>
+        </div>
+        <hr>
+        <div >
+            <div class="form-row text-center">
+                <button class="btn btn-primary" ng-click="updateDialog_Editdaotao(daotao)" 
+                ng-hide="formBHXh.madaotao.$error.required +
+                formBHXh.luongdaotao.$error.required +
+                formBHXh.ghichu.$error.required ">Update</button>
+                <button  class="btn btn-primary" ng-click="closeDialog()">Cancel</button>
+              
+            </div>
+            <div class="form-row">
+                <div class="alert alert-info" role="alert" 
+                ng-show="formBHXh.madaotao.$error.required +
+                formBHXh.luongdaotao.$error.required +
+                formBHXh.ghichu.$error.required ">
+                    Bạn phải nhập đầy đủ thông tin mới được thêm 
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

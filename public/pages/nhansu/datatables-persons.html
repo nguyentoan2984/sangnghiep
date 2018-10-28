@@ -1,0 +1,82 @@
+<!-- được incluce vào trong trang user-quanly-cuahang -->
+<form class="form-inline"  novalidate  name="formNhanvien">
+        <div style="overflow-x:auto;">      
+    <table datatable="ng" dt-options="dtOptions_tables " dt-column-defs="dtColumnDefs"  class="table  table-bordered bordered table-striped table-condensed">
+                <div class="container">
+                        <div class="row">
+                                <div class="col-md-12 text-center"  >
+                                        <h3 class="text-primary"> <i> <strong>Danh Sách Nhân Viên Cửa Hàng</strong></i> </h3>
+                                        <small>Khu Vực</small>
+                                        <select  ng-click="selectKhuVuc(objSelected_KhuVuc)" name="objSelected_khuvuc" class="form-control" ng-model="objSelected_KhuVuc" ng-options="item.makhuvuc for item in dsKhuVuc" required >
+                                              </select>
+                                        <small>Cửa Hàng</small>
+                                        <select  ng-click="selectCuahang(objSelected_cuaHang,{control:''})" name="objSelected_cuahang" class="form-control" ng-model="objSelected_cuaHang" ng-options="item.storename for item in dsCuahang" required>
+                                              </select>
+                                            
+                                    </div>
+                        </div>
+          <thead >
+            <tr>
+                    <th class="text-center" ><button type="button" ng-click="showDialogAdd()" class="btn btn-info"
+                        ng-hide="formNhanvien.objSelected_khuvuc.$error.required + formNhanvien.objSelected_cuahang.$error.required 
+                       "
+                        >Thêm</button></th>
+                <th class="text-center"  > STT</th>
+                <th class="text-center" >Ma Nv</th>
+                <th class="text-center" >Cửa Hàng</th>
+                <th class="text-center" >Tên Nv</th>
+                <th class="text-center" >Giới Tính</th>
+                <th class="text-center" >Địa Chỉ Tạm Trú</th>
+                <th class="text-center" >Địa Chỉ ThườngTrú</th>
+                <th class="text-center" >Điện Thoại</th>
+                <th class="text-center" >Email</th>
+                <th class="text-center" >Tài Khoản</th>
+                <th class="text-center" >Vị Trí</th>
+                <th class="text-center" >Mã Lương</th>
+                <th class="text-center" >Mã Bảo Hiểm</th>
+                <th class="text-center" >Ca Làm Việc </th>
+                <th class="text-center" >Ngày Vào</th>
+                <th class="text-center" >CMND</th>
+                <th class="text-center" >Ngày Cấp</th>
+                <th class="text-center" >Nơi Cấp</th>
+                <th class="text-center" >Chủ Hộ</th>
+                <th class="text-center" >Ngày Sinh Chủ Hộ</th>
+                <th class="text-center" >Giới Tính Chủ Hộ</th>
+                <th class="text-center" >Mã Đào Tạo</th>
+            
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="person in persons">
+                    <td align="center"  ng-hide="$last===true?true:false">
+                            <button type="button" ng-click="showDialogEdit($index)" > <i class="material-icons text-success">edit</i></button>
+                            <button type="button" ng-click="showDialogDelete($index)" > <i class="material-icons text-danger">delete</i></button>
+                        </td>
+                <td align="center">{{$last===true?null:$index+1 }}</td>
+                <td align="center">{{ $last===true?null:person.manhanvien }}</td>
+                <td align="center">{{$last===true?null: person.storename }}</td>
+                <td align="center">{{ $last===true?null:person.tennhanvien }}</td>
+                <td align="center">{{ $last===true?null:person.gioitinh }}</td>
+                <td align="center">{{ $last===true?null:person.diachitamtru }}</td>
+                <td align="center">{{ $last===true?null:person.diachithuongtru }}</td>
+                <td align="center">{{ $last===true?null:person.dienthoai }}</td>
+                <td align="center">{{ $last===true?null:person.email }}</td>
+                <td align="center">{{ $last===true?null:person.taikhoan }}</td>
+                <td align="center">{{ $last===true?null:person.vitri }}</td>
+                <td align="center">{{ $last===true?null:person.maluong }}</td>
+                <td align="center">{{ $last===true?null:person.mabaohiem }}</td>
+                <td align="center">{{ $last===true?null:person.calamviec }}</td>
+                <td align="center">{{ $last===true?null:person.ngaylamviec | date:'dd-MM-yyyy'   }}</td>
+                <td align="center">{{ $last===true?null:person.cmnd }}</td>
+                <td align="center">{{ $last===true?null:person.ngaycap | date:'dd-MM-yyyy' }}</td>
+                <td align="center">{{ $last===true?null:person.noicap }}</td>
+                <td align="center">{{ ($last===true || person.vitri=='Nhân Viên')?null:person.chuho }}</td>
+                <td align="center">{{ ($last===true || person.vitri=='Nhân Viên')?null:person.ngaysinhchuho | date:'dd-MM-yyyy' }}</td>
+                <td align="center">{{ ($last===true || person.vitri=='Nhân Viên')?null:person.gioitinhchuho }}</td>
+                <td align="center">{{ $last===true?null:person.madaotao }}</td>
+             
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </form>

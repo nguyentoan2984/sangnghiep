@@ -1,0 +1,91 @@
+<br>
+
+<section class="content-header" >
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="text-primary text-center" class="box-title"><b>Kết quả đăng ký cấp số trực tuyến của quý khách</b> </h3>
+      </div>
+      <form novalidate name="formLaysotructuyen">
+        <div class="box-body" class="row">
+          <div class="row" class="form-group">
+                  <div class="col-xs-12 text-center"  class="box-title">
+                      <h3 ><b>Số phiếu thứ tự</b> </h3>
+                  </div>
+            </div>
+          <div class="row" class="form-group">      
+                  <div class="col-xs-offset-3 col-xs-6 text-center " 
+                   ng-style="{'background-color':'blue','color':'white'}" >
+                    <h1>{{showInfo.number}}</h1>
+                 </div>
+          </div>
+         
+          <br>
+          <div class="row text-center"  class="form-group">
+            <label class="col-xs-4 control-label">Số serial xác thực</label>
+            <div class="col-xs-8 control-label">
+              <label   ng-style="{'background-color':'#F7F1F1'}">{{showInfo.serial}}</label>
+            </div>
+          </div>
+
+          <div class="row text-center" class="form-group">
+            <label class="col-xs-4 control-label">Giao dịch dự kiến</label>
+            <div class="col-xs-8 control-label">
+              <label class="text-left" ng-style="{'background-color':'#F7F1F1'}">{{showInfo.timeGiaodich }}</label>
+            </div>
+          </div>
+
+          <div class="row text-center" class="form-group">
+            <label class="col-xs-4 control-label">Điểm giao dịch</label>
+            <div class="col-xs-8 control-label">
+              <label ng-style="{'background-color':'#F7F1F1'}">{{showInfo.diemGiaodich}}</label>
+            </div>
+          </div>
+
+          <div class="row text-center" class="form-group">
+            <label class="col-xs-4 control-label">Địa chỉ giao dịch</label>
+            <div class="col-xs-8 control-label">
+              <label ng-style="{'background-color':'#F7F1F1'}">{{showInfo.diachiGiaodich}}</label>
+            </div>
+          </div>
+
+          <div class="row text-center" class="form-group">
+            <label class="col-xs-4 control-label">Họ & tên khách hàng</label>
+            <div class="col-xs-8 control-label">
+              <label ng-style="{'background-color':'#F7F1F1'}">{{showInfo.nameCustomer}}</label>
+            </div>
+          </div>
+
+          <div class="row text-center" class="form-group">
+            <label class="col-xs-4 control-label">Địa chỉ khách hàng</label>
+            <div class="col-xs-8 control-label">
+              <label ng-style="{'background-color':'#F7F1F1'}">{{showInfo.addressCustomer}}</label>
+            </div>
+          </div>
+
+          <div class="row text-center" class="form-group">
+            <label class="col-xs-4 control-label">CMND</label>
+            <div class="col-xs-8 control-label">
+              <label ng-style="{'background-color':'#F7F1F1'}">{{showInfo.cmndCustomer}}</label>
+            </div>
+          </div>
+<br>
+          <div class="row text-center">
+            <div class=" text-center" class="form-group">
+                <button class="btn btn-primary " type="button"  >Gửi email</button>
+                <button class="btn btn-primary " type="button" > Gửi sms</button>
+                <button class="btn btn-primary " type="button" > In phiếu</button>
+                <button class="btn btn-primary " type="button" > Bỏ qua</button>
+              </div>
+
+        </div>
+
+
+        
+      
+        <!-- /.box-footer -->
+      </form>
+    </div>
+    <!-- /.content -->
+  </div>
+
+</section>

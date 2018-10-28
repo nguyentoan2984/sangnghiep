@@ -1,0 +1,85 @@
+<div class="container" style="overflow-x:auto;">
+    <form novalidate name="formPhucap">
+            <h3 class="text-center"> Phụ Cấp Của Nhân Viên</h3>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Điện Thoại</label>
+                    <input type="number" name="dienthoai" class="form-control" ng-model="phucap_khoantru.pcdienthoai" ng-value="phucap_khoantru.pcdienthoai" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Trách Nhiệm</label>
+                    <input type="number" name="trachnhiem" class="form-control" ng-model="phucap_khoantru.pctrachnhiem" ng-value="phucap_khoantru.pctrachnhiem" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Chuyên Cần</label>
+                    <input type="number" name="chuyencan" class="form-control" ng-model="phucap_khoantru.pcchuyencan" ng-value="phucap_khoantru.pcchuyencan" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Thưởng</label>
+                    <input type="number" name="thuong" class="form-control" ng-model="phucap_khoantru.pcthuong" ng-value="phucap_khoantru.pcthuong" required>
+                </div>
+            </div>
+            <h3 class="text-center">Các Khoản Trừ Của Nhân Viên</h3>
+            
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Phạt</label>
+                    <input type="number" name="phat" class="form-control" ng-model="phucap_khoantru.phat" ng-value="phucap_khoantru.phat" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Trừ Khác</label>
+                    <input type="number" name="trukhac" class="form-control" ng-model="phucap_khoantru.trukhac" ng-value="phucap_khoantru.trukhac" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                    <label>Công Đoàn</label>
+                    <input type="number" name="congdoan" class="form-control" ng-model="phucap_khoantru.congdoan" ng-value="phucap_khoantru.congdoan" required>
+                </div>
+                  <div class="form-group col-md-6" >
+                    <!-- <label>Trừ BHNT</label>
+                    <input type="number" name="bhnt" class="form-control" ng-model="phucap_khoantru.bhnt"  ng-value="phucap_khoantru.bhnt" required> -->
+                </div>
+
+            </div>
+
+
+
+
+            <div class="form-row text-center">
+                <button class="btn btn-primary" ng-click="addDialog_phucap_khoantru(phucap_khoantru)"
+                 ng-hide="formPhucap.dienthoai.$error.required +
+                formPhucap.trachnhiem.$error.required +
+                formPhucap.chuyencan.$error.required +
+                formPhucap.thuong.$error.required +
+                formPhucap.phat.$error.required +
+                formPhucap.trukhac.$error.required +
+                formPhucap.bhnt.$error.required +
+                formPhucap.congdoan.$error.required
+                "
+                >Add</button>
+                <button  class="btn btn-primary" ng-click="closeDialog()">Cancel</button>
+              
+            </div>
+            <div class="form-row">
+                <div class="alert alert-info" role="alert"
+                 ng-show="formPhucap.dienthoai.$error.required +
+                 formPhucap.trachnhiem.$error.required +
+                 formPhucap.chuyencan.$error.required +
+                 formPhucap.thuong.$error.required +
+                 formPhucap.phat.$error.required +
+                 formPhucap.trukhac.$error.required +
+                 formPhucap.bhnt.$error.required +
+                 formPhucap.congdoan.$error.required
+                 ">
+                    Bạn phải nhập đầy đủ thông tin mới được thêm phụ cấp và các khoản trừ của nhân viên
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

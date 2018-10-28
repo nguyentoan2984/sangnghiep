@@ -1,0 +1,53 @@
+<div>
+    <md-dialog aria-label="List dialog">
+    
+        <h3 class="text-center">Cập Nhật Chấm Công</h3>
+        <!-- action="/action_page.php" method="POST" -->
+        <form  novalidate name="formEditCong" >
+            <div class="form-row text-center">
+                   
+                <div class="form-group">
+                    <label>Thời Gian Vào</label>
+                    <input   type="time" name="timein" class="form-control"  placeholder="" ng-model="cong.timein"  ng-value="cong.timein" required>
+                </div>
+               
+            </div>
+            <div class="form-row text-center ">
+           
+             <div class="form-group ">
+                 <label>Thời Gian Ra</label>
+                 <input  type="time" name="timeout" class="form-control"  placeholder="" ng-model="cong.timeout" ng-value="cong.timeout" required>
+             </div>
+         </div>
+
+         <div class="form-row text-center ">
+            
+              <div class="form-group ">
+                  <label>Lý do cập nhật</label>
+                  <input  type="text" name="lydo" class="form-control"  placeholder="" ng-model="cong.lydo"  required>
+              </div>
+          </div>
+          
+            <div class="form-row text-center">
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-primary" ng-click="updateDialogCong(cong)"
+                    ng-hide="formEditCong.timein.$error.required + formEditCong.timeout.$error.required +
+                    formEditCong.lydo.$error.required       
+                    "
+                         >update</button>
+                </div>
+                <div class="form-group col-md-6">
+                <button  class="btn btn-primary" ng-click="closeDialog()">Cancel</button>
+            </div>
+       </div>
+            <div class="form-row" >
+                    <div class="alert alert-info" role="alert"
+                     ng-show="formEditCong.timein.$error.required + formEditCong.timeout.$error.required +
+                     formEditCong.lydo.$error.required 
+                           ">
+                     Bạn phải nhập đầy đủ thông tin mới được cập nhật nhân viên
+                    </div>
+                </div>
+        </form>
+    </md-dialog>
+ </div>    

@@ -1,0 +1,79 @@
+<div>
+    <md-dialog aria-label="List dialog">
+    
+        <h3 class="text-center">Thêm Chấm Công</h3>
+        <!-- action="/action_page.php" method="POST" -->
+        <form  novalidate  name="formNhanvien">
+            <div class="form-row">
+                <div class="form-group col-md-6" ng-show="false">
+                        <label>Mã Nhân Viên</label>
+                        <input type="text" name="manhanvien" class="form-control"  placeholder="manhanvien" ng-model="nhanvien.manhanvien" ng-value="nhanvien.manhanvien" required >
+                    </div>
+                <div class="form-group col-md-6">
+                    <label>Cửa Hàng</label>
+                    <!-- <input type="text" name="cuahang" class="form-control"  placeholder="cuahang" ng-model="nhanvien.storename" ng-value="nhanvien.storename" required > -->
+                    <select  name="cuahang" class="form-control" ng-model="nhanvien.storename" 
+                    required>
+                    <option ng-repeat="ch in dsCuahang_addCong">{{ch.storename}}</option>
+                </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Tên</label>
+                    <input onkeydown="return false" type="text" name="ten" class="form-control"  placeholder="ten" ng-model="nhanvien.tennhanvien" ng-value="nhanvien.tennhanvien" required>
+                </div>
+            </div>
+    
+                <div class="form-row text-center">
+                    
+                <div class="form-group">
+                    <label>Thời Gian Vào</label>
+                    <input 
+                    type=time (HH:MM) name="Addtimein" class="form-control"  placeholder="" ng-model="nhanvien.Addcongtimein"  ng-value="nhanvien.Addcongtimein " required>
+                </div>
+                
+            </div>
+
+            <div class="form-row text-center ">
+            
+            <div class="form-group ">
+                <label>Thời Gian Ra</label>
+                <input  type="time" name="Addtimeout" class="form-control"  placeholder="" ng-model="nhanvien.Addcongtimeout" ng-value="nhanvien.Addcongtimeout" required>
+            </div>
+        </div>
+        
+        <div class="form-row text-center ">
+                
+                <div class="form-group ">
+                    <label>Ngày</label>
+                    <input type="date" class="form-control " name="AddDate" ng-model="nhanvien.AddDate" required>
+                </div>
+            </div>
+            <div class="form-row text-center ">
+                
+                <div class="form-group ">
+                    <label>Lý do thêm chấm công</label>
+                    <input type="text" class="form-control " name="lydo" ng-model="nhanvien.lydo" required>
+                </div>
+            </div>
+    
+            <div class="form-row text-center">
+                <button  class="btn btn-primary" ng-click="addCongDialog(nhanvien)"
+                ng-hide="formNhanvien.cuahang.$error.required + formNhanvien.ten.$error.required 
+                + formNhanvien.Addtimein.$error.required +  formNhanvien.Addtimeout.$error.required 
+                + formNhanvien.AddDate.$error.required + formNhanvien.lydo.$error.required  "
+                >Add</button>
+                <button  class="btn btn-primary" ng-click="closeDialog()">Cancel</button>
+            </div>
+            <div class="form-row">
+                <div class="alert alert-info" role="alert"
+                ng-show="formNhanvien.cuahang.$error.required + formNhanvien.ten.$error.required 
+                + formNhanvien.Addtimein.$error.required +  formNhanvien.Addtimeout.$error.required 
+                + formNhanvien.AddDate.$error.required + formNhanvien.lydo.$error.required 
+                "
+                >
+                    Bạn phải nhập đầy đủ thông tin mới được thêm ngày chấm công mới cho nhân viên
+                </div>
+            </div>
+        </form>
+    </md-dialog>
+    </div>

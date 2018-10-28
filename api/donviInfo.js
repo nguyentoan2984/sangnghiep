@@ -5,12 +5,12 @@ module.exports=function(app,jsonParser,checkApi) {
     app.get('/donviInfo', function (req, res) {
         donviInfo.get_donviInfo()
         .then(result => {
-            console.log(result.recordset)
+            // console.log(result.recordset)
             res.send(JSON.stringify(result.recordset))
             })
         .catch(err => {
             console.log(err)
-            res.send(JSON.stringify({ control:"noOk"}));
+            res.send(JSON.stringify([{ control:"noOk"}]));
            
         });
      });
@@ -25,7 +25,7 @@ module.exports=function(app,jsonParser,checkApi) {
                         })
                     .catch(err => {
                         console.log(err)
-                        res.send(JSON.stringify({ control:"noOk"}));
+                        res.send(JSON.stringify([{ control:"noOk"}]));
                        
         });
     });
