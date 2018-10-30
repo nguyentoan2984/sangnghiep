@@ -1,0 +1,23 @@
+<div  >
+        <md-dialog aria-label="List dialog">
+    <h3 class="text-center">Số điện thoại nhận tin nhắn</h3>
+    <form novalidate name="formSendemail">
+        <div class="row">
+            <div class="col-xs-12 ">
+                <input type="text" class="form-control " name="phone" ng-model="control.phone" placeholder="nhập số điện thoại"  required>
+            </div>
+
+        </div>
+
+        <hr>
+        <div class="row text-center"  >
+            <div class="col-xs-12">
+                <button class="btn btn-primary" class="form-control " ng-click="send(control)" 
+                ng-disabled="formSendemail.phone.$error.required">send</button>
+                <button  class="btn btn-primary" class="form-control " ng-click="closeDialog()">Cancel</button>
+            </div>
+          
+        </div>
+    </form>
+</md-dialog>
+</div>

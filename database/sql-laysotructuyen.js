@@ -89,7 +89,7 @@ obj.soluongdangcho = ( result.recordset[0].soluongdangcho== undefined || result.
         // console.log(timeNow,STARTTIME,ENDTIME,STARTTIME2,ENDTIME2)
         if (timeNow < STARTTIME || ENDTIME2 < timeNow ||  (timeNow > ENDTIME && timeNow < STARTTIME2 ))
          {
-            status ="“Đã hết giờ giao dịch, bạn vui lòng liên hệ trực tiếp đơn vị cần đăng ký để được hỗ tr"
+            status ="“ngoài thời gian phục vụ, bạn vui lòng liên hệ trực tiếp đơn vị cần đăng ký để được hỗ tr"
             number=0
             obj.number=number
             obj.status=status

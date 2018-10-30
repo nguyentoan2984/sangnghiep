@@ -26,9 +26,16 @@ app.factory('getNumber', function ($resource) {
         delete: { method: 'DELETE',params: {id: '@id'},isArray: true }
     })
 });
+app.factory('sendNumber', function ($resource) {
+    return $resource('/sendNumber', {  }, {
+        save: { method: 'POST' ,isArray: true},
+      
+    })
+});
 
-app.controller('callNumber_Controller', ['$scope', '$location', '$resource','$mdDialog','$window','captcha','donviInfo','$sce','getNumber',
-function ($scope, $location, $resource,$mdDialog,$window,captcha,donviInfo,$sce,getNumber) {
+
+app.controller('callNumber_Controller', ['$scope', '$location', '$resource','$mdDialog','$window','captcha','donviInfo','$sce','getNumber','sendNumber',
+function ($scope, $location, $resource,$mdDialog,$window,captcha,donviInfo,$sce,getNumber,sendNumber) {
     let dataTables_Template=[
     'pages/client/laysotructuyen.html',
     'pages/client/laysotructuyenResult.html'
@@ -38,6 +45,7 @@ function ($scope, $location, $resource,$mdDialog,$window,captcha,donviInfo,$sce,
  let textCaptcha=""
  let selectedOption_Config={}
  $scope.showNumber=false
+ let printpdf={}
 
     $scope.getCaptcha = function(){
         captcha.query({ }, function (result) {
@@ -113,6 +121,10 @@ function ($scope, $location, $resource,$mdDialog,$window,captcha,donviInfo,$sce,
                     }
          );
    }
+   $scope.reset=function(){
+   let landingUrl = "http://" + $window.location.host ;
+   $window.location.href = landingUrl;
+   }
 
    $scope.capSo=function(Info){
        if(!Info || Info.valueCaptcha==null || Info.valueCaptcha==undefined) return alert(" Bạn vui lòng chọn mã xác thực")
@@ -132,15 +144,17 @@ function ($scope, $location, $resource,$mdDialog,$window,captcha,donviInfo,$sce,
                         timeGiaodich:$scope.timeGiaodich,
                         diachiGiaodich:ADDRESS,
                         diemGiaodich: OFFICENAME,
-                        nameCustomer:Info.ho + Info.ten,
+                        nameCustomer:Info.ho + " " + Info.ten,
                         addressCustomer:Info.diachi,
                         cmndCustomer:Info.cmnd,
                     }
+                    printpdf=$scope.showInfo
                     // console.log($scope.showInfo)
                     cancelLoading()
                     $scope.template=dataTables_Template[1];
           } else{
                         alert(result[0].status)
+                        cancelLoading()
 
           }
             
@@ -150,6 +164,80 @@ function ($scope, $location, $resource,$mdDialog,$window,captcha,donviInfo,$sce,
                     }
          );
    }
+/////////////////////gui email///////////
+$scope.ShowDialog_sendmail = function (html) {
+   let resultInfo= $scope.showInfo
+   console.log(resultInfo)
+    var parentEl = angular.element(document.body);
+    $mdDialog.show({
+        parent: parentEl,
+        // targetEvent: $event,
+        // clickOutsideToClose: true,
+        escapeToClose: true,
+        //   scope: $scope,
+        templateUrl: html,
+        locals: {
+            resultInfo
+        },
+        controller: DialogController
+    }).then(function (obj) {
+        console.log(obj)
+        if (obj === "cancel") {
+        } 
+          else
+       { sendNumber.save(obj, function (result) {
+              
+              if (result[0].control === 'noOk')
+              alert("có lỗi trong quá trình tương tác server hệ thống")    
+                 else if( result[0].control=== 'api' )
+                     {
+                         alert("bạn phải đăng nhập lại hệ thống để tiếp tục")    
+                      //    $location.path('/');
+                      let landingUrl = "http://" + $window.location.host ;
+                      $window.location.href = landingUrl;
+                     }  
+                         else 
+                             {
+                              $scope.showSimpleToast("gửi email thành công");
+                             }
+                         }, function () {
+                             alert("đường truyền mạng có lỗi vui lòng nhập lại email")
+                             return
+                            }
+                 );
+         }
+            
+        }, function () {  alert("đường truyền mạng có lỗi hoặc reset lại trình duyệt web") });
+    // funtion dialog
+    function DialogController($scope, $mdDialog,resultInfo) {
+        $scope.closeDialog = function () {
+            $mdDialog.hide("cancel");
+        };
+        $scope.send = function (option) {
+            let obj={
+                control:option,
+                Info:resultInfo
+            }
+         
+            $mdDialog.hide({obj});
+     
+        }
+    };
+    // funtion dialog
+}    // Dialog     
+
+
+$scope.showSimpleToast = function(string) {
+    $mdToast.show(
+      $mdToast.simple()
+        .textContent(string)
+        .position('bottom right' )
+        .hideDelay(3000)
+        .toastClass(string)
+      
+    );
+  };
+
 
    $scope.showAlert = function(ev) {
     $mdDialog.show({
@@ -168,6 +256,56 @@ function ($scope, $location, $resource,$mdDialog,$window,captcha,donviInfo,$sce,
   function cancelLoading(){
     $mdDialog.cancel();
 }
+
+$scope.printDocument = function(){
+  
+
+
+var doc = new jsPDF();
+doc.addFont('tahoma.ttf', 'tahoma', 'normal');
+
+doc.setFont('tahoma');
+// doc.setFontSize(40);
+// doc.setFont("helvetica");
+
+doc.setTextColor(0, 0, 255);
+doc.setFontSize(20);
+doc.text(25, 50, 'Kết quả đăng ký cấp số trực tuyến của quý khách');
+doc.setTextColor(100);
+doc.setFontSize(14);
+doc.text(30, 60, 'Số phiếu thứ tự: '+ printpdf.number);
+doc.setFontSize(14);
+doc.text(30, 70,'Số serial xác thực: '+ printpdf.serial);
+doc.setFontSize(14);
+doc.text(30, 80,'Giao dịch dự kiến lúc: '+ printpdf.timeGiaodich);
+doc.setFontSize(14);
+doc.text(30, 90,'Điểm giao dịch: '+ printpdf.diemGiaodich);
+doc.setFontSize(14);
+doc.text(30, 100,'Địa chỉ giao dịch: '+ printpdf.diachiGiaodich);
+doc.setFontSize(14);
+doc.text(30, 110,'Họ & tên khách hàng: '+ printpdf.nameCustomer);
+doc.setFontSize(14);
+doc.text(30, 120,'Địa chỉ khách hàng: '+ printpdf.addressCustomer);
+doc.setFontSize(14);
+doc.text(30, 130,'CMND: '+ printpdf.cmndCustomer);
+
+
+
+// var specialElementHandlers = {
+//     '#editor': function (element, renderer) {
+//         return true;
+//     }
+// };
+//     doc.fromHTML($('#content').html(), 15, 15, {
+//         'width': 170,
+//             'elementHandlers': specialElementHandlers
+//     });
+
+    doc.save('ketqua.pdf');
+
+
+  }
+
 
 ////////////////////app controller///////////////////
     }])
