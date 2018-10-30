@@ -167,7 +167,7 @@ function ($scope, $location, $resource,$mdDialog,$mdToast,$window,captcha,donviI
 /////////////////////gui email///////////
 $scope.ShowDialog_sendmail = function (html) {
    let resultInfo= $scope.showInfo
-   console.log(resultInfo)
+  
     var parentEl = angular.element(document.body);
     $mdDialog.show({
         parent: parentEl,
