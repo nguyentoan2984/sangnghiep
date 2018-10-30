@@ -126,7 +126,7 @@ obj.soluongdangcho = ( result.recordset[0].soluongdangcho== undefined || result.
                         END
                                                `;
                result   = await queryDb(selectSql,database);
-               console.log(result)
+            //    console.log(result)
                obj.serial=result.recordset[0].SERIAL
                obj.id=result.recordset[0].ID
                returnArray.push(obj)

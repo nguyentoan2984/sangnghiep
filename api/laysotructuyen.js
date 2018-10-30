@@ -34,12 +34,7 @@ module.exports=function(app,jsonParser,checkApi) {
      });
      app.post('/sendNumber',jsonParser, function (req, res) {
       
-        let{control,Info}=req.body.obj
-        console.log(req.body)
-        let nook ={ control:"noOk" };
-        let ok ={ control:"Ok" };
-      
-      
+       let{control,Info}=req.body.obj
        let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -69,31 +64,37 @@ module.exports=function(app,jsonParser,checkApi) {
       
 
                 let mailOptions = {
-                    from: '"hethong1phut30giay 👻" <hethong1phut30giay@gmail.com>', // sender address
-                    to: "nguyentoan2984@gmail.com", // list of receivers
+                    from: `${String(control.email)} 👻 <${String(control.email)}>`, // sender address
+                    to: String(control.email), // list of receivers
                     subject: 'Hello ✔', // Subject line
                     // text: String(Info), // plain text body
                     html: `
                     <div>
-                    <<h1>Kết quả đăng ký cấp số trực tuyến của quý khách</h1>
-                    <div><b> Số phiếu thứ tự :' + String(Info.number)+'</b></div> 
-                    
+                    <div><h1>Kết quả đăng ký cấp số trực tuyến của quý khách</h1></div>
+                    <div><b> Số phiếu thứ tự    : ${String(Info.number)} </b></div> 
+                    <div><b> Số serial xác thực : ${String(Info.serial)} </b></div> 
+                    <div><b> Giao dịch dư kiến  : ${String(Info.timeGiaodich)} </b></div> 
+                    <div><b> Điểm giao dịch     : ${String(Info.diemGiaodich)} </b></div> 
+                    <div><b> Địa chỉ giao dịch  : ${String(Info.diachiGiaodich)} </b></div> 
+                    <div><b> Họ tên khách hàng  : ${String(Info.nameCustomer)} </b></div> 
+                    <div><b> Địa chỉ khách hàng : ${String(Info.addressCustomer)} </b></div> 
+                    <div><b> Cmnd               : ${String(Info.cmndCustomer)} </b></div> 
                     </div>` 
-                  
-                    
                     
                     // html body
                 };
                 // send mail with defined transport object
                 transporter.sendMail(mailOptions, (error, info) => {
                     if (error) {
-                        return console.log(error);
+      
+                        return res.send(JSON.stringify([{ control:"noOk"}]));
                     }
                     console.log('Message sent: %s', info.messageId);
                     // Preview only available when sending through an Ethereal account
                     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
                     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
                     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+                    res.send(JSON.stringify([{ control:"ok"}]));
                 });
 
         ///////////// xác thực login ok/////////////        

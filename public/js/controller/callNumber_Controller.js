@@ -34,8 +34,8 @@ app.factory('sendNumber', function ($resource) {
 });
 
 
-app.controller('callNumber_Controller', ['$scope', '$location', '$resource','$mdDialog','$window','captcha','donviInfo','$sce','getNumber','sendNumber',
-function ($scope, $location, $resource,$mdDialog,$window,captcha,donviInfo,$sce,getNumber,sendNumber) {
+app.controller('callNumber_Controller', ['$scope', '$location', '$resource','$mdDialog','$mdToast','$window','captcha','donviInfo','$sce','getNumber','sendNumber',
+function ($scope, $location, $resource,$mdDialog,$mdToast,$window,captcha,donviInfo,$sce,getNumber,sendNumber) {
     let dataTables_Template=[
     'pages/client/laysotructuyen.html',
     'pages/client/laysotructuyenResult.html'
@@ -181,27 +181,28 @@ $scope.ShowDialog_sendmail = function (html) {
         },
         controller: DialogController
     }).then(function (obj) {
-        console.log(obj)
         if (obj === "cancel") {
         } 
           else
-       { sendNumber.save(obj, function (result) {
-              
+       { 
+        $scope.showAlert("processing")
+        sendNumber.save(obj, function (result) {
+            
               if (result[0].control === 'noOk')
-              alert("có lỗi trong quá trình tương tác server hệ thống")    
+                    {  cancelLoading()
+                    alert("có lỗi trong quá trình tương tác server hệ thống")   } 
                  else if( result[0].control=== 'api' )
                      {
-                         alert("bạn phải đăng nhập lại hệ thống để tiếp tục")    
-                      //    $location.path('/');
                       let landingUrl = "http://" + $window.location.host ;
                       $window.location.href = landingUrl;
                      }  
                          else 
                              {
+                              cancelLoading()
                               $scope.showSimpleToast("gửi email thành công");
                              }
                          }, function () {
-                             alert("đường truyền mạng có lỗi vui lòng nhập lại email")
+                             alert("đường truyền mạng có lỗi vui lòng kiểm tra và nhập lại email")
                              return
                             }
                  );
