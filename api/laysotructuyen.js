@@ -3,6 +3,8 @@ module.exports=function(app,jsonParser,checkApi) {
     const laysotructuyen = require('../database/sql-laysotructuyen');
     const nodemailer = require('nodemailer');
     const xoauth2 = require('xoauth2')
+    let Infosendmail={}
+    let controlmail={}
    
     app.get('/getNumber/:OFFICEID/:SERVICEID',jsonParser, function (req, res) {
         let{SERVICEID,OFFICEID}=req.params
@@ -33,85 +35,84 @@ module.exports=function(app,jsonParser,checkApi) {
         });
      });
      app.post('/sendNumber',jsonParser, function (req, res) {
-      
-       let{control,Info}=req.body.obj
-       let transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            type: 'OAuth2',
-            user: "hethong1phut30giay@gmail.com",
-            clientId: "291461678056-sthb58jupg8snc11h2uk2at75m0svajn.apps.googleusercontent.com",
-            clientSecret: "K2l4PWM0O_AzTuJnq1GWy7FZ",
-            refreshToken: "1/XBdSPt4uob2UMNYq0UJzLPAHSsKtB4HKtX8SDT7U_is",
-            accessToken:"ya29.GltGBg2YF_6qnMle1Jj74TahR_nYjHiqyJIXQI6FfrWHhUMt_u-W2Xht0No5arjFDkhYmJCmRWQx1byW7x7DHZQOZOMfKc3U99XA-83YaFsZClQI5UmjIOwZ-2Py"
-        }
-    });
-       
-                // let transporter = nodemailer.createTransport({
-                //     service: 'gmail',
-                //     auth: {
-                //             xoauth2: xoauth2.createXOAuth2Generator({
-                //             user: "hethong1phut30giay@gmail.com",
-                //             clientId: "291461678056-sthb58jupg8snc11h2uk2at75m0svajn.apps.googleusercontent.com",
-                //             clientSecret: "K2l4PWM0O_AzTuJnq1GWy7FZ",
-                //             refreshToken: "1/XBdSPt4uob2UMNYq0UJzLPAHSsKtB4HKtX8SDT7U_is",
-                //             accessToken:"ya29.GltGBg2YF_6qnMle1Jj74TahR_nYjHiqyJIXQI6FfrWHhUMt_u-W2Xht0No5arjFDkhYmJCmRWQx1byW7x7DHZQOZOMfKc3U99XA-83YaFsZClQI5UmjIOwZ-2Py"
-                //      })
-                //     }
-                // });
-      
-
-                let mailOptions = {
-                    from: `${String(control.email)} 👻 <${String(control.email)}>`, // sender address
-                    to: String(control.email), // list of receivers
-                    subject: 'Hello ✔', // Subject line
-                    // text: String(Info), // plain text body
-                    html: `
-                    <div>
-                    <div><h1>Kết quả đăng ký cấp số trực tuyến của quý khách</h1></div>
-                    <div><b> Số phiếu thứ tự    : ${String(Info.number)} </b></div> 
-                    <div><b> Số serial xác thực : ${String(Info.serial)} </b></div> 
-                    <div><b> Giao dịch dư kiến  : ${String(Info.timeGiaodich)} </b></div> 
-                    <div><b> Điểm giao dịch     : ${String(Info.diemGiaodich)} </b></div> 
-                    <div><b> Địa chỉ giao dịch  : ${String(Info.diachiGiaodich)} </b></div> 
-                    <div><b> Họ tên khách hàng  : ${String(Info.nameCustomer)} </b></div> 
-                    <div><b> Địa chỉ khách hàng : ${String(Info.addressCustomer)} </b></div> 
-                    <div><b> Cmnd               : ${String(Info.cmndCustomer)} </b></div> 
-                    </div>` 
-                    
-                    // html body
-                };
-                // send mail with defined transport object
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-      
-                        return res.send(JSON.stringify([{ control:"noOk"}]));
-                    }
-                    console.log('Message sent: %s', info.messageId);
-                    // Preview only available when sending through an Ethereal account
-                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-                    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-                    res.send(JSON.stringify([{ control:"ok"}]));
-                });
-
-        ///////////// xác thực login ok/////////////        
-                // transporter.verify(function(error, success) {
-                //     if (error) {
-                //          console.log(error);
-                //     } else {
-                        
-                //          console.log('Server is ready to take our messages');
-                //     }
-                //  });
+       let {control,Info}=req.body.obj
+       Infosendmail=Info
+       controlmail=control
+       const token = require('./token');
+       const scopes = [
+        'https://mail.google.com/',
+        // 'https://www.googleapis.com/auth/gmail.modify',
+        // 'https://www.googleapis.com/auth/gmail.compose',
+        // 'https://www.googleapis.com/auth/gmail.send',
+      ];
+      token.authenticate(scopes)
+      .then( result => res.send(JSON.stringify([{ control:"ok"}])))
+      .catch(err => {
+        console.log(err)
+        res.send(JSON.stringify([{ control:"noOk"}]));
+      })
        
      });
 
-
-   
-
-      
+    app.get('/oauth2callback',jsonParser, async function (req, res) {
+        const {google} = require('googleapis');
+        const token = require('./token');
+        const url = require('url');
+        const querystring = require('querystring');
+        const qs = querystring.parse(url.parse(req.url).query);
+        const {tokens} = await token.oAuth2Client.getToken(qs.code);
+        token.oAuth2Client.credentials = tokens;
+    
+        const gmail = google.gmail({
+            version: 'v1',
+            auth: token.oAuth2Client,
+          });
+            // You can use UTF-8 encoding for the subject using the method below.
+            // You can also just use a plain string if you don't need anything fancy.
+            const subject = '🤘 Hello 🤘';
+            const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
+            const messageParts = [
+              'From: Phan mem xep hang <nguyentoan2984@gmail.com>',
+              'To:'+ String(controlmail.email),
+              'Content-Type: text/html; charset=utf-8',
+              'MIME-Version: 1.0',
+              `Subject: ${utf8Subject}`,
+              '',
+              `
+              <div>
+              <div><h1>Kết quả đăng ký cấp số trực tuyến của quý khách</h1></div>
+              <div><b> Số phiếu thứ tự    : ${String(Infosendmail.number)} </b></div> 
+              <div><b> Số serial xác thực : ${String(Infosendmail.serial)} </b></div> 
+              <div><b> Giao dịch dư kiến  : ${String(Infosendmail.timeGiaodich)} </b></div> 
+              <div><b> Điểm giao dịch     : ${String(Infosendmail.diemGiaodich)} </b></div> 
+              <div><b> Địa chỉ giao dịch  : ${String(Infosendmail.diachiGiaodich)} </b></div> 
+              <div><b> Họ tên khách hàng  : ${String(Infosendmail.nameCustomer)} </b></div> 
+              <div><b> Địa chỉ khách hàng : ${String(Infosendmail.addressCustomer)} </b></div> 
+              <div><b> Cmnd               : ${String(Infosendmail.cmndCustomer)} </b></div> 
+              </div>` ,
+            ];
+            const message = messageParts.join('\n');
+          
+            // The body needs to be base64url encoded.
+            const encodedMessage = Buffer.from(message)
+              .toString('base64')
+              .replace(/\+/g, '-')
+              .replace(/\//g, '_')
+              .replace(/=+$/, '');
+          
+            const result = await gmail.users.messages.send({
+              userId: 'me',
+              requestBody: {
+                raw: encodedMessage,
+              },
+            });
+          if(result.statusText==="OK")
+          {
+            res.send("gửi email thành công")
+          } else{
+            res.send("gửi email không thành công")
+          }
+        
+    });
                  
     }

@@ -175,16 +175,34 @@ class giamsatNhanvien {
                 obj.AVGWAITTIME =  ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].AVGWAITTIME 
    
    // //  ////////thoi gian nghỉ giửa 2 số thứ tự//////////
-                selectSqlInfo=  `BEGIN
-                SELECT	
-                	DATEDIFF("SECOND", MAX(dbo.CUSTOMERS.FINISHTIME),GETDATE()) AS 'TG_OFF_2SO'
-                FROM    	dbo.CUSTOMERS
-                WHERE   	dbo.CUSTOMERS.STATUS = '3' AND dbo.CUSTOMERS.STAFFID='${StaffID}'		
-                            AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}'	
+                // selectSqlInfo=  `BEGIN
+                // SELECT	
+                // 	DATEDIFF("SECOND", MAX(dbo.CUSTOMERS.FINISHTIME),GETDATE()) AS 'TG_OFF_2SO'
+                // FROM    	dbo.CUSTOMERS
+                // WHERE   	dbo.CUSTOMERS.STATUS = '3' AND dbo.CUSTOMERS.STAFFID='${StaffID}'		
+                //             AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}'	
+                // END
+                //     `;
+                selectSqlInfo=`
+               
+                BEGIN
+                DECLARE @TIMEOFF INT
+                    IF (SELECT COUNT(dbo.CUSTOMERS.STATUS) 
+                                FROM  dbo.CUSTOMERS
+                                WHERE dbo.CUSTOMERS.STAFFID ='${StaffID}'	
+                                AND dbo.CUSTOMERS.STATUS = '1'
+                                AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}')='1'
+                                SET @TIMEOFF='0'
+                    ELSE
+                        SELECT		@TIMEOFF= DATEDIFF("SECOND", MAX(dbo.CUSTOMERS.FINISHTIME),GETDATE())
+                        FROM    	dbo.CUSTOMERS
+                        WHERE   	dbo.CUSTOMERS.STATUS = '3' AND dbo.CUSTOMERS.STAFFID ='${StaffID}'		
+                            AND CONVERT(CHAR(10), TOCOUNTERTIME, 103) = '${dateNow}'
                 END
-                    `;
+                SELECT @TIMEOFF AS 'TG_OFF_2SO'`
                 resultInfo = await queryDb(selectSqlInfo,database1);
                 // if (!resultInfo.rowsAffected[0]) throw new Error('không load được thông tin giam sat dich vụ ');
+              
                 obj.TG_OFF_2SO = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].TG_OFF_2SO 
              
      ///////////// data canh bao//////////
