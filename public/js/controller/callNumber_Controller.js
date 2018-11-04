@@ -54,6 +54,7 @@ function ($scope, $location, $resource,$mdDialog,$mdToast,$window,captcha,donviI
         $scope.template=dataTables_Template[0];
     }
     $scope.danhgiatructuyen=function(){
+        $scope.showDiv=false
         $scope.template=dataTables_Template[2];
     }
  ////////// lấy số trực tuyến/////////////
