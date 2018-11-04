@@ -202,7 +202,6 @@ class giamsatNhanvien {
                 SELECT @TIMEOFF AS 'TG_OFF_2SO'`
                 resultInfo = await queryDb(selectSqlInfo,database1);
                 // if (!resultInfo.rowsAffected[0]) throw new Error('không load được thông tin giam sat dich vụ ');
-              
                 obj.TG_OFF_2SO = ( resultInfo.recordset[0]== undefined || resultInfo.recordset[0]== null ) ? null : resultInfo.recordset[0].TG_OFF_2SO 
              
      ///////////// data canh bao//////////

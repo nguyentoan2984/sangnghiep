@@ -1,0 +1,127 @@
+<br>
+
+<section  class="content-header">
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="text-primary" class="box-title"><b>Đánh giá trực tuyến nhân viên giao dịch</b> </h3>
+      </div>
+      <!-- /.box-header -->
+      <!-- form start  class="form-horizontal"-->
+      <form novalidate name="formDanhgiatructuyen">
+        <div class="box-body"  class="text-center">
+          <div class="text-primary" ><b>1. Nhập số serial xác thực đã được cấp khi lấy số thứ tự</b> </div>
+          <br>
+          <div class="row" class="form-group">
+                  <div class="col-xs-offset-1 col-xs-3">
+                      <label >Mã code/serial:</label>
+                  </div>
+                  <div class="col-xs-4">
+                        <input type="text" ng-change="change()" ng-model="Info.code" ng-value="Info.code" name="code" class="form-control" placeholder="Nhập mã xác thực" required> </input>
+                </div>
+                <div class="col-xs-4">
+                    <button ng-click="getinfoRating(Info)" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                  </div>
+            </div>
+        <div class="text-primary" ng-show="showDiv"><b>2. Đơn vị đã giao dịch</b> </div>
+        <br  ng-show="showDiv">
+        <div class="row" class="form-group" ng-show="showDiv">
+                <div class="col-xs-offset-1 col-xs-3">
+                    <label >Đơn vị:</label>
+                </div>
+                <div class="col-xs-6">
+                        <input type="text" ng-model="donviRating" name="code" class="form-control" disabled> </input>
+                </div>
+            </div>
+        <div class="text-primary" ng-show="showDiv"><b>3. Chọn tiêu chí nhận xét- đánh giá nhân viên giao dịch</b> </div>
+        <br  ng-show="showDiv">
+        <div class="row" class="form-group" ng-show="showDiv">
+                <div class="col-xs-offset-1 col-xs-3">
+                    <label >Nhân viên:</label>
+                </div>
+                <div class="col-xs-6">
+                        <input type="text" ng-model="nhanvienRating" name="code" class="form-control" disabled> </input>
+                </div>
+            </div>
+            <br  ng-show="showDiv">
+            <div class="row" class="form-group" ng-show="showDiv">
+              
+                    <div class="col-xs-offset-4 form-check" >
+                        <div  class="col-xs-2 ">
+                                <label class="form-check-label">
+                                        <input type="radio" 
+                                        ng-model="rating.tieuchi"
+                                        value="tot"
+                                        class="form-check-input" 
+                                        name="optradio">Tốt
+                                      </label>
+                        </div>
+                        <div  class="col-xs-2 ">
+                                <label class="form-check-label">
+                                        <input type="radio" 
+                                        ng-model="rating.tieuchi"
+                                       value="rattot"
+                                        class="form-check-input" 
+                                        name="optradio">Rất tốt
+                                      </label>
+                        </div>
+                        <div  class="col-xs-2 ">
+                                <label class="form-check-label">
+                                        <input type="radio"
+                                        ng-model="rating.tieuchi"
+                                       value="trungbinh"
+                                         class="form-check-input" 
+                                         name="optradio">Trung bình
+                                      </label>
+                        </div>
+                        <div  class="col-xs-2 ">
+                                <label class="form-check-label">
+                                        <input type="radio"
+                                        ng-model="rating.tieuchi"
+                                       value="khongtot"
+                                         class="form-check-input"
+                                          name="optradio">Không tốt
+                                      </label>
+                        </div>
+                 
+                    </div>
+                </div>
+
+          <div class="row" ng-show="showDiv">
+              <div class="col-xs-12">
+                  <b>3.Chọn mã xác thực</b> 
+              </div>
+            </div>
+          
+          <br ng-show="showDiv">
+            <div class="row" class="form-group" ng-show="showDiv">
+                <div class="col-xs-5" class="form-control"  ng-bind-html="maCaptcha">
+                  </div>
+
+                  <div class="col-xs-4" >
+                    <input type="text"  ng-model="Info.valueCaptcha" name="captcha" class="form-control" placeholder="Nhập mã captcha" required> </input>
+                  </div>
+                  <div class="col-xs-2">
+                    <button ng-click="getCaptcha()" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                  </div>
+
+            </div>
+     <br  ng-show="showDiv"> 
+        <!-- /.box-body -->
+        <div class="row" ng-show="showDiv">
+            <div class=" text-center" class="form-group">
+                <button class="btn btn-primary " type="button"  ng-click="danhgia(Info)"
+                ng-disabled="
+               
+                " 
+                >Đánh giá</button>
+                <button class="btn btn-primary " type="button" ng-click="reset_danhgia()"> Reset</button>
+              </div>
+
+        </div>
+      
+        <!-- /.box-footer -->
+      </form>
+    </div>
+    <!-- /.content -->
+
+</section>

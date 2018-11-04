@@ -360,6 +360,7 @@ $scope.selectServiceCounter=function (selectedOption){
                 cancelLoading()
             } 
             else{
+                // console.log(result[0])
                 $scope.waningcheckbox_Info={
                     sound:result[0].BYSOUND,
                     picture:result[0].BYIMG,

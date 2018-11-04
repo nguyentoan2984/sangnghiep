@@ -32,15 +32,30 @@ app.factory('sendNumber', function ($resource) {
       
     })
 });
+app.factory('rating', function ($resource) {
+    return $resource('/rating/:code', {  }, {
+        query: { method: 'GET', isArray: true },
+        save: { method: 'POST' ,isArray: true},
+      
+    })
+});
 
 
-app.controller('callNumber_Controller', ['$scope', '$location', '$resource','$mdDialog','$mdToast','$window','captcha','donviInfo','$sce','getNumber','sendNumber',
-function ($scope, $location, $resource,$mdDialog,$mdToast,$window,captcha,donviInfo,$sce,getNumber,sendNumber) {
+app.controller('callNumber_Controller', ['$scope', '$location', '$resource','$mdDialog','$mdToast','$window','captcha','donviInfo','$sce','getNumber','sendNumber','rating',
+function ($scope, $location, $resource,$mdDialog,$mdToast,$window,captcha,donviInfo,$sce,getNumber,sendNumber,rating) {
     let dataTables_Template=[
     'pages/client/laysotructuyen.html',
-    'pages/client/laysotructuyenResult.html'
+    'pages/client/laysotructuyenResult.html',
+    'pages/client/danhgiatructuyen.html',
     ];
-    $scope.template=dataTables_Template[0];
+    $scope.template=dataTables_Template[2];
+
+    $scope.laysotructuyen=function(){
+        $scope.template=dataTables_Template[0];
+    }
+    $scope.danhgiatructuyen=function(){
+        $scope.template=dataTables_Template[2];
+    }
  ////////// lấy số trực tuyến/////////////
  let textCaptcha=""
  let selectedOption_Config={}
@@ -259,8 +274,6 @@ $scope.showSimpleToast = function(string) {
 }
 
 $scope.printDocument = function(){
-  
-
 
 var doc = new jsPDF();
 doc.addFont('tahoma.ttf', 'tahoma', 'normal');
@@ -289,24 +302,92 @@ doc.setFontSize(14);
 doc.text(30, 120,'Địa chỉ khách hàng: '+ printpdf.addressCustomer);
 doc.setFontSize(14);
 doc.text(30, 130,'CMND: '+ printpdf.cmndCustomer);
-
-
-
-// var specialElementHandlers = {
-//     '#editor': function (element, renderer) {
-//         return true;
-//     }
-// };
-//     doc.fromHTML($('#content').html(), 15, 15, {
-//         'width': 170,
-//             'elementHandlers': specialElementHandlers
-//     });
-
-    doc.save('ketqua.pdf');
-
+doc.save('ketqua.pdf');
 
   }
+////////////////////danh gia truc tuyen/////////
+ let objRating={}  
+ $scope.showDiv=false
+$scope.change=function(){
+    $scope.showDiv=false
+} 
+$scope.reset_danhgia=function(){
+    $scope.showDiv=false
+    $scope.Info={
+        code:null,
+        valueCaptcha:null
 
+    }
+    
+}
+
+$scope.getinfoRating=function(Info){
+    if(!Info || Info.code==null || Info.code==undefined) return alert(" Bạn vui lòng nhập mã code/serial")
+    $scope.showAlert("processing")
+    rating.query({code:Info.code}, function (result) {
+          if (result[0].control === 'noOk')
+                {  cancelLoading()
+                alert("có lỗi trong quá trình tương tác server hệ thống hoặc mã code/serial không tồn tại")   } 
+             else if( result[0].control=== 'api' )
+                 {
+                  let landingUrl = "http://" + $window.location.host ;
+                  $window.location.href = landingUrl;
+                 }  
+                     else 
+                         {
+
+                          objRating=result[0]
+                          $scope.showDiv=true
+                          $scope.donviRating=result[0].donvi   
+                          $scope.nhanvienRating=result[0].nhanvien
+                          cancelLoading()
+                          $scope.showSimpleToast("load thành công");
+                         }
+                     }, function () {
+                         alert("đường truyền mạng có lỗi vui lòng kiểm tra và nhập lại mã xác thực")
+                         return
+                        }
+             );
+}
+
+$scope.rating={
+    tieuchi:"tot"
+}
+
+$scope.danhgia=function(Info){
+    if(!Info || Info.valueCaptcha==null || Info.valueCaptcha==undefined) return alert(" Bạn vui lòng nhập mã xác thực")
+    if(Info.valueCaptcha!==textCaptcha) return alert(" Bạn nhập không đúng mã xác thực")
+    
+    if($scope.rating.tieuchi==="tot") 
+    {objRating.BEST="0",objRating.GOOD="1",objRating.AVERAGE="0",objRating.POOR="0"}
+    if($scope.rating.tieuchi==="rattot") 
+    {objRating.BEST="1",objRating.GOOD="0",objRating.AVERAGE="0",objRating.POOR="0"}
+    if($scope.rating.tieuchi==="trungbinh") 
+    {objRating.BEST="0",objRating.GOOD="0",objRating.AVERAGE="1",objRating.POOR="0"}
+    if($scope.rating.tieuchi==="khongtot") 
+    {objRating.BEST="0",objRating.GOOD="0",objRating.AVERAGE="0",objRating.POOR="1"}
+    
+    $scope.showAlert("processing")
+    rating.save(objRating, function (result) {
+        if (result[0].control === 'noOk')
+              {  cancelLoading()
+              alert("có lỗi trong quá trình tương tác server hệ thống ")   } 
+           else if( result[0].control=== 'api' )
+               {
+                let landingUrl = "http://" + $window.location.host ;
+                $window.location.href = landingUrl;
+               }  
+                   else 
+                       {
+                        cancelLoading()
+                        $scope.showSimpleToast("đánh giá thành công");
+                       }
+                   }, function () {
+                       alert("đường truyền mạng có lỗi vui lòng kiểm tra và nhập lại mã xác thực")
+                       return
+                      }
+           );
+}
 
 ////////////////////app controller///////////////////
     }])

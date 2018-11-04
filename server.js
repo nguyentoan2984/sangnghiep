@@ -66,6 +66,8 @@ const canhbao = require('./api/cauhinhCanhbao');
 canhbao(app,jsonParser,checkApi);
 const laysotructuyen = require('./api/laysotructuyen');
 laysotructuyen(app,jsonParser,checkApi);
+const danhgiatructuyen = require('./api/danhgiatructuyen');
+danhgiatructuyen(app,jsonParser,checkApi);
 /// route
 app.get('/', (req, res) =>{
     res.render('capsotructuyen');
