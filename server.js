@@ -68,6 +68,8 @@ const laysotructuyen = require('./api/laysotructuyen');
 laysotructuyen(app,jsonParser,checkApi);
 const danhgiatructuyen = require('./api/danhgiatructuyen');
 danhgiatructuyen(app,jsonParser,checkApi);
+const crudDichvu = require('./api/crudDichvu');
+crudDichvu(app,jsonParser,checkApi);
 /// route
 app.get('/', (req, res) =>{
     res.render('capsotructuyen');

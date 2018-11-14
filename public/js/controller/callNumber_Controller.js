@@ -132,6 +132,7 @@ function ($scope, $location, $resource,$mdDialog,$mdToast,$window,captcha,donviI
         cancelLoading()
         // console.log(result)
                  }, function () {
+                    cancelLoading()
                    alert("Kết nối dữ liệu đơn vị " + OFFICEID + "-" + OFFICENAME + "-" + SERVICENAME+  " không thành công"  )
                      return
                     }
@@ -175,6 +176,7 @@ function ($scope, $location, $resource,$mdDialog,$mdToast,$window,captcha,donviI
           }
             
             }, function () {
+                cancelLoading()
                    alert("Kết nối dữ liệu đơn vị " + OFFICEID + "-" + OFFICENAME +  " không thành công"  )
                      return
                     }
@@ -218,6 +220,7 @@ $scope.ShowDialog_sendmail = function (html) {
                               $scope.showSimpleToast("gửi email thành công");
                              }
                          }, function () {
+                             cancelLoading()
                              alert("đường truyền mạng có lỗi vui lòng kiểm tra và nhập lại email")
                              return
                             }
@@ -336,38 +339,38 @@ $scope.getinfoRating=function(Info){
                  }  
                      else 
                          {
-
+                         console.log(result)
                           objRating=result[0]
                           $scope.showDiv=true
                           $scope.donviRating=result[0].donvi   
                           $scope.nhanvienRating=result[0].nhanvien
+                          $scope.showtieuchi=result[0].Assess
                           cancelLoading()
                           $scope.showSimpleToast("load thành công");
                          }
                      }, function () {
+                        cancelLoading()
                          alert("đường truyền mạng có lỗi vui lòng kiểm tra và nhập lại mã xác thực")
                          return
                         }
              );
 }
 
-$scope.rating={
-    tieuchi:"tot"
+$scope.checkRating = function(index) {
+    if(index==1) 
+    {objRating.BEST="0",objRating.GOOD="1",objRating.AVERAGE="0",objRating.POOR="0"}
+    if(index==2) 
+    {objRating.BEST="1",objRating.GOOD="0",objRating.AVERAGE="0",objRating.POOR="0"}
+    if(index==3) 
+    {objRating.BEST="0",objRating.GOOD="0",objRating.AVERAGE="1",objRating.POOR="0"}
+    if(index==4) 
+    {objRating.BEST="0",objRating.GOOD="0",objRating.AVERAGE="0",objRating.POOR="1"}
+    
 }
 
 $scope.danhgia=function(Info){
     if(!Info || Info.valueCaptcha==null || Info.valueCaptcha==undefined) return alert(" Bạn vui lòng nhập mã xác thực")
     if(Info.valueCaptcha!==textCaptcha) return alert(" Bạn nhập không đúng mã xác thực")
-    
-    if($scope.rating.tieuchi==="tot") 
-    {objRating.BEST="0",objRating.GOOD="1",objRating.AVERAGE="0",objRating.POOR="0"}
-    if($scope.rating.tieuchi==="rattot") 
-    {objRating.BEST="1",objRating.GOOD="0",objRating.AVERAGE="0",objRating.POOR="0"}
-    if($scope.rating.tieuchi==="trungbinh") 
-    {objRating.BEST="0",objRating.GOOD="0",objRating.AVERAGE="1",objRating.POOR="0"}
-    if($scope.rating.tieuchi==="khongtot") 
-    {objRating.BEST="0",objRating.GOOD="0",objRating.AVERAGE="0",objRating.POOR="1"}
-    
     $scope.showAlert("processing")
     rating.save(objRating, function (result) {
         if (result[0].control === 'noOk')
@@ -384,6 +387,7 @@ $scope.danhgia=function(Info){
                         $scope.showSimpleToast("đánh giá thành công");
                        }
                    }, function () {
+                        cancelLoading()
                        alert("đường truyền mạng có lỗi vui lòng kiểm tra và nhập lại mã xác thực")
                        return
                       }

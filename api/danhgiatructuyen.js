@@ -17,7 +17,7 @@ module.exports=function(app,jsonParser,checkApi) {
      });
      app.post('/rating/',jsonParser, function (req, res) {
         let updateRating= req.body
-       console.log(updateRating)
+    //    console.log(updateRating)
        danhgiatructuyen.update_ratingInfo(updateRating)
        .then(result => {
            // console.log(result)

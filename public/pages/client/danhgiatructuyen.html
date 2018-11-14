@@ -45,46 +45,19 @@
             <br  ng-show="showDiv">
             <div class="row" class="form-group" ng-show="showDiv">
               
-                    <div class="col-xs-offset-4 form-check" >
+                    <div class="col-xs-offset-4 form-check" ng-repeat="ratings in showtieuchi" >
                         <div  class="col-xs-2 ">
                                 <label class="form-check-label">
                                         <input type="radio" 
-                                        ng-model="rating.tieuchi"
-                                        value="tot"
                                         class="form-check-input" 
-                                        name="optradio">Tốt
+                                        ng-click="checkRating(ratings.AssessNumber)"
+                                        name="optradio">{{ratings.AssessName}}
+                                        
                                       </label>
                         </div>
-                        <div  class="col-xs-2 ">
-                                <label class="form-check-label">
-                                        <input type="radio" 
-                                        ng-model="rating.tieuchi"
-                                       value="rattot"
-                                        class="form-check-input" 
-                                        name="optradio">Rất tốt
-                                      </label>
-                        </div>
-                        <div  class="col-xs-2 ">
-                                <label class="form-check-label">
-                                        <input type="radio"
-                                        ng-model="rating.tieuchi"
-                                       value="trungbinh"
-                                         class="form-check-input" 
-                                         name="optradio">Trung bình
-                                      </label>
-                        </div>
-                        <div  class="col-xs-2 ">
-                                <label class="form-check-label">
-                                        <input type="radio"
-                                        ng-model="rating.tieuchi"
-                                       value="khongtot"
-                                         class="form-check-input"
-                                          name="optradio">Không tốt
-                                      </label>
-                        </div>
-                 
                     </div>
                 </div>
+           
 
           <div class="row" ng-show="showDiv">
               <div class="col-xs-12">

@@ -1,0 +1,145 @@
+<form novalidate name="formAddservice">
+<section class="content-header">
+    <h1 class="text-primary">
+        <strong>Cấu hình hệ thống dịch vụ</strong>
+      </h1>
+      <br>
+      <div class="box">
+        <div class="box-body">
+          <div class="row" class="from-group">
+            <div class="col-xs-6">
+              <label class="col-xs-6">Chọn đơn vị cấu hình </label>
+              <select class="col-xs-6" 
+              class="from-control"
+              ng-options="option.OFFICENAME for option in donVi_Config track by option.ORDERINDEX"
+              ng-model="selectedOption"
+              ng-click="select_crudService(selectedOption)"
+              name="donvi"
+              required
+              >
+              <option  value="" disabled  >Đơn vị cần cấu hình</option>
+  
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12 ">
+        <div class="box">
+          <div class="box-header" >
+                  <label class="box-title">Danh sách Dịch vụ</label>
+          </div>
+          <!-- /.box-header -->
+<!-- grid 1 -->
+          <div class="box-body"  style="overflow-y:auto;" >
+            <table  datatable="ng" dt-options="dtOptions_tables" dt-column-defs="dtColumnDefs"  class="table table-bordered bordered table-striped table-condensed">
+              <thead>
+                <tr class="from-group">
+                  <th>SERVICEID</th>
+                  <th>SVcode</th>
+                  <th>SERVICENAME</th>
+                  <th>STARTNO</th>
+                  <th>ENDNO</th>
+                  <th>STARTTIME</th>
+                  <th>ENDTIME</th>
+                  <th>STARTTIME2</th>
+                  <th>ENDTIME2</th>
+                  <th>COPIES</th>
+                  <th>MAXTIME</th>
+                  <th>RESET</th>
+                  <th>CONTI</th>
+                  <th class="text-center" ><button type="button"
+                     ng-click="action('Add')" class="btn btn-info"
+                     ng-hide="formAddservice.donvi.$error.required"
+                    >Thêm</button></th>
+                </tr>
+
+                <tr ng-show="show_crudService" class="from-group">
+                    <th><input type="text" ng-disabled="true"></th>
+                    <th><input type="text" ng-disabled="true"></th>
+                    <th><input type="text"   class="from-control" name="SERVICENAME" ng-model="Infoservice.SERVICENAME" ng-value="Infoservice.SERVICENAME" required></th>
+                    <th><input type="number" class="from-control" name="STARTNO" ng-model="Infoservice.STARTNO" ng-value="Infoservice.STARTNO" required></th>
+                    <th><input type="number" class="from-control" name="ENDNO" ng-model="Infoservice.ENDNO" ng-value="Infoservice.ENDNO" required></th>
+                    <th><input type="text"  class="from-control" name="STARTTIME" ng-model="Infoservice.STARTTIME" ng-value="Infoservice.STARTTIME" required></th>
+                    <th><input type="text"  class="from-control" name="ENDTIME" ng-model="Infoservice.ENDTIME" ng-value="Infoservice.ENDTIME" required></th>
+                    <th><input type="text"  class="from-control" name="STARTTIME2" ng-model="Infoservice.STARTTIME2" ng-value="Infoservice.STARTTIME2" required></th>
+                    <th><input type="text"  class="from-control" name="ENDTIME2" ng-model="Infoservice.ENDTIME2" ng-value="Infoservice.ENDTIME2" required></th>
+                    <th><input type="number" class="from-control" name="COPIES" ng-model="Infoservice.COPIES" ng-value="Infoservice.COPIES" required></th>
+                    <th><input type="number" class="from-control" name="MAXTIME" ng-model="Infoservice.MAXTIME" ng-value="Infoservice.MAXTIME" required></th>
+                
+                    <th>
+                            <select 
+                             ng-model="Infoservice.RESET"
+                          
+                             required
+                             name="RESET"
+                             class="from-control" 
+                            >
+                            <option  value='0'  >false</option>
+                            <option  value='1'   >true</option>
+                
+                            </select>
+                    </th>
+                    <th><input type="number" class="from-control" name="CONTI"  ng-model="Infoservice.CONTI" ng-value="Infoservice.CONTI"required></th>
+                    <th class="text-center" ><button type="button" ng-click="actionService(Infoservice)" class="btn btn-info"
+                        ng-disabled="
+                        formAddservice.SERVICENAME.$error.required  + 
+                        formAddservice.STARTNO.$error.required  + 
+                        formAddservice.ENDNO.$error.required  + 
+                        formAddservice.STARTTIME.$error.required  + 
+                        formAddservice.ENDTIME.$error.required  + 
+                        formAddservice.STARTTIME2.$error.required  + 
+                        formAddservice.ENDTIME2.$error.required  + 
+                        formAddservice.COPIES.$error.required  + 
+                        formAddservice.MAXTIME.$error.required  +
+                        formAddservice.RESET.$error.required  +
+                        formAddservice.CONTI.$error.required  
+                        
+                        "
+                        
+                        
+                        >{{labelName}}</button></th>
+                  </tr>
+              
+              </thead>
+              <tbody>
+                
+                <tr ng-repeat="service in  servicefullInfo">
+                  <td>{{service.SERVICEID}}</td>
+                  <td>{{service.SVcode}}</td>
+                  <td>{{service.SERVICENAME}}</td>
+                  <td>{{service.STARTNO}}</td>
+                  <td>{{service.ENDNO}}</td>
+                  <td>{{service.STARTTIME  }}</td>
+                  <td>{{service.ENDTIME}}</td>
+                  <td>{{service.STARTTIME2}}</td>
+                  <td>{{service.ENDTIME2}}</td>
+                  <td>{{service.COPIES}}</td>
+                  <td>{{service.MAXTIME}}</td>
+                  <td>{{service.RESET}}</td>
+                  <td>{{service.CONTI}}</td>
+                  <td align="center">
+                    <button type="button" ng-click="action('Edit',$index)"  > <i class="material-icons text-success">edit</i></button>
+                    <button type="button" ng-click="ShowDialog_confirm('pages/admin/dialogDelete-confirm.html',$index)" > <i class="material-icons text-danger">delete</i></button>
+                </td>
+                 
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.box-body -->
+          </div>
+          </div>
+      <!-- /.col -->
+
+    <!-- /.row -->
+  </section>
+</form>
+  
+
+<!-- /.content -->

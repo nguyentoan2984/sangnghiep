@@ -56,14 +56,21 @@ class danhgiatructuyen {
        obj.staffid=result1.recordset[0].staffid 
        obj.customerno=result1.recordset[0].customerno 
        obj.nhanvien=result1.recordset[0].nhanvien 
-        returnArray.push(obj)
+
+          
+      selectSql =`
+      SELECT * FROM dbo.Assess AS Assess`;
+       result = await queryDb(selectSql,database);
+      if (!result.rowsAffected[0]) throw new Error('không load được các tiêu chí  để đánh giá nhân viên ');
+      obj.Assess=result.recordset
+      returnArray.push(obj)
         return returnArray
     }
     
     static async update_ratingInfo(updateRating) {
         let database =databaseInfo
         let dateNow =new Date();
-            dateNow = moment(dateNow).utc().format('DD/MM/YYYY'); 
+        dateNow = moment(dateNow).utc().format('DD/MM/YYYY'); 
       let selectSql =`
         SELECT IPDATABASE,DATABASENAME,USERNAME,PASSWORD,OFFICENAME AS 'donvi'  
       FROM dbo.OFFICE
@@ -80,13 +87,12 @@ class danhgiatructuyen {
          selectSql =`
           delete  FROM dbo.RATINGS
          WHERE  CustomerNo='${updateRating.customerno}'
-           AND VOTETIME='${dateNow}'
+           AND CONVERT(CHAR(10), VOTETIME, 103) = '${dateNow}'
                
          `;
          result = await queryDb(selectSql,database1);
-         
-         
-           selectSql =
+
+         selectSql =
            `
            BEGIN
            INSERT INTO dbo.RATINGS
@@ -101,7 +107,7 @@ class danhgiatructuyen {
            )
      VALUES
            (
-		   '${dateNow}'			
+		   GETDATE()		
            ,'${updateRating.staffid}'			
            ,'${updateRating.customerno}'			
            ,'${updateRating.BEST}'			

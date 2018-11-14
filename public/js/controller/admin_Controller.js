@@ -55,38 +55,46 @@ app.factory('checkboxWarning', function ($resource) {
         update: { method: 'PUT',isArray: true },
     })
 });
+app.factory('crudDichvu', function ($resource) {
+    return $resource('/crudDichvu/:OFFICEID/:serviceidDelete', {  }, {
+        query: { method: 'GET', isArray: true },
+        save: { method: 'POST' ,isArray: true},
+        update: { method: 'PUT',isArray: true },
+        delete: { method: 'DELETE',params: {id: '@id'},isArray: true }
+    })
+});
 
 app.controller('admin_Controller', ['$scope', '$location', '$resource','$interval','$mdToast','$mdDialog','$timeout','donviInfo',
 'counter','staffs','DTOptionsBuilder',
 'DTColumnBuilder','DTColumnDefBuilder',
-'giamsatDichvu','giamsatNhanvien','canhbao','checkboxWarning',
+'giamsatDichvu','giamsatNhanvien','canhbao','checkboxWarning','crudDichvu',
 function ($scope, $location, $resource,$interval,$mdToast, $mdDialog, $timeout,donviInfo,counter,staffs,DTOptionsBuilder,
-DTColumnBuilder,DTColumnDefBuilder,giamsatDichvu,giamsatNhanvien,canhbao,checkboxWarning) {
+DTColumnBuilder,DTColumnDefBuilder,giamsatDichvu,giamsatNhanvien,canhbao,checkboxWarning,crudDichvu) {
 // datatables
 
-
+function reloadDatatable () {
+    let vt=false
+    console.log(":")
+    $scope.dtOptions.reloadData();
+    
+};
 
 $scope.dtOptions_tables = DTOptionsBuilder.newOptions()
 .withPaginationType('full_numbers',false)
 .withOption('ordering', false)
 .withOption('bFilter', true)
 .withOption('bInfo',false)
-
-
-// Do not forget to add the scorllY option!!!
-
 .withOption('paging', true)
 .withOption('lengthMenu', [[5, 10, 15, 20, 25, -1], [5, 10, 15, 20, 25, "All"]]);
 
-$scope.reloadData = function() {
-    $scope.dtOptions.reloadData();
-};
+
 let dataTables_Template=['pages/admin/datatables-cauhinhNhanvien.html',
 'pages/admin/datatables-giamsatNhanvien.html','pages/admin/datatables-giamsatDichvu.html',
-'pages/admin/datatables-cauhinhMuccanhbao.html'
+'pages/admin/datatables-cauhinhMuccanhbao.html',
+'pages/admin/datatables-cauhinhDichvu.html'
 ];
 
-$scope.template=dataTables_Template[2];
+$scope.template=dataTables_Template[4];
 
 $scope.load_datatables_cauhinhNhanvien = function(){
     $scope.officeService_Config=[]
@@ -121,8 +129,190 @@ $scope.load_datatables_cauhinhMuccanhbao = function(){
     $scope.waning_Info={}
     $scope.template=dataTables_Template[3];
 };
+/////////////////// crud dich vu////////////////////////////
+let selectoption_crudDichvu={}
 
-  ///////////////// cau hinh nhan vien cua don vi//////////////////
+$scope.servicefullInfo=[]
+$scope.show_crudService=false
+
+
+$scope.select_crudService=function (selectedOption){
+    $scope.show_crudService=false
+    if (!selectedOption) return
+       ( selectoption_crudDichvu==selectedOption)?null:(
+           $scope.servicefullInfo=[]
+         
+       );  
+           OFFICENAME=selectedOption.OFFICENAME
+           OFFICEID =selectedOption.OFFICEID
+           selectoption_crudDichvu=selectedOption    
+            $scope.showAlert("Loading")
+           crudDichvu.query({OFFICEID}, function (result) {
+                // console.log(result)
+                if(result[0].control) {
+                    cancelLoading()
+                    alert("load dịch vụ của  " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
+                    return
+                }  
+              cancelLoading()
+              $scope.servicefullInfo = result
+                   
+                                 }, function () {
+                                     cancelLoading()
+                                     alert("load dịch vu của" + OFFICEID + "-" + OFFICENAME + " không thành công"  )
+                                     return
+                                     }
+                         );
+        
+  }
+  $scope.action=function(label,index){
+    $scope.show_crudService=true
+    $scope.labelName=label
+    if(label==="Add")
+    {
+        $scope.Infoservice={
+            STARTTIME:"07:30:00",
+            ENDTIME:"12:00:00",
+            STARTTIME2:"13:30:00",
+            ENDTIME2: "23:00:00"
+        }
+    }
+   
+    if(label==="Edit")
+    {
+        $scope.Infoservice={
+            SERVICEID:$scope.servicefullInfo[index].SERVICEID,
+            SERVICENAME:$scope.servicefullInfo[index].SERVICENAME,
+            STARTNO:$scope.servicefullInfo[index].STARTNO,
+            ENDNO:$scope.servicefullInfo[index].ENDNO,
+            STARTTIME:$scope.servicefullInfo[index].STARTTIME,
+            ENDTIME: $scope.servicefullInfo[index].ENDTIME,
+            STARTTIME2:$scope.servicefullInfo[index].STARTTIME2,
+            ENDTIME2: $scope.servicefullInfo[index].ENDTIME2,
+            COPIES:$scope.servicefullInfo[index].COPIES,
+            MAXTIME:$scope.servicefullInfo[index].MAXTIME,
+            RESET:$scope.servicefullInfo[index].RESET,
+            CONTI:$scope.servicefullInfo[index].CONTI,
+           
+        }
+
+    }
+}
+  
+$scope.actionService=function(Infoservice){
+    if( $scope.labelName==="Add") {
+        addService(Infoservice)
+    }
+    if( $scope.labelName==="Edit") {
+        editService(Infoservice)
+    }
+
+}
+
+function addService (Infoservice){
+    $scope.showAlert("Loading")
+        crudDichvu.save({Infoservice,OFFICEID}, function (result) {
+            console.log(result)
+            if(result[0].control) {
+                cancelLoading()
+                alert("thêm dịch vụ cho " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
+                return
+            }  
+          cancelLoading()
+          $scope.showSimpleToast("thêm dịch vụ thành công")
+          $scope.show_crudService=false
+        //   reloadDatatable()
+          $scope.servicefullInfo=result
+          
+               
+                             }, function () {
+                                 cancelLoading()
+                                 alert("Kết nối dữ liệu đơn vị " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
+                                 return
+                                 }
+                     );
+  }
+  function editService (Infoservice){
+    $scope.showAlert("Loading")
+    crudDichvu.update({Infoservice,OFFICEID}, function (result) {
+        console.log(result)
+        if(result[0].control) {
+            cancelLoading()
+            alert("sửa dịch vụ cho " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
+            return
+        }  
+      cancelLoading()
+      $scope.showSimpleToast("sửa dịch vụ thành công")
+      $scope.show_crudService=false
+    //   reloadDatatable()
+      $scope.servicefullInfo=result
+    
+           
+                         }, function () {
+                             cancelLoading()
+                             alert("Kết nối dữ liệu đơn vị " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
+                             return
+                             }
+                 );
+}
+function deleteService (index){
+    $scope.showAlert("Loading")
+      let serviceidDelete=$scope.servicefullInfo[index].SERVICEID 
+    crudDichvu.delete({serviceidDelete,OFFICEID}, function (result) {
+        console.log(result)
+        if(result[0].control) {
+            cancelLoading()
+            alert("xoá dịch vụ cho " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
+            return
+        }  
+      cancelLoading()
+      $scope.showSimpleToast("xoá dịch vụ thành công")
+      $scope.servicefullInfo=result
+    
+      $scope.show_crudService=false
+           
+                         }, function () {
+                             cancelLoading()
+                             alert("Kết nối dữ liệu đơn vị " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
+                             return
+                             }
+                 );
+}
+
+$scope.ShowDialog_confirm = function (html,index) {
+    let resultInfo= $scope.showInfo
+     var parentEl = angular.element(document.body);
+     $mdDialog.show({
+         parent: parentEl,
+         // targetEvent: $event,
+         // clickOutsideToClose: true,
+         escapeToClose: true,
+         //   scope: $scope,
+         templateUrl: html,
+         locals: {
+             resultInfo
+         },
+         controller: DialogController
+     }).then(function (obj) {
+      console.log(obj)
+        if (obj === "cancel") return
+        if ( obj==="dichvu")
+                {
+                   deleteService(index)
+                }  
+         }, function () {  alert("đường truyền mạng có lỗi hoặc reset lại trình duyệt web") });
+     // funtion dialog
+     function DialogController($scope, $mdDialog,resultInfo) {
+         $scope.closeDialog = function () {
+             $mdDialog.hide("cancel");
+         };
+         $scope.delete = function (option) {
+             $mdDialog.hide(option);
+         }
+     };
+     // funtion dialog
+ } 
+///////////////// cau hinh nhan vien cua don vi//////////////////
   let OFFICEID=""
   let SERVICEID=""
   let COUNTERID=""
@@ -308,7 +498,7 @@ $scope.selectServiceCounter=function (selectedOption){
                             arrayUpdate[i].checkBox=false
                             $scope.staffs_grid2.push(arrayUpdate[i])
                           }
-                       $scope.reloadData
+                    //    $scope.reloadData
                        cancelLoading()
                        $scope.showSimpleToast("cập nhật thành công")
                                 }, function () {
@@ -340,7 +530,7 @@ $scope.selectServiceCounter=function (selectedOption){
                             arrayUpdate[i].QUAY=0
                             $scope.staffs_grid1.push(arrayUpdate[i])
                           }
-                       $scope.reloadData
+                    //    $scope.reloadData
                        cancelLoading()
                        $scope.showSimpleToast("cập nhật thành công")
 

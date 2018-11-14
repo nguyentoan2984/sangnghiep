@@ -1,0 +1,101 @@
+<div>
+    <md-dialog aria-label="List dialog">
+
+        <h3 class="text-center">Cập Nhật Cửa Hàng</h3>
+        <!-- action="/action_page.php" method="POST" -->
+        <form novalidate name="formCuaHang">
+            <div class="form-row">
+                <div class="form-group col-md-6" >
+                    <label>Cửa Hàng</label>
+                    <input type="text" name="storename" class="form-control" placeholder="Cửa Hàng" ng-model="cuahang.storename" >
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="password" ng-model="cuahang.password"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group col-md-6">
+                    <label>Địa Chỉ</label>
+                    <input type="text" name="diachi" class="form-control" placeholder="diachi" ng-model="cuahang.diachi" ng-value="cuahang.diachi"
+                        required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Điện Thoại</label>
+                    <input type="number" name="dienthoai" class="form-control" placeholder="dienthoai" ng-model="cuahang.dienthoai"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Mã Khu Vực</label>
+                    <select  name="makhuvuc" class="form-control" ng-model="cuahang.makhuvuc" 
+                        required>
+                        <option ng-repeat="kv in dsKhuVuc">{{kv.makhuvuc}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Tên Trạm</label>
+                    <select  name="tentram" class="form-control" ng-model="cuahang.tentram" 
+                        required>
+                        <option ng-repeat="tram in dstram">{{tram.tentram}}</option>
+                    </select>
+                </div>
+           
+            </div>
+
+            <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                    <label>Mã Cửa Hàng</label>
+                    <input type="text" name="macuahang" class="form-control"  ng-model="cuahang.macuahang"
+                        required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Email ( vd jonhn@gmail.com)</label>
+                    <input type="email" name="email" class="form-control"  ng-model="cuahang.gmail"
+                      email  required>
+                </div>
+            </div>
+            <div class="form-row">
+                
+                  <div class="form-group col-md-6">
+                      <label>Phân Cấp</label>
+                      <select  class="form-control" name="gioitinh" ng-model="cuahang.quyenquanly" required>
+                        <option selected>Trực Thuộc</option>
+                        <option>Nhượng Quyền</option>
+                        </select>
+                  </div>
+                
+              </div>
+
+
+
+            <div class="form-row text-center">
+                <button type="submit" class="btn btn-primary" ng-click="Dialog_addCuahang(cuahang)" 
+                ng-hide="formCuaHang.storename.$error.required + 
+                        formCuaHang.password.$error.required +
+                        formCuaHang.diachi.$error.required +
+                        formCuaHang.dienthoai.$error.required +
+                        formCuaHang.makhuvuc.$error.required +
+                        formCuaHang.tentram.$error.required +
+                        formCuaHang.macuahang.$error.required +
+                        formCuaHang.email.$error.required +
+                        formCuaHang.email.$error.email 
+               ">Add</button>
+                <button class="btn btn-primary" ng-click="closeDialog()">Cancel</button>
+            </div>
+            <div class="form-row">
+                <div class="alert alert-info" role="alert" ng-show="formCuaHang.diachi.$error.required + formCuaHang.makhuvuc.$error.required  
+                     ">
+                    Bạn phải nhập đầy đủ thông tin mới được thêm cửa hàng
+                </div>
+            </div>
+        </form>
+    </md-dialog>
+</div>
