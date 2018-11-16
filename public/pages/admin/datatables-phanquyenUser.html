@@ -1,0 +1,65 @@
+<div  ng-controller="phanquyenUser_Controller">
+
+<form novalidate name="formAddservice">
+    <section class="content-header">
+        <h1 class="text-primary">
+            <strong>Tạo và phân quyền account</strong>
+          </h1>
+        
+       
+      </section>
+    
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-12 ">
+            <div class="box">
+              <div class="box-header" >
+                      <label class="box-title">Danh sách account </label>
+              </div>
+              <!-- /.box-header -->
+    <!-- grid 1 -->
+              <div class="box-body"  style="overflow-y:auto;" >
+                <table  datatable="ng" dt-options="dtOptions_tables" dt-column-defs="dtColumnDefs"  class="table table-bordered bordered table-striped table-condensed">
+                  <thead>
+                    <tr class="from-group">
+                      <th>MaNv</th>
+                      <th>Họ tên</th>
+                      <th>Username</th>
+                      <th>Password</th>
+                      <th>Email</th>
+                      <th class="text-center" ><button type="button"
+                         ng-click="ShowDialog_addUser()" class="btn btn-info"
+                         ng-hide="formAddservice.donvi.$error.required"
+                        >Thêm</button></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                    <tr ng-repeat="user in  accounts">
+                      <td>{{user.MaNV}}</td>
+                      <td>{{user.HoTen}}</td>
+                      <td>{{user.UserName}}</td>
+                      <td>{{user.PassUser}}</td>
+                      <td>{{user.email}}</td>
+                      <td align="center">
+                        <button type="button" ng-click="ShowDialog_EditUser($index)"  > <i class="material-icons text-success">edit</i></button>
+                        <button type="button" ng-click="ShowDialog_confirm($index)" > <i class="material-icons text-danger">delete</i></button>
+                    </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.box-body -->
+              </div>
+              </div>
+          <!-- /.col -->
+    
+        <!-- /.row -->
+      </section>
+    </form>
+      
+</div>
+      
+    
+    <!-- /.content -->

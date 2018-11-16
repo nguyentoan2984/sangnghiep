@@ -1,0 +1,89 @@
+
+<md-dialog aria-label="List dialog"  > 
+    
+        <h3 class="text-center text-primary">cập nhật account</h3>
+        <!-- action="/action_page.php" method="POST" -->
+        <form  novalidate  name="formNhanvien">
+            <div class="form-row">
+                <div class="form-group col-xs-6">
+                    <label>Họ</label>
+                    <input type="text" name="ho" class="form-control"  placeholder="họ" ng-model="user.ho" ng-value="user.ho" required >
+                </div>
+                <div class="form-group col-xs-6">
+                    <label >Tên</label>
+                    <input type="text" name="ten" class="form-control"  placeholder="ten" ng-model="user.ten" ng-value="user.ten" required >
+                </div>
+              
+            </div>
+    
+            <div class="form-row">
+               
+                <div class="form-group col-xs-4">
+                    <label>Username</label>
+                    <input type="text" ng-disabled="true" name="username" class="form-control" placeholder="username" ng-model="user.username" ng-value="user.username" required>
+                   </div>
+                <div class="form-group col-xs-4">
+                        <label>password</label>
+                        <input type="text" name="password" class="form-control"  placeholder="password" ng-model="user.password" ng-value="user.password"  required>
+                    </div>
+                <div class="form-group col-xs-4">
+                            <label>Email ( david@gmail.com )</label>
+                            <input type="email" name="email" class="form-control"  placeholder="email" ng-model="user.email" ng-value="user.email" required email >
+                    </div>
+                </div>
+             
+                <div class="col-xs-offset-1  form-row">
+                        <h3>cập nhật quyền account</h3>
+                </div>
+               
+                <div class="form-row ">
+                    
+                          <div class=" form-check"  ng-repeat="rule in rules" >
+                            <div class="form-group col-xs-3">
+                                      <label class="form-check-label">
+                                              <input type="checkbox" 
+                                              class="form-check-input" 
+                                              ng-model="checkrule"
+                                              ng-click="checkRules(checkrule,rule.MaQuyen)"
+                                              name="optcheck"
+                                              ng-checked="funtionCheck(rule.MaQuyen)"
+                                              >{{rule.ChucNang}}
+                                     </label>
+                              </div>
+                          </div>
+                      </div>
+                 
+    
+                
+    
+    
+            <div class="form-row text-center">
+                <button  class="btn btn-primary" ng-click="EditDialog(user)"
+                ng-hide="
+                  formNhanvien.ho.$error.required + 
+                  formNhanvien.ten.$error.required +
+                  formNhanvien.username.$error.required + 
+                  formNhanvien.password.$error.required +
+                  formNhanvien.email.$error.required  +
+                  formNhanvien.email.$error.email
+                  "
+                >Edit</button>
+                <button  class="btn btn-primary" ng-click="closeDialog()">Cancel</button>
+            </div>
+            <div class="form-row">
+                <div class="alert alert-info" role="alert"
+                ng-show="
+                formNhanvien.ho.$error.required + 
+                formNhanvien.ten.$error.required +
+                formNhanvien.username.$error.required + 
+                formNhanvien.password.$error.required +
+                formNhanvien.email.$error.required  +
+                formNhanvien.email.$error.email
+                "
+                >
+                    Bạn phải nhập đầy đủ thông tin mới được thêm mới account
+                </div>
+            </div>
+        </form>
+    </md-dialog>
+    

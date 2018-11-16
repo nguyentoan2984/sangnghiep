@@ -5,8 +5,7 @@ CREATE TABLE dbo.ADMINS(
 	Ho 				nvarchar(30) NULL,
 	Ten 			nvarchar(10) NULL,
 	UserName 		nvarchar(30) NULL,
-	PassUser    	nvarchar(30) NULL,
-	Quyen	 		varchar(100) NOT NULL,
+	PassUser    	nvarchar(30) NULL
     CONSTRAINT PK_ADMIN PRIMARY KEY(ID)
  )
  
@@ -21,7 +20,16 @@ CREATE TABLE dbo.ADMINS(
  )
 
  GO
- 
+ ----TAO BANG PHAN QUYEN USER
+CREATE TABLE dbo.ADMINROLES(
+    ID     			bigint IDENTITY(1,1) NOT NULL,
+	MaNV			varchar(4) NOT NULL,
+	MaQuyen		    nvarchar(4) NULL,
+    CONSTRAINT PK_ADMINROLES PRIMARY KEY (ID)
+ )
+
+ GO
+
  ---- TAO MA QUYEN TRONG GROUP ADMIN
 CREATE FUNCTION AUTO_MAQUYEN()
 RETURNS VARCHAR(4)
@@ -76,8 +84,8 @@ INSERT INTO dbo.GROUPADMIN
            ,GhiChu)
      VALUES
            (dbo.AUTO_MAQUYEN ()	                                                  ---<MaQuyen, varchar(4),>
-           ,'Giám sát'				                                              ---<ChucNang, nvarchar(30),>
-           ,'Quyền được xem giám sát phục vụ Mở màn hình Giám sát trực tuyến')    ---<GhiChu, nvarchar(200),>)
+           ,N'Giám sát'				                                              ---<ChucNang, nvarchar(30),>
+           ,N'Quyền được xem giám sát phục vụ Mở màn hình Giám sát trực tuyến')    ---<GhiChu, nvarchar(200),>)
 GO
 
 ----XEM
@@ -91,8 +99,8 @@ GO
 
 --UPDARE
 UPDATE dbo.GROUPADMIN
-   SET ChucNang ='Giam sat'							---<ChucNang, nvarchar(30),>
-      ,GhiChu =	'Quyen duoc xem giam sat dich vu, Mo man hinh giam sat truc tuyen'							---<GhiChu, nvarchar(200),>
+   SET ChucNang =N'Giam sat'							---<ChucNang, nvarchar(30),>
+      ,GhiChu =	N'Quyen duoc xem giam sat dich vu, Mo man hinh giam sat truc tuyen'							---<GhiChu, nvarchar(200),>
  WHERE MaQuyen ='MQ04'
 GO
 
@@ -113,15 +121,14 @@ INSERT INTO dbo.ADMINS
            ,Ho
            ,Ten
            ,UserName
-           ,PassUser
-           ,Quyen)
+           ,PassUser)
      VALUES
            (dbo.AUTO_MANV ()	---<MaNV, varchar(15),>   
-           ,'Nguyen'			---<Ho, nvarchar(30),>
-           ,'Toan'				---<Ten, nvarchar(10),>
+           ,N'Nguyen'			---<Ho, nvarchar(30),>
+           ,N'Toan'				---<Ten, nvarchar(10),>
            ,'nguyentoan'		---<UserName, nvarchar(30),>
            ,'123456'			---<PassUser, nvarchar(30),>
-           ,'{'+'MQ02'+','+'MQ03'+'}')				---<MaQuyen, varchar(4),>) LOAD TRONG dbo.GROUPADMIN
+           )				---<MaQuyen, varchar(4),>) LOAD TRONG dbo.GROUPADMIN
 
 
 ---XEM 
@@ -137,10 +144,9 @@ GO
 ---username va MaNV khong dc update
 
 UPDATE dbo.ADMINS
-   SET Ho =	'Nguyen Thien'						----<Ho, nvarchar(30),>
-      ,Ten ='Toan'						-----<Ten, nvarchar(10),>
+   SET Ho =	N'Nguyen Thien'						----<Ho, nvarchar(30),>
+      ,Ten =N'Toan'						-----<Ten, nvarchar(10),>
       ,PassUser ='12345678'					----<PassUser, nvarchar(30),>
-      ,Quyen ='{'+'MQ02'+','+'MQ03'+'}'					----<MaQuyen, varchar(4),>
  WHERE MaNV='01'
 GO
 
@@ -153,7 +159,35 @@ SELECT*FROM ADMINS
 GO
 
 SELECT MaNV,Username,
-	   CONCAT(Ho,' ',Ten) As 'Ho Ten',
-	   Quyen
+	   CONCAT(Ho,' ',Ten) As 'Ho Ten'
 FROM   dbo.ADMINS
 WHERE  Username ='nguyentoan'
+
+
+-----ADD QUYEN USER
+-----TRUOC KHI ADD QUYEN USER XOA QUYEN CU, UPDATE QUYEN MOI
+BEGIN
+DELETE FROM dbo.ADMINROLES
+      WHERE MaNV='01'
+INSERT INTO dbo.ADMINROLES
+           (MaNV
+           ,MaQuyen)
+     VALUES ('01','MQ02'),
+			('01','MQ03')
+END
+
+----XEM QUYEN NHAN VIEN
+
+SELECT dbo.ADMINS.MaNV,dbo.ADMINS.Username,
+	   CONCAT(dbo.ADMINS.Ho,' ',dbo.ADMINS.Ten) As 'Ho Ten',
+	   dbo.ADMINROLES.MaQuyen
+FROM   dbo.ADMINS,dbo.ADMINROLES
+WHERE  dbo.ADMINS.MaNV=dbo.ADMINROLES.MaNV
+AND    dbo.ADMINS.MaNV ='01'
+
+---XEM MA QUYEN CUA MaNV ='01'
+SELECT 
+	   dbo.ADMINROLES.MaQuyen
+FROM   dbo.ADMINS,dbo.ADMINROLES
+WHERE  dbo.ADMINS.MaNV=dbo.ADMINROLES.MaNV
+AND    dbo.ADMINS.MaNV ='01'

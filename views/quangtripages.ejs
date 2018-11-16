@@ -37,9 +37,11 @@
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
+    
   <div class="wrapper" ng-controller="admin_Controller">
-
-    <header class="main-header">
+     <strong ng-init="userlogin='<%= maNV %>';init(userlogin);"></strong>
+    
+     <header class="main-header">
       <!-- Logo -->
       <a href="/" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -126,18 +128,18 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
           <!-- Danh muc -->
-          <li class="treeview" ng-show="false">
-            <a href="#">
+          <li class="treeview" ng-show="arrayRules.rule5" >
+            <a ng-click ="load_datatables_cauhinhAccount()">
             <i class="fa fa-laptop"></i>
-            <span>Danh mục</span>
-            <span class="pull-right-container">
+            <span>Cấu hình accounts</span>
+            <!-- <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
-                </span>
+                </span> -->
           </a>
-            <ul class="treeview-menu">
+            <!-- <ul class="treeview-menu">
               <li><a href="../UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
               <li><a href="../UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
-            </ul>
+            </ul> -->
           </li>
           <!-- Giam sat -->
           <li class="treeview">
@@ -149,28 +151,31 @@
                   </span>
             </a>
             <ul class="treeview-menu">
-              <li><a ng-click="load_datatables_giamsathNhanvien()"><i class="fa fa-circle-o"></i> Giám sát nhan vien</a></li>
-              <li><a ng-click="load_datatables_giamsathDichvu()"><i class="fa fa-circle-o"></i> Giám sát dich vu</a></li>
+              <li ng-show="arrayRules.rule1" ><a ng-click="load_datatables_giamsathNhanvien()"><i class="fa fa-circle-o"></i> Giám sát nhan vien</a></li>
+              <li ng-show="arrayRules.rule2"><a ng-click="load_datatables_giamsathDichvu()"><i class="fa fa-circle-o"></i> Giám sát dich vu</a></li>
             </ul>
           </li>
           <!-- cau hinh he thong -->
           <li class="treeview">
             <a href="#">
         <i class="fa fa-laptop"></i>
-        <span>Cấu hình hệ thống</span>
+        <span>Cấu hình hệ thống </span>
         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
       </a>
             <ul class="treeview-menu">
-              <li><a ng-click="load_datatables_cauhinhNhanvien()">
+                <li ng-show="arrayRules.rule6"><a ng-click="load_datatables_cauhinhDichvu()">
+                    <i class="fa fa-circle-o"></i>Dịch vụ</a></li>
+              <li ng-show="arrayRules.rule3"><a ng-click="load_datatables_cauhinhNhanvien()">
                 <i class="fa fa-circle-o"></i>Nhân viên</a></li>
-              <li><a  ng-click="load_datatables_cauhinhMuccanhbao()">
+              <li ng-show="arrayRules.rule4"><a  ng-click="load_datatables_cauhinhMuccanhbao()">
                 <i class="fa fa-circle-o"></i> Mức cảnh báo</a></li>
             </ul>
           </li>
           <!-- Báo cáo -->
           <li class="treeview" ng-show="false">
+    
             <a href="#">
           <i class="fa fa-laptop"></i>
           <span>Báo cáo</span>
@@ -189,10 +194,10 @@
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
- 
+  
       <div class="content-wrapper" ng-model="template" ng-include="template"  >
         <!-- Content Header (Page header) -->
-    
+      
         <!-- /.content -->
     </div>
 
@@ -228,5 +233,6 @@
 <script type="text/javascript " src="../../dist/js/adminlte.min.js"></script>
 <script type="text/javascript"  src="../../bower_components/angular/angular-resource.min.js "></script>
 <script type="text/javascript " src="js/controller/admin_Controller.js "></script>
+<script type="text/javascript " src="js/controller/phanquyenUser_Controller.js "></script>
 </body>
 </html>

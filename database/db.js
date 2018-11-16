@@ -13,14 +13,14 @@ async function queryDb(selectSql,database) {
             new sql.ConnectionPool(config).connect().then(pool => {
                 return pool.request().query(selectSql)
             }).then(result => {
-    
+                sql.close();
                 resolve(result);
     
-                sql.close();
+               
             }).catch(err => {
-    
-                reject(err)
                 sql.close();
+                reject(err)
+               
             });
         });
     

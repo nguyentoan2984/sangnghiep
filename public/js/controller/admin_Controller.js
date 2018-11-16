@@ -63,20 +63,41 @@ app.factory('crudDichvu', function ($resource) {
         delete: { method: 'DELETE',params: {id: '@id'},isArray: true }
     })
 });
+app.factory('getRules', function ($resource) {
+    return $resource('/getRules/', {  }, {
+        save: { method: 'POST', isArray: true },
+    })
+});
 
 app.controller('admin_Controller', ['$scope', '$location', '$resource','$interval','$mdToast','$mdDialog','$timeout','donviInfo',
 'counter','staffs','DTOptionsBuilder',
 'DTColumnBuilder','DTColumnDefBuilder',
-'giamsatDichvu','giamsatNhanvien','canhbao','checkboxWarning','crudDichvu',
+'giamsatDichvu','giamsatNhanvien','canhbao','checkboxWarning','crudDichvu','getRules',
 function ($scope, $location, $resource,$interval,$mdToast, $mdDialog, $timeout,donviInfo,counter,staffs,DTOptionsBuilder,
-DTColumnBuilder,DTColumnDefBuilder,giamsatDichvu,giamsatNhanvien,canhbao,checkboxWarning,crudDichvu) {
+DTColumnBuilder,DTColumnDefBuilder,giamsatDichvu,giamsatNhanvien,canhbao,checkboxWarning,crudDichvu,getRules) {
 // datatables
 
+// MQ01 quyen giam sat nhan vien
+// MQ02 quyen giam sat dich vu
+// MQ03 quyen cau hinh nhan vien
+// MQ04 quyen cấu hình mức cảnh báo
+// MQ05 quyen cấu hình account
+// MQ06 quyen cấu hình dich vu
+
+
+$scope.arrayRules={
+    rule1:false,
+    rule2:false,
+    rule3:false,
+    rule4:false,
+    rule5:false,
+    rule6:false
+}
+
+
+
 function reloadDatatable () {
-    let vt=false
-    console.log(":")
     $scope.dtOptions.reloadData();
-    
 };
 
 $scope.dtOptions_tables = DTOptionsBuilder.newOptions()
@@ -88,14 +109,29 @@ $scope.dtOptions_tables = DTOptionsBuilder.newOptions()
 .withOption('lengthMenu', [[5, 10, 15, 20, 25, -1], [5, 10, 15, 20, 25, "All"]]);
 
 
-let dataTables_Template=['pages/admin/datatables-cauhinhNhanvien.html',
-'pages/admin/datatables-giamsatNhanvien.html','pages/admin/datatables-giamsatDichvu.html',
+let dataTables_Template=[
+'pages/admin/datatables-cauhinhNhanvien.html',
+'pages/admin/datatables-giamsatNhanvien.html',
+'pages/admin/datatables-giamsatDichvu.html',
 'pages/admin/datatables-cauhinhMuccanhbao.html',
-'pages/admin/datatables-cauhinhDichvu.html'
+'pages/admin/datatables-cauhinhDichvu.html',
+'pages/admin/datatables-phanquyenUser.html',
+'pages/admin/datatables-empty.html'
+
 ];
 
-$scope.template=dataTables_Template[4];
 
+$scope.template=dataTables_Template[6];
+
+$scope.load_datatables_cauhinhAccount = function(){
+    timer.stop();
+    $scope.template=dataTables_Template[5];
+};
+
+$scope.load_datatables_cauhinhDichvu = function(){
+    timer.stop();
+    $scope.template=dataTables_Template[4];
+};
 $scope.load_datatables_cauhinhNhanvien = function(){
     $scope.officeService_Config=[]
     timer.stop();
@@ -129,19 +165,58 @@ $scope.load_datatables_cauhinhMuccanhbao = function(){
     $scope.waning_Info={}
     $scope.template=dataTables_Template[3];
 };
+
+$scope.init = function(maNV){    
+    if(maNV=="9999") 
+   {
+  
+        $scope.arrayRules={
+        rule1:true,
+        rule2:true,
+        rule3:true,
+        rule4:true,
+        rule5:true,
+        rule6:true
+    }
+    $scope.template=dataTables_Template[5];
+    return
+}
+    
+  
+    getRules.save({maNV}, function (result) {
+        // console.log(result)
+        if(result[0].control) {
+            cancelLoading()
+            alert("lỗi hệ thông" )
+            return
+        }  
+       
+            for ( let num of result )   {
+               if(num.MaQuyen=="MQ01") $scope.arrayRules.rule1=true
+               if(num.MaQuyen=="MQ02") $scope.arrayRules.rule2=true
+               if(num.MaQuyen=="MQ03") $scope.arrayRules.rule3=true
+               if(num.MaQuyen=="MQ04") $scope.arrayRules.rule4=true
+               if(num.MaQuyen=="MQ05") $scope.arrayRules.rule6=true
+            }
+
+                         }, function () {
+                            alert("lỗi hệ thông" )
+                             return
+                             }
+                 );
+};
+
+
 /////////////////// crud dich vu////////////////////////////
 let selectoption_crudDichvu={}
-
 $scope.servicefullInfo=[]
 $scope.show_crudService=false
-
 
 $scope.select_crudService=function (selectedOption){
     $scope.show_crudService=false
     if (!selectedOption) return
        ( selectoption_crudDichvu==selectedOption)?null:(
            $scope.servicefullInfo=[]
-         
        );  
            OFFICENAME=selectedOption.OFFICENAME
            OFFICEID =selectedOption.OFFICEID
@@ -280,7 +355,7 @@ function deleteService (index){
 }
 
 $scope.ShowDialog_confirm = function (html,index) {
-    let resultInfo= $scope.showInfo
+
      var parentEl = angular.element(document.body);
      $mdDialog.show({
          parent: parentEl,
@@ -290,7 +365,7 @@ $scope.ShowDialog_confirm = function (html,index) {
          //   scope: $scope,
          templateUrl: html,
          locals: {
-             resultInfo
+           
          },
          controller: DialogController
      }).then(function (obj) {
@@ -302,7 +377,7 @@ $scope.ShowDialog_confirm = function (html,index) {
                 }  
          }, function () {  alert("đường truyền mạng có lỗi hoặc reset lại trình duyệt web") });
      // funtion dialog
-     function DialogController($scope, $mdDialog,resultInfo) {
+     function DialogController($scope, $mdDialog) {
          $scope.closeDialog = function () {
              $mdDialog.hide("cancel");
          };
