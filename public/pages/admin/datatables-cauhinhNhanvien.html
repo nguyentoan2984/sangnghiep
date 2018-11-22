@@ -140,6 +140,10 @@
                     </div>
                   </th>
                   <th>Nhân viên</th>
+                  <th class="text-center" ><button type="button"
+                    ng-click="ShowDialog_addStaff()" class="btn btn-info"
+                    ng-hide="formAddservice.donvi.$error.required"
+                   >Thêm</button></th>
                 </tr>
               </thead>
               <tbody>
@@ -150,6 +154,12 @@
                         </div>
                       </th>
                       <th>Nhân viên</th>
+                      <th class="text-center" ><button type="button"
+                        ng-click="ShowDialog_addStaff()" class="btn btn-info"
+                        ng-hide="formAddservice.donvi.$error.required"
+                       >Thêm</button></th>
+                    
+                     
                     </tr>
                 <tr ng-repeat="staff in  staffs_grid2 ">
                   <td  >
@@ -158,6 +168,10 @@
                     </div>
                   </td>
                   <td>{{staff.NAME}}</td>
+                  <td align="center">
+                    <!-- <button type="button" ng-click="action('Dichvu','Edit',$index)"  > <i class="material-icons text-success">edit</i></button> -->
+                    <button type="button" ng-click="ShowDialog_confirm('nhanvien','pages/admin/dialogDelete-confirm.html',$index)" > <i class="material-icons text-danger">delete</i></button>
+                </td>
                 </tr>
               </tbody>
             </table>

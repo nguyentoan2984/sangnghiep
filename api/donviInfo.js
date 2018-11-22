@@ -2,7 +2,7 @@
 module.exports=function(app,jsonParser,checkApi) {  
     const donviInfo = require('../database/sql-donviInfo');
    
-    app.get('/donviInfo', function (req, res) {
+    app.get('/donviInfo',checkApi, function (req, res) {
         donviInfo.get_donviInfo()
         .then(result => {
             // console.log(result.recordset)
@@ -15,7 +15,7 @@ module.exports=function(app,jsonParser,checkApi) {
         });
      });
 
-     app.post('/donviInfo',jsonParser, function (req, res) {
+     app.post('/donviInfo',jsonParser,checkApi, function (req, res) {
         let {OFFICEID}= req.body.selectedOption
 
                     donviInfo.get_officeServiceInfo(OFFICEID)
@@ -44,7 +44,7 @@ module.exports=function(app,jsonParser,checkApi) {
                             res.send(JSON.stringify({ control:"noOk"}));
                          });
                });
-               app.post('/staffs',jsonParser, function (req, res) {
+               app.post('/staffs',jsonParser,checkApi, function (req, res) {
                 let {COUNTERID}= req.body.selectedOption
                 let {OFFICEID}= req.body
                 let {TABLE}= req.body
@@ -59,7 +59,7 @@ module.exports=function(app,jsonParser,checkApi) {
                                 res.send(JSON.stringify({ control:"noOk"}));
                              });
                    });
-                   app.put('/staffs',jsonParser, function (req, res) {
+                   app.put('/staffs',jsonParser,checkApi, function (req, res) {
                     let {COUNTERID}= req.body
                     let {OFFICEID}= req.body
                     let {arrayUpdate}= req.body
@@ -75,4 +75,45 @@ module.exports=function(app,jsonParser,checkApi) {
                                     res.send(JSON.stringify({ control:"noOk"}));
                                  });
                        });
+
+                       app.post('/staff',jsonParser,checkApi, function (req, res) {
+                        let {staff}= req.body.obj
+                       
+                                    donviInfo.add_staff(staff)
+                                    .then(result => {
+                                        // console.log(result.recordset)
+                                        res.send(JSON.stringify(result.recordset))
+                                        })
+                                    .catch(err => {
+                                        console.log(err)
+                                        res.send(JSON.stringify({ control:"noOk"}));
+                                     });
+                           });
+                           app.post('/staff',jsonParser,checkApi, function (req, res) {
+                            let {staff}= req.body.obj
+                           
+                                        donviInfo.add_staff(staff)
+                                        .then(result => {
+                                            // console.log(result.recordset)
+                                            res.send(JSON.stringify(result.recordset))
+                                            })
+                                        .catch(err => {
+                                            console.log(err)
+                                            res.send(JSON.stringify({ control:"noOk"}));
+                                         });
+                               });
+                               app.delete('/staff/:OFFICEID/:COUNTERID/:nhanvienDelete',jsonParser,checkApi, function (req, res) {
+                                let {OFFICEID,COUNTERID,nhanvienDelete}= req.params
+                             
+                                            donviInfo.delete_staff(OFFICEID,COUNTERID,nhanvienDelete)
+                                            .then(result => {
+                                                // console.log(result.recordset)
+                                                res.send(JSON.stringify(result.recordset))
+                                                })
+                                            .catch(err => {
+                                                console.log(err)
+                                                res.send(JSON.stringify({ control:"noOk"}));
+                                             });
+                                   });
+
     }

@@ -50,12 +50,12 @@ DTColumnBuilder,DTColumnDefBuilder,phanquyenUser) {
                      },
                      controller: DialogController
                  }).then(function (obj) {
-                    // console.log(obj)
+                    console.log(obj)
                     if (obj === "cancel") return
                     if(!obj.MaQuyen[0]) return alert (" vui lòng thêm quyền hạn cho account")
                   $scope.showAlert("processing")
                     phanquyenUser.save({obj}, function (result) {
-                        // console.log(result)
+                        console.log(result)
                         if(result[0].control) {
                             cancelLoading()
                             alert(" thêm user không thành công"  )
@@ -156,7 +156,6 @@ DTColumnBuilder,DTColumnDefBuilder,phanquyenUser) {
             $scope.ShowDialog_EditUser = function (index) {
                 let rules=  $scope.rules
                 let userEdit=$scope.accounts[index]
-                console.log(userEdit)
                  var parentEl = angular.element(document.body);
                  $mdDialog.show({
                      parent: parentEl,

@@ -69,7 +69,7 @@ class crudDichvu {
       obj.serviceid=result.recordset[0].serviceid
       let svcode=OFFICEID+obj.serviceid
       
-     console.log(obj,svcode)
+     
       //    for (let num of  result.recordset ){
     //         num.STARTTIME= moment(num.STARTTIME).utc().format('HH:mm:ss')
     //         num.ENDTIME= moment(num.ENDTIME).utc().format('HH:mm:ss')

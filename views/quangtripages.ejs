@@ -128,18 +128,18 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
           <!-- Danh muc -->
-          <li class="treeview" ng-show="arrayRules.rule5" >
-            <a ng-click ="load_datatables_cauhinhAccount()">
+          <li class="treeview" >
+            <a >
             <i class="fa fa-laptop"></i>
             <span>Cấu hình accounts</span>
-            <!-- <span class="pull-right-container">
+            <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
-                </span> -->
+                </span>
           </a>
-            <!-- <ul class="treeview-menu">
-              <li><a href="../UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
-              <li><a href="../UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
-            </ul> -->
+            <ul class="treeview-menu">
+              <li ng-show="arrayRules.rule5" ><a ng-click ="load_datatables_cauhinhAccount()" ><i class="fa fa-circle-o"></i> Danh sách accounts</a></li>
+              <!-- <li><a href="../UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li> -->
+            </ul>
           </li>
           <!-- Giam sat -->
           <li class="treeview">
@@ -165,6 +165,8 @@
             </span>
       </a>
             <ul class="treeview-menu">
+                <li ng-show="arrayRules.rule7"><a ng-click="load_datatables_cauhinhDonvi()">
+                    <i class="fa fa-circle-o"></i>Đơn vị</a></li>
                 <li ng-show="arrayRules.rule6"><a ng-click="load_datatables_cauhinhDichvu()">
                     <i class="fa fa-circle-o"></i>Dịch vụ</a></li>
               <li ng-show="arrayRules.rule3"><a ng-click="load_datatables_cauhinhNhanvien()">

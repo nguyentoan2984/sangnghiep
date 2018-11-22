@@ -25,6 +25,14 @@ app.factory('staffs', function ($resource) {
         delete: { method: 'DELETE',params: {id: '@id'},isArray: true }
     })
 });
+app.factory('staff', function ($resource) {
+    return $resource('/staff/:OFFICEID/:COUNTERID/:nhanvienDelete/', {  }, {
+        query: { method: 'GET', isArray: true },
+        save: { method: 'POST' ,isArray: true},
+        update: { method: 'PUT',isArray: true },
+        delete: { method: 'DELETE',params: {id: '@id'},isArray: true }
+    })
+});
 app.factory('giamsatDichvu', function ($resource) {
     return $resource('/giamsatDichvu', {  }, {
         query: { method: 'GET', isArray: true },
@@ -63,6 +71,14 @@ app.factory('crudDichvu', function ($resource) {
         delete: { method: 'DELETE',params: {id: '@id'},isArray: true }
     })
 });
+app.factory('crudDonvi', function ($resource) {
+    return $resource('/crudDonvi/:officeidDelete/', {  }, {
+        query: { method: 'GET', isArray: true },
+        save: { method: 'POST' ,isArray: true},
+        update: { method: 'PUT',isArray: true },
+        delete: { method: 'DELETE',params: {id: '@id'},isArray: true }
+    })
+});
 app.factory('getRules', function ($resource) {
     return $resource('/getRules/', {  }, {
         save: { method: 'POST', isArray: true },
@@ -72,17 +88,18 @@ app.factory('getRules', function ($resource) {
 app.controller('admin_Controller', ['$scope', '$location', '$resource','$interval','$mdToast','$mdDialog','$timeout','donviInfo',
 'counter','staffs','DTOptionsBuilder',
 'DTColumnBuilder','DTColumnDefBuilder',
-'giamsatDichvu','giamsatNhanvien','canhbao','checkboxWarning','crudDichvu','getRules',
+'giamsatDichvu','giamsatNhanvien','canhbao','checkboxWarning','crudDichvu','getRules','crudDonvi','staff',
 function ($scope, $location, $resource,$interval,$mdToast, $mdDialog, $timeout,donviInfo,counter,staffs,DTOptionsBuilder,
-DTColumnBuilder,DTColumnDefBuilder,giamsatDichvu,giamsatNhanvien,canhbao,checkboxWarning,crudDichvu,getRules) {
+DTColumnBuilder,DTColumnDefBuilder,giamsatDichvu,giamsatNhanvien,canhbao,checkboxWarning,crudDichvu,getRules,crudDonvi,staff) {
 // datatables
 
-// MQ01 quyen giam sat nhan vien
-// MQ02 quyen giam sat dich vu
-// MQ03 quyen cau hinh nhan vien
-// MQ04 quyen cấu hình mức cảnh báo
-// MQ05 quyen cấu hình account
-// MQ06 quyen cấu hình dich vu
+// MQ01 quyen giam sat nhan vien rule1
+// MQ02 quyen giam sat dich vu rule2
+// MQ03 quyen cau hinh nhan vien rule3
+// MQ04 quyen cấu hình mức cảnh báo rule4
+// MQ05 quyen cấu hình account ( full quyen) 
+// MQ06 quyen cấu hình dich vu rule6
+// MQ07 quyen cấu hình donvi rule7
 
 
 $scope.arrayRules={
@@ -91,7 +108,8 @@ $scope.arrayRules={
     rule3:false,
     rule4:false,
     rule5:false,
-    rule6:false
+    rule6:false,
+    rule7:false
 }
 
 
@@ -116,18 +134,43 @@ let dataTables_Template=[
 'pages/admin/datatables-cauhinhMuccanhbao.html',
 'pages/admin/datatables-cauhinhDichvu.html',
 'pages/admin/datatables-phanquyenUser.html',
-'pages/admin/datatables-empty.html'
+'pages/admin/datatables-empty.html',
+'pages/admin/datatables-cauhinhDonvi.html',
+
 
 ];
 
 
-$scope.template=dataTables_Template[6];
+// $scope.template=dataTables_Template[6];
 
 $scope.load_datatables_cauhinhAccount = function(){
     timer.stop();
     $scope.template=dataTables_Template[5];
 };
 
+$scope.load_datatables_cauhinhDonvi = function(){
+    timer.stop();
+    $scope.template=dataTables_Template[7];
+    $scope.showAlert("Loading")
+    crudDonvi.query({}, function (result) {
+      
+        if(result[0].control) {
+            cancelLoading()
+            alert("load danh sách các đơn vị không thành công"  )
+            return
+        }  
+      cancelLoading()
+      $scope.donvifullInfo = result
+           
+                         }, function () {
+                             cancelLoading()
+                             alert("load danh sách các đơn vị không thành công"  )
+                             return
+                             }
+                 );
+
+
+};
 $scope.load_datatables_cauhinhDichvu = function(){
     timer.stop();
     $scope.template=dataTables_Template[4];
@@ -176,9 +219,10 @@ $scope.init = function(maNV){
         rule3:true,
         rule4:true,
         rule5:true,
-        rule6:true
+        rule6:true,
+        rule7:true
     }
-    $scope.template=dataTables_Template[5];
+    $scope.template=dataTables_Template[7];
     return
 }
     
@@ -196,8 +240,11 @@ $scope.init = function(maNV){
                if(num.MaQuyen=="MQ02") $scope.arrayRules.rule2=true
                if(num.MaQuyen=="MQ03") $scope.arrayRules.rule3=true
                if(num.MaQuyen=="MQ04") $scope.arrayRules.rule4=true
-               if(num.MaQuyen=="MQ05") $scope.arrayRules.rule6=true
+               if(num.MaQuyen=="MQ05") $scope.arrayRules.rule5=true
+               if(num.MaQuyen=="MQ06") $scope.arrayRules.rule6=true
+               if(num.MaQuyen=="MQ07") $scope.arrayRules.rule7=true
             }
+            $scope.template=dataTables_Template[6]
 
                          }, function () {
                             alert("lỗi hệ thông" )
@@ -240,54 +287,105 @@ $scope.select_crudService=function (selectedOption){
                          );
         
   }
-  $scope.action=function(label,index){
+  $scope.action=function(option,label,index){
     $scope.show_crudService=true
     $scope.labelName=label
-    if(label==="Add")
-    {
-        $scope.Infoservice={
-            STARTTIME:"07:30:00",
-            ENDTIME:"12:00:00",
-            STARTTIME2:"13:30:00",
-            ENDTIME2: "23:00:00"
-        }
+ if( option=="Dichvu"){
+                if(label==="Add")
+                {
+                    $scope.Infoservice={
+                        STARTTIME:"07:30:00",
+                        ENDTIME:"12:00:00",
+                        STARTTIME2:"13:30:00",
+                        ENDTIME2: "23:00:00",
+                        RESET:false
+                    }
+                }
+            
+                if(label==="Edit")
+                {
+                    $scope.Infoservice={
+                        SERVICEID:$scope.servicefullInfo[index].SERVICEID,
+                        SERVICENAME:$scope.servicefullInfo[index].SERVICENAME,
+                        STARTNO:$scope.servicefullInfo[index].STARTNO,
+                        ENDNO:$scope.servicefullInfo[index].ENDNO,
+                        STARTTIME:$scope.servicefullInfo[index].STARTTIME,
+                        ENDTIME: $scope.servicefullInfo[index].ENDTIME,
+                        STARTTIME2:$scope.servicefullInfo[index].STARTTIME2,
+                        ENDTIME2: $scope.servicefullInfo[index].ENDTIME2,
+                        COPIES:$scope.servicefullInfo[index].COPIES,
+                        MAXTIME:$scope.servicefullInfo[index].MAXTIME,
+                        RESET:$scope.servicefullInfo[index].RESET,
+                        CONTI:$scope.servicefullInfo[index].CONTI,
+                    
+                    }
+
+                }
+            }
+if( option=="Donvi"){
+    let dateNow =new Date();
+    
+         dateNow = moment(dateNow).format('YYYY-MM-DD HH:MM:SS'); 
+        
+    $scope.Infodonvi={
+     RUNTIME:dateNow,
+     ISACTIVE:true
     }
-   
+
+
     if(label==="Edit")
     {
-        $scope.Infoservice={
-            SERVICEID:$scope.servicefullInfo[index].SERVICEID,
-            SERVICENAME:$scope.servicefullInfo[index].SERVICENAME,
-            STARTNO:$scope.servicefullInfo[index].STARTNO,
-            ENDNO:$scope.servicefullInfo[index].ENDNO,
-            STARTTIME:$scope.servicefullInfo[index].STARTTIME,
-            ENDTIME: $scope.servicefullInfo[index].ENDTIME,
-            STARTTIME2:$scope.servicefullInfo[index].STARTTIME2,
-            ENDTIME2: $scope.servicefullInfo[index].ENDTIME2,
-            COPIES:$scope.servicefullInfo[index].COPIES,
-            MAXTIME:$scope.servicefullInfo[index].MAXTIME,
-            RESET:$scope.servicefullInfo[index].RESET,
-            CONTI:$scope.servicefullInfo[index].CONTI,
-           
+        $scope.Infodonvi={
+            OFFICEID:$scope.donvifullInfo[index].OFFICEID,
+            OFFICENAME:$scope.donvifullInfo[index].OFFICENAME,
+            ADDRESS:$scope.donvifullInfo[index].ADDRESS,
+            PHONE:$scope.donvifullInfo[index].PHONE,
+            FAX:$scope.donvifullInfo[index].FAX,
+            ORDERINDEX: $scope.donvifullInfo[index].ORDERINDEX,
+            IPDATABASE:$scope.donvifullInfo[index].IPDATABASE,
+            DATABASENAME: $scope.donvifullInfo[index].DATABASENAME,
+            USERNAME:$scope.donvifullInfo[index].USERNAME,
+            PASSWORD:$scope.donvifullInfo[index].PASSWORD,
+            RUNTIME:$scope.donvifullInfo[index].RUNTIME,
+            ISACTIVE:$scope.donvifullInfo[index].ISACTIVE,
+            LOGO:$scope.donvifullInfo[index].LOGO,
+            
         }
 
-    }
+    }            
+
+} 
+  
+   
 }
   
-$scope.actionService=function(Infoservice){
+$scope.actionObj=function(option,InfoObj){
+if(option=="Dichvu")
+        {
+            if( $scope.labelName==="Add") {
+                addService(InfoObj)
+            }
+            if( $scope.labelName==="Edit") {
+                editService(InfoObj)
+            }
+        }
+if(option=="Donvi")
+{
     if( $scope.labelName==="Add") {
-        addService(Infoservice)
+        addDonvi(InfoObj)
     }
     if( $scope.labelName==="Edit") {
-        editService(Infoservice)
+        editDonvi(InfoObj)
     }
+}
+    
 
 }
 
 function addService (Infoservice){
-    $scope.showAlert("Loading")
+    $scope.showAlert("processing")
         crudDichvu.save({Infoservice,OFFICEID}, function (result) {
-            console.log(result)
+        
             if(result[0].control) {
                 cancelLoading()
                 alert("thêm dịch vụ cho " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
@@ -308,9 +406,9 @@ function addService (Infoservice){
                      );
   }
   function editService (Infoservice){
-    $scope.showAlert("Loading")
+    $scope.showAlert("processing")
     crudDichvu.update({Infoservice,OFFICEID}, function (result) {
-        console.log(result)
+       
         if(result[0].control) {
             cancelLoading()
             alert("sửa dịch vụ cho " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
@@ -331,10 +429,10 @@ function addService (Infoservice){
                  );
 }
 function deleteService (index){
-    $scope.showAlert("Loading")
+    $scope.showAlert("processing")
       let serviceidDelete=$scope.servicefullInfo[index].SERVICEID 
     crudDichvu.delete({serviceidDelete,OFFICEID}, function (result) {
-        console.log(result)
+      
         if(result[0].control) {
             cancelLoading()
             alert("xoá dịch vụ cho " + OFFICEID + "-" + OFFICENAME + " không thành công"  )
@@ -354,7 +452,95 @@ function deleteService (index){
                  );
 }
 
-$scope.ShowDialog_confirm = function (html,index) {
+function addDonvi (InfoDonvi){
+    $scope.showAlert("processing")
+        crudDonvi.save({InfoDonvi}, function (result) {
+          
+            if(result[0].control) {
+                cancelLoading()
+                alert("thêm don vị không thành công"  )
+                return
+            }  
+          cancelLoading()
+          $scope.showSimpleToast("thêm đơn vị thành công")
+          $scope.show_crudService=false
+        //   reloadDatatable()
+          $scope.donvifullInfo=result
+          
+               
+                             }, function () {
+                                 cancelLoading()
+                                 alert("load danh sách các đơn vị không thành công"  )
+                                 return
+                                 }
+                     );
+  }
+  function editDonvi (InfoDonvi){
+    $scope.showAlert("Processing")
+    crudDonvi.update({InfoDonvi}, function (result) {
+      
+        if(result[0].control) {
+            cancelLoading()
+            alert("update đơn vị không thành công"  )
+            return
+        }  
+      cancelLoading()
+      $scope.showSimpleToast("update đơn vị  thành công")
+      $scope.show_crudService=false
+    //   reloadDatatable()
+      $scope.donvifullInfo=result
+    
+           
+                         }, function () {
+                             cancelLoading()
+                             alert("update đơn vị không thành công"  )
+                             return
+                             }
+                 );
+}
+function deleteDonvi (index){
+    $scope.showAlert("processing")
+      let officeidDelete=$scope.donvifullInfo[index].OFFICEID 
+    crudDonvi.delete({officeidDelete}, function (result) {
+        console.log(result)
+        if(result[0].control) {
+            cancelLoading()
+            alert("xoá đơn vị không thành công"  )
+            return
+        }  
+      cancelLoading()
+      $scope.showSimpleToast("xoá đơn vị thành công")
+      $scope.donvifullInfo=result
+    
+      $scope.show_crudService=false
+           
+                         }, function () {
+                             cancelLoading()
+                             alert("xoá đơn vị không thành công"  )
+                             return
+                             }
+                 );
+}
+function deleteNhanvien (index){
+    $scope.showAlert("processing")
+      let nhanvienDelete=$scope.staffs_grid2[index].STAFFID
+    staff.delete({OFFICEID,COUNTERID,nhanvienDelete}, function (result) {
+        if(result[0].control) {
+            cancelLoading()
+            alert("xoá nhân viên không thành công"  )
+            return
+        }  
+      cancelLoading()
+      $scope.showSimpleToast("xoá nhân viên thành công")
+      $scope.staffs_grid2 = result
+                         }, function () {
+                             cancelLoading()
+                             alert("xoá nhân viên không thành công"  )
+                             return
+                             }
+                 );
+}
+$scope.ShowDialog_confirm = function (option,html,index) {
 
      var parentEl = angular.element(document.body);
      $mdDialog.show({
@@ -369,12 +555,22 @@ $scope.ShowDialog_confirm = function (html,index) {
          },
          controller: DialogController
      }).then(function (obj) {
-      console.log(obj)
+     
         if (obj === "cancel") return
-        if ( obj==="dichvu")
+                if ( option==="dichvu")
+                        {
+                        deleteService(index)
+                        }  
+                if ( option==="donvi")
                 {
-                   deleteService(index)
-                }  
+                deleteDonvi(index)
+                }    
+                if ( option==="nhanvien")
+                {
+                  deleteNhanvien(index)
+                }    
+                    
+        
          }, function () {  alert("đường truyền mạng có lỗi hoặc reset lại trình duyệt web") });
      // funtion dialog
      function DialogController($scope, $mdDialog) {
@@ -387,6 +583,60 @@ $scope.ShowDialog_confirm = function (html,index) {
      };
      // funtion dialog
  } 
+
+ $scope.ShowDialog_addStaff = function () {
+     var parentEl = angular.element(document.body);
+     $mdDialog.show({
+         parent: parentEl,
+         // targetEvent: $event,
+         // clickOutsideToClose: true,
+         escapeToClose: true,
+         //   scope: $scope,
+         templateUrl: 'pages/admin/dialogStaffAdd.html',
+         locals: {
+            COUNTERID
+         },
+         controller: DialogController
+     }).then(function (obj) {
+        if (obj === "cancel") return
+      $scope.showAlert("processing")
+        staff.save({obj}, function (result) {
+            // console.log(result)
+            if(result[0].control) {
+                cancelLoading()
+                alert(" thêm nhân viên không thành công"  )
+                return
+            }  
+          cancelLoading()
+          $scope.showSimpleToast("thêm nhân viên thành công")
+          $scope.staffs_grid2=result
+            // console.log($scope.accounts)
+                             }, function () {
+                                 cancelLoading()
+                            alert(" thêm nhân viên không thành công"  )
+                                 return
+                                 }
+                     );
+         }, function () {  alert("đường truyền mạng có lỗi hoặc reset lại trình duyệt web") });
+     // funtion dialog
+     function DialogController($scope, $mdDialog,COUNTERID) {
+           
+         $scope.closeDialog = function () {
+             $mdDialog.hide("cancel");
+         };
+         $scope.addDialog = function (staff) {
+             console.log(staff)
+             staff.COUNTERID=COUNTERID
+             staff.OFFICEID=OFFICEID
+             $mdDialog.hide({staff});
+         }
+      
+     };
+     // funtion dialog
+ } 
+
+
+
 ///////////////// cau hinh nhan vien cua don vi//////////////////
   let OFFICEID=""
   let SERVICEID=""

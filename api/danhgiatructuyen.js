@@ -2,7 +2,7 @@
 module.exports=function(app,jsonParser,checkApi) {  
     const danhgiatructuyen = require('../database/sql-danhgiatructuyen');
    
-    app.get('/rating/:code',jsonParser, function (req, res) {
+    app.get('/rating/:code',checkApi, function (req, res) {
          let {code}= req.params
         // console.log(code)
         danhgiatructuyen.get_ratingInfo(code)
@@ -15,7 +15,7 @@ module.exports=function(app,jsonParser,checkApi) {
             res.send(JSON.stringify([{ control:"noOk"}]));
         });
      });
-     app.post('/rating/',jsonParser, function (req, res) {
+     app.post('/rating/',jsonParser,checkApi, function (req, res) {
         let updateRating= req.body
     //    console.log(updateRating)
        danhgiatructuyen.update_ratingInfo(updateRating)

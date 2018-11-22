@@ -1,0 +1,149 @@
+
+<section class="content-header">
+    <h1 class="text-primary">
+      <strong>Cấu hình hệ thống nhân viên</strong>
+    </h1>
+    <br>
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-xs-6">
+            <label class="col-xs-6">Chọn đơn vị cấu hình </label>
+            <select class="col-xs-6" 
+            ng-options="option.OFFICENAME for option in donVi_Config track by option.ORDERINDEX"
+            ng-model="selectedOption"
+            ng-click="selectdonvi(selectedOption,option=0)"
+            >
+            <option  value="" disabled  >Đơn vị cần cấu hình</option>
+
+            </select>
+          </div>
+
+          <div class="col-xs-6">
+            <label class="col-xs-3">Dịch vụ </label>
+            <select class="col-xs-6" 
+            ng-options="option.SERVICENAME for option in officeService_Config track by option.SERVICEID"
+            ng-model="selectedService"
+            ng-click="selectService(selectedService)"
+            >
+            <option value="" disabled>Chọn dịch vụ</option>>
+            </select>
+          </div>
+        </div>
+
+        <div class="row"><br></div>
+
+        <div class="row">
+          <div class="col-xs-6">
+            <label class="col-xs-6"> Sắp xếp nhân viên phục vụ tại quầy </label>
+            <select class="col-xs-6" 
+            ng-options="option.COUNTERID for option in officeCounter_Config track by option.COUNTERID"
+            ng-model="selectedCounter"
+            ng-click="selectServiceCounter(selectedCounter)"
+            >
+            <option value="" disabled>Chọn quầy</option>>
+
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </section>
+
+  <!-- Main content -->
+ 
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12 ">
+        <div class="box">
+          <div class="box-header" >
+                  <label class="box-title">Danh sách nhân viên</label>
+          </div>
+          <!-- /.box-header -->
+<!-- grid 1 -->
+          <div class="box-body"  style="overflow-y:auto;" >
+            <table  datatable="ng" dt-options="dtOptions_tables" dt-column-defs="dtColumnDefs"  class="table table-bordered bordered table-striped table-condensed">
+              <thead>
+                <tr class="from-group">
+                  <th>STAFFID</th>
+                  <th>StaffIDOffice</th>
+                  <th>Họ Tên</th>
+                  <th>CounterId</th>
+                  <th>Status</th>
+                  <th>StatusTime</th>
+                  <th>Login</th>
+                  <th>StaffIDLog</th>
+                  <th class="text-center" ><button type="button"
+                     ng-click="action('Dichvu','Add')" class="btn btn-info"
+                     ng-hide="formAddservice.donvi.$error.required"
+                    >Thêm</button></th>
+                </tr>
+
+                <tr ng-show="show_crudService" class="from-group">
+                   
+                    <th><input type="text"   class="from-control" name="STAFFID" ng-model="Infostaff.STAFFID" ng-value="Infostaff.STAFFID" required></th>
+                    <th><input type="number" class="from-control" name="StaffIDOffice" ng-model="Infostaff.StaffIDOffice" ng-value="Infostaff.StaffIDOffice" required></th>
+                    <th><input type="number" class="from-control" name="LASTNAME" ng-model="Infostaff.LASTNAME" ng-value="Infostaff.LASTNAME" required></th>
+                    <th><input type="text"  class="from-control" name="FIRSTNAME" ng-model="Infostaff.FIRSTNAME" ng-value="Infostaff.FIRSTNAME" required></th>
+                    <th><input type="text"  class="from-control" name="COUNTERID" ng-model="Infostaff.COUNTERID" ng-value="Infostaff.COUNTERID" required></th>
+                    <th><input type="text"  class="from-control" name="STATUS" ng-model="Infostaff.STATUS" ng-value="Infostaff.STARTTISTATUSME2" required></th>
+                    <th><input type="text"  class="from-control" name="STATUSTIME" ng-model="Infostaff.STATUSTIME" ng-value="Infostaff.STATUSTIME" required></th>
+                    <th><input type="number" class="from-control" name="LOGIN" ng-model="Infostaff.LOGIN" ng-value="Infostaff.LOGIN" required></th>
+                    <th><input type="number" class="from-control" name="StaffIDLog" ng-model="Infostaff.StaffIDLog" ng-value="Infostaff.StaffIDLog" required></th>
+                    
+                    <th class="text-center" ><button type="button" ng-click="actionObj('Nhanvien',Infostaff)" class="btn btn-info"
+                        ng-disabled="
+                        formAddservice.SERVICENAME.$error.required  + 
+                        formAddservice.STARTNO.$error.required  + 
+                        formAddservice.ENDNO.$error.required  + 
+                        formAddservice.STARTTIME.$error.required  + 
+                        formAddservice.ENDTIME.$error.required  + 
+                        formAddservice.STARTTIME2.$error.required  + 
+                        formAddservice.ENDTIME2.$error.required  + 
+                        formAddservice.COPIES.$error.required  + 
+                        formAddservice.MAXTIME.$error.required  +
+                        formAddservice.RESET.$error.required  +
+                        formAddservice.CONTI.$error.required  
+                        
+                        "
+                        
+                        
+                        >{{labelName}}</button></th>
+                  </tr>
+              
+              </thead>
+              <tbody>
+                
+                <tr ng-repeat="service in  servicefullInfo">
+                  <td>{{service.SERVICEID}}</td>
+                  <td>{{service.SVcode}}</td>
+                  <td>{{service.SERVICENAME}}</td>
+                  <td>{{service.STARTNO}}</td>
+                  <td>{{service.ENDNO}}</td>
+                  <td>{{service.STARTTIME  }}</td>
+                  <td>{{service.ENDTIME}}</td>
+                  <td>{{service.STARTTIME2}}</td>
+                  <td>{{service.ENDTIME2}}</td>
+                  <td>{{service.COPIES}}</td>
+                  <td>{{service.MAXTIME}}</td>
+                  <td>{{service.RESET}}</td>
+                  <td>{{service.CONTI}}</td>
+                  <td align="center">
+                    <button type="button" ng-click="action('Dichvu','Edit',$index)"  > <i class="material-icons text-success">edit</i></button>
+                    <button type="button" ng-click="ShowDialog_confirm('dichvu','pages/admin/dialogDelete-confirm.html',$index)" > <i class="material-icons text-danger">delete</i></button>
+                </td>
+                 
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.box-body -->
+          </div>
+          </div>
+      <!-- /.col -->
+
+    <!-- /.row -->
+  </section>
+
+<!-- /.content -->

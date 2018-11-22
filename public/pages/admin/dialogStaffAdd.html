@@ -1,0 +1,79 @@
+
+<md-dialog aria-label="List dialog"  > 
+    
+        <h3 class="text-center text-primary">Thêm mới nhân viên</h3>
+        <!-- action="/action_page.php" method="POST" -->
+        <form  novalidate  name="formNhanvien">
+            <div class="form-row">
+                <div class="form-group col-xs-4">
+                    <label>StaffIDOffice</label>
+                    <input type="number" name="StaffIDOffice" class="form-control"  placeholder="StaffIDOffice" ng-model="staff.StaffIDOffice" required >
+                </div>
+                <!-- <div class="form-group col-xs-3">
+                    <label >COUNTERID</label>
+                    <input type="number" name="COUNTERID" class="form-control"  placeholder="COUNTERID" ng-model="staff.COUNTERID" required >
+                </div> -->
+                <div class="form-group col-xs-4">
+                    <label>FIRSTNAME</label>
+                    <input type="text" name="FIRSTNAME" class="form-control"  placeholder="FIRSTNAME" ng-model="staff.FIRSTNAME" required >
+                </div>
+                <div class="form-group col-xs-4">
+                    <label >LASTNAME</label>
+                    <input type="text" name="LASTNAME" class="form-control"  placeholder="LASTNAME" ng-model="staff.LASTNAME" required >
+                </div>
+              
+            </div>
+    
+            <!-- <div class="form-row">
+                    <div class="form-group col-xs-3">
+                        <label>STATUS</label>
+                        <input type="number" name="STATUS" class="form-control"  placeholder="STATUS" ng-model="staff.STATUS" required >
+                    </div>
+                    <div class="form-group col-xs-3">
+                        <label >STATUSTIME</label>
+                        <input type="text" name="STATUSTIME" class="form-control"  placeholder="STATUSTIME" ng-model="staff.STATUSTIME" required >
+                    </div>
+                    <div class="form-group col-xs-3">
+                        <label>LOGIN</label>
+                        <input type="text" name="LOGIN" class="form-control"  placeholder="LOGIN" ng-model="staff.LOGIN" required >
+                    </div>
+                    <div class="form-group col-xs-3">
+                        <label >StaffIDLog</label>
+                        <input type="text" name="StaffIDLog" class="form-control"  placeholder="StaffIDLog" ng-model="staff.StaffIDLog" required >
+                    </div>
+                  
+                </div> -->
+    
+            <div class="form-row text-center">
+                <button  class="btn btn-primary" ng-click="addDialog(staff)"
+                ng-hide="
+                  formNhanvien.StaffIDOffice.$error.required + 
+                  formNhanvien.FIRSTNAME.$error.required + 
+                  formNhanvien.LASTNAME.$error.required 
+                
+                  "
+                >Add</button>
+                <button  class="btn btn-primary" ng-click="closeDialog()">Cancel</button>
+            </div>
+            <div class="form-row">
+                <div class="alert alert-info" role="alert"
+                ng-show="
+                formNhanvien.StaffIDOffice.$error.required + 
+                formNhanvien.COUNTERID.$error.required +
+                formNhanvien.FIRSTNAME.$error.required + 
+                formNhanvien.LASTNAME.$error.required 
+             
+                "
+                >
+                    Bạn phải nhập đầy đủ thông tin mới được thêm mới nhân viên
+                </div>
+            </div>
+        </form>
+    </md-dialog>
+    <!-- formNhanvien.STATUS.$error.required  +
+    formNhanvien.STATUSTIME.$error.required   +
+    formNhanvien.LOGIN.$error.required  +
+    formNhanvien.StaffIDLog.$error.required -->
+    
+    
+    

@@ -1,0 +1,133 @@
+<form novalidate name="formAdddonvi">
+    <section class="content-header">
+        <h1 class="text-primary">
+            <strong>Cấu hình hệ thống đơn vị</strong>
+          </h1>
+          <br>
+         
+      </section>
+    
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-12 ">
+            <div class="box">
+              <div class="box-header" >
+                      <label class="box-title">Danh sách đơn vị</label>
+              </div>
+              <!-- /.box-header -->
+    <!-- grid 1 -->
+              <div class="box-body"  style="overflow-y:auto;" >
+                <table  datatable="ng" dt-options="dtOptions_tables" dt-column-defs="dtColumnDefs"  class="table table-bordered bordered table-striped table-condensed">
+                  <thead>
+                    <tr class="from-group">
+                      <th>OFFICEID</th>
+                      <th>OFFICENAME</th>
+                      <th>ADDRESS</th>
+                      <th>PHONE</th>
+                      <th>FAX</th>
+                      <th>ORDERINDEX</th>
+                      <th>IPDATABASE</th>
+                      <th>DATABASENAME</th>
+                      <th>USERNAME</th>
+                      <th>PASSWORD</th>
+                      <th>RUNTIME</th>
+                      <th>ISACTIVE</th>
+                      <!-- <th>LOGO</th> -->
+                      <th class="text-center" ><button type="button"
+                         ng-click="action('Donvi','Add')" class="btn btn-info"
+                         ng-hide="formAdddonvi.donvi.$error.required"
+                        >Thêm</button></th>
+                    </tr>
+    
+                    <tr ng-show="show_crudService" class="from-group">
+                        <th><input type="text" class="from-control" name="OFFICEID" ng-model="Infodonvi.OFFICEID" ng-value="Infodonvi.OFFICEID" required></th>
+                        <th><input type="text" class="from-control" name="OFFICENAME" ng-model="Infodonvi.OFFICENAME" ng-value="Infodonvi.OFFICENAME" required></th>
+                        <th><input type="text" class="from-control" name="ADDRESS" ng-model="Infodonvi.ADDRESS" ng-value="Infodonvi.ADDRESS" required></th>
+                        <th><input type="text"  class="from-control" name="PHONE" ng-model="Infodonvi.PHONE" ng-value="Infodonvi.PHONE" required></th>
+                        <th><input type="text"  class="from-control" name="FAX" ng-model="Infodonvi.FAX" ng-value="Infodonvi.FAX" required></th>
+                        <th><input type="number"  class="from-control" name="ORDERINDEX" ng-model="Infodonvi.ORDERINDEX" ng-value="Infodonvi.ORDERINDEX" required></th>
+                        <th><input type="text"  class="from-control" name="IPDATABASE" ng-model="Infodonvi.IPDATABASE" ng-value="Infodonvi.IPDATABASE" required></th>
+                        <th><input type="text" class="from-control" name="DATABASENAME" ng-model="Infodonvi.DATABASENAME" ng-value="Infodonvi.DATABASENAME" required></th>
+                        <th><input type="text" class="from-control" name="USERNAME" ng-model="Infodonvi.USERNAME" ng-value="Infodonvi.USERNAME" required></th>
+                        <th><input type="text"  class="from-control" name="PASSWORD" ng-model="Infodonvi.PASSWORD" ng-value="Infodonvi.PASSWORD" required></th>
+                        <th><input type="text"  class="from-control" name="RUNTIME" ng-model="Infodonvi.RUNTIME" ng-value="Infodonvi.RUNTIME" required></th>
+                       
+                        <th class="text-center">
+                          <!-- <select 
+                           ng-model="Infodonvi.ISACTIVE"
+                           ng-value="Infodonvi.ISACTIVE"
+                           required
+                           name="ISACTIVE"
+                           class="from-control" 
+                          >
+                          <option  value='0'  >false</option>
+                          <option  value='1'   >true</option>
+              
+                          </select> -->
+                          <input type="checkbox" class="switch" 
+                          ng-model="Infodonvi.ISACTIVE"
+                          ng-value="Infodonvi.ISACTIVE"
+                          > 
+                  </th>
+                     
+                        <!-- <th><input type="text" class="from-control" name="LOGO" ng-model="Infodonvi.LOGO" ng-value="Infodonvi.LOGO" required></th> -->
+                        <th class="text-center" ><button type="button" ng-click="actionObj('Donvi',Infodonvi)" class="btn btn-info"
+                            ng-disabled="
+                            formAdddonvi.OFFICEID.$error.required  + 
+                            formAdddonvi.OFFICENAME.$error.required  + 
+                            formAdddonvi.ADDRESS.$error.required  + 
+                            formAdddonvi.PHONE.$error.required  + 
+                            formAdddonvi.FAX.$error.required  + 
+                            formAdddonvi.ORDERINDEX.$error.required  + 
+                            formAdddonvi.IPDATABASE.$error.required  + 
+                            formAdddonvi.DATABASENAME.$error.required  + 
+                            formAdddonvi.USERNAME.$error.required  + 
+                            formAdddonvi.PASSWORD.$error.required  +
+                            formAdddonvi.RUNTIME.$error.required  
+                          
+                            
+                            
+                            "
+                            
+                            
+                            >{{labelName}}</button></th>
+                      </tr>
+                  
+                  </thead>
+                  <tbody>
+                    
+                    <tr ng-repeat="donvi in  donvifullInfo">
+                      <td>{{donvi.OFFICEID}}</td>
+                      <td>{{donvi.OFFICENAME}}</td>
+                      <td>{{donvi.ADDRESS}}</td>
+                      <td>{{donvi.PHONE}}</td>
+                      <td>{{donvi.FAX}}</td>
+                      <td>{{donvi.ORDERINDEX  }}</td>
+                      <td>{{donvi.IPDATABASE}}</td>
+                      <td>{{donvi.DATABASENAME}}</td>
+                      <td>{{donvi.USERNAME}}</td>
+                      <td>{{donvi.PASSWORD}}</td>
+                      <td>{{donvi.RUNTIME | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+                      <td>{{donvi.ISACTIVE}}</td>
+                      <!-- <td>{{donvi.LOGO}}</td> -->
+                      <td align="center">
+                        <button type="button" ng-click="action('Donvi','Edit',$index)"  > <i class="material-icons text-success">edit</i></button>
+                        <button type="button" ng-click="ShowDialog_confirm('donvi','pages/admin/dialogDelete-confirm.html',$index)" > <i class="material-icons text-danger">delete</i></button>
+                    </td>
+                     
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.box-body -->
+              </div>
+              </div>
+          <!-- /.col -->
+    
+        <!-- /.row -->
+      </section>
+    </form>
+      
+    
+    <!-- /.content -->

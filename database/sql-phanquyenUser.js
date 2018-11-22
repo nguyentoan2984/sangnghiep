@@ -2,7 +2,6 @@ const queryDb = require('./db');
 const databaseInfo = require('./databaseInfo');
 // const { hash, compare } = require('bcrypt');
 
-
 class phanquyenUser {
     static async get_userInfo() {
        
@@ -56,7 +55,7 @@ class phanquyenUser {
         return arrayReturn;
     }
     static async add_userInfo(obj) {
-        
+      
          let arrayReturn=[]
          let database =databaseInfo
        
@@ -110,7 +109,7 @@ class phanquyenUser {
         //     WHERE MaNV='${MaNV}'
         // `;
         // result = await queryDb(selectSql,database);
-        console.log(obj.MaQuyen)
+        // console.log(obj.MaQuyen)
         for (let num of obj.MaQuyen) {
          
                 selectSql =
@@ -182,7 +181,15 @@ class phanquyenUser {
          DELETE FROM dbo.ADMINS
          WHERE MaNV='${maUser}'
      `;
-     let  result = await queryDb(selectSql,database);
+     let    result = await queryDb(selectSql,database);
+
+        selectSql =
+     `
+     DELETE FROM dbo.ADMINROLES
+     WHERE MaNV='${maUser}'
+ `;
+   result = await queryDb(selectSql,database);
+
           selectSql =
              `
              SELECT 
@@ -317,8 +324,6 @@ class phanquyenUser {
             
          return arrayReturn;
      }
-    
-   
    
 }
 module.exports = phanquyenUser;

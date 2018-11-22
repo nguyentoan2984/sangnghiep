@@ -12,7 +12,6 @@ class admin {
      
         if (!result.rowsAffected[0]) throw new Error('account khong ton tai');
         let {PassUser,MaNV}=result.recordset[0]
-        console.log(PassUser,password)
         if(PassUser!==password) throw new Error('password không đúng');
         
      

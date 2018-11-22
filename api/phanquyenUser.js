@@ -2,11 +2,11 @@
 module.exports=function(app,jsonParser,checkApi) {  
     const phanquyenUser = require('../database/sql-phanquyenUser');
    
-    app.get('/phanquyenUser', function (req, res) {
+    app.get('/phanquyenUser',checkApi, function (req, res) {
 
         phanquyenUser.get_userInfo()
         .then(result => {
-            // console.log(result)
+            console.log(result)
             res.send(JSON.stringify(result))
             })
         .catch(err => {
@@ -15,11 +15,12 @@ module.exports=function(app,jsonParser,checkApi) {
            
         });
      });
-     app.post('/phanquyenUser',jsonParser, function (req, res) {
+     app.post('/phanquyenUser',jsonParser,checkApi, function (req, res) {
         let {obj}=req.body
+        console.log(obj)
                 phanquyenUser.add_userInfo(obj)
                 .then(result => {
-                    console.log(result)
+                    // console.log(result)
                     res.send(JSON.stringify(result))
                     })
                 .catch(err => {
@@ -42,7 +43,7 @@ module.exports=function(app,jsonParser,checkApi) {
                    
                 });
              });
-             app.put('/phanquyenUser',jsonParser, function (req, res) {
+             app.put('/phanquyenUser',jsonParser,checkApi, function (req, res) {
                 let {obj}=req.body
                         phanquyenUser.edit_userInfo(obj)
                         .then(result => {

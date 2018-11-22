@@ -54,7 +54,7 @@
                   <th>RESET</th>
                   <th>CONTI</th>
                   <th class="text-center" ><button type="button"
-                     ng-click="action('Add')" class="btn btn-info"
+                     ng-click="action('Dichvu','Add')" class="btn btn-info"
                      ng-hide="formAddservice.donvi.$error.required"
                     >Thêm</button></th>
                 </tr>
@@ -72,10 +72,10 @@
                     <th><input type="number" class="from-control" name="COPIES" ng-model="Infoservice.COPIES" ng-value="Infoservice.COPIES" required></th>
                     <th><input type="number" class="from-control" name="MAXTIME" ng-model="Infoservice.MAXTIME" ng-value="Infoservice.MAXTIME" required></th>
                 
-                    <th>
-                            <select 
+                    <th class="text-center">
+                            <!-- <select 
                              ng-model="Infoservice.RESET"
-                          
+                             ng-value="Infoservice.RESET"
                              required
                              name="RESET"
                              class="from-control" 
@@ -83,10 +83,13 @@
                             <option  value='0'  >false</option>
                             <option  value='1'   >true</option>
                 
-                            </select>
+                            </select> -->
+                            <input type="checkbox" class="switch"   ng-model="Infoservice.RESET"
+                            ng-value="Infoservice.RESET"
+                            > 
                     </th>
                     <th><input type="number" class="from-control" name="CONTI"  ng-model="Infoservice.CONTI" ng-value="Infoservice.CONTI"required></th>
-                    <th class="text-center" ><button type="button" ng-click="actionService(Infoservice)" class="btn btn-info"
+                    <th class="text-center" ><button type="button" ng-click="actionObj('Dichvu',Infoservice)" class="btn btn-info"
                         ng-disabled="
                         formAddservice.SERVICENAME.$error.required  + 
                         formAddservice.STARTNO.$error.required  + 
@@ -97,7 +100,6 @@
                         formAddservice.ENDTIME2.$error.required  + 
                         formAddservice.COPIES.$error.required  + 
                         formAddservice.MAXTIME.$error.required  +
-                        formAddservice.RESET.$error.required  +
                         formAddservice.CONTI.$error.required  
                         
                         "
@@ -124,8 +126,8 @@
                   <td>{{service.RESET}}</td>
                   <td>{{service.CONTI}}</td>
                   <td align="center">
-                    <button type="button" ng-click="action('Edit',$index)"  > <i class="material-icons text-success">edit</i></button>
-                    <button type="button" ng-click="ShowDialog_confirm('pages/admin/dialogDelete-confirm.html',$index)" > <i class="material-icons text-danger">delete</i></button>
+                    <button type="button" ng-click="action('Dichvu','Edit',$index)"  > <i class="material-icons text-success">edit</i></button>
+                    <button type="button" ng-click="ShowDialog_confirm('dichvu','pages/admin/dialogDelete-confirm.html',$index)" > <i class="material-icons text-danger">delete</i></button>
                 </td>
                  
                 </tr>

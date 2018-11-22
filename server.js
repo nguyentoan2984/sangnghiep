@@ -70,8 +70,11 @@ const danhgiatructuyen = require('./api/danhgiatructuyen');
 danhgiatructuyen(app,jsonParser,checkApi);
 const crudDichvu = require('./api/crudDichvu');
 crudDichvu(app,jsonParser,checkApi);
+const crudDonvi = require('./api/crudDonvi');
+crudDonvi(app,jsonParser,checkApi);
 const phanquyenUser = require('./api/phanquyenUser');
 phanquyenUser(app,jsonParser,checkApi);
+
 const admin = require('./api/admin');
 admin(app,jsonParser,urlparser,checkApi,sign,SK);
 /// route
