@@ -74,6 +74,8 @@ const crudDonvi = require('./api/crudDonvi');
 crudDonvi(app,jsonParser,checkApi);
 const phanquyenUser = require('./api/phanquyenUser');
 phanquyenUser(app,jsonParser,checkApi);
+const chatbotfacebook = require('./api/chatbotfacebook');
+chatbotfacebook(app,jsonParser,checkApi);
 
 const admin = require('./api/admin');
 admin(app,jsonParser,urlparser,checkApi,sign,SK);
@@ -81,10 +83,6 @@ admin(app,jsonParser,urlparser,checkApi,sign,SK);
 app.get('/', (req, res) =>{
     res.render('capsotructuyen');
   });
-
-
-
-
 
 
 ///////////////////// Tri Luat///////////////////////

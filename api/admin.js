@@ -32,7 +32,7 @@ if(username=="administrator" && password=='1qaz2wsx3edc')
             res.send(" username hoặc mật khẩu không đúng")
         });
 
-        app.post('/getRules/',jsonParser,checkApi, (req, res) =>{
+        app.post('/getRules/',jsonParser, (req, res) =>{
           let {maNV}=req.body
         
           admin.getRules(maNV)
@@ -45,8 +45,6 @@ if(username=="administrator" && password=='1qaz2wsx3edc')
                 res.send(JSON.stringify([{ control:"noOk"}]));
             });
           });
-          
-
       });
       
    

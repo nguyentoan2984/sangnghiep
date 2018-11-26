@@ -48,7 +48,7 @@ function ($scope, $location, $resource,$mdDialog,$mdToast,$window,captcha,donviI
     'pages/client/laysotructuyenResult.html',
     'pages/client/danhgiatructuyen.html',
     ];
-    $scope.template=dataTables_Template[2];
+    $scope.template=dataTables_Template[0];
 
     $scope.laysotructuyen=function(){
         $scope.template=dataTables_Template[0];
@@ -148,6 +148,8 @@ function ($scope, $location, $resource,$mdDialog,$mdToast,$window,captcha,donviI
        if(Info.valueCaptcha!==textCaptcha) return alert(" Bạn nhập không đúng mã xác thực")
        $scope.selectServiceNumber(selectedOption_Config)
        Info.timeGiaodich= $scope.timeGiaodich
+       Info.ISSUEDFROM="1"
+       Info.FACEBOOK=null
        $scope.showAlert ("Loading...")
        getNumber.save({OFFICEID:OFFICEID,SERVICEID:SERVICEID,INFOCUSTOMERS:Info}, function (result) {
         if(result[0].control) return     alert("Kết nối dữ liệu đơn vị " + OFFICEID + "-" + OFFICENAME + "-" + SERVICENAME+  " không thành công"  )       

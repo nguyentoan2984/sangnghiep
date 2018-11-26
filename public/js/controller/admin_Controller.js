@@ -80,17 +80,17 @@ app.factory('crudDonvi', function ($resource) {
     })
 });
 app.factory('getRules', function ($resource) {
-    return $resource('/getRules/', {  }, {
-        save: { method: 'POST', isArray: true },
+    return $resource('/getRules/:maNV/', {  }, {
+        save: { method: 'POST',isArray: true },
     })
 });
 
 app.controller('admin_Controller', ['$scope', '$location', '$resource','$interval','$mdToast','$mdDialog','$timeout','donviInfo',
 'counter','staffs','DTOptionsBuilder',
 'DTColumnBuilder','DTColumnDefBuilder',
-'giamsatDichvu','giamsatNhanvien','canhbao','checkboxWarning','crudDichvu','getRules','crudDonvi','staff',
+'giamsatDichvu','giamsatNhanvien','canhbao','checkboxWarning','crudDichvu','getRules','crudDonvi','staff','$window',
 function ($scope, $location, $resource,$interval,$mdToast, $mdDialog, $timeout,donviInfo,counter,staffs,DTOptionsBuilder,
-DTColumnBuilder,DTColumnDefBuilder,giamsatDichvu,giamsatNhanvien,canhbao,checkboxWarning,crudDichvu,getRules,crudDonvi,staff) {
+DTColumnBuilder,DTColumnDefBuilder,giamsatDichvu,giamsatNhanvien,canhbao,checkboxWarning,crudDichvu,getRules,crudDonvi,staff,$window) {
 // datatables
 
 // MQ01 quyen giam sat nhan vien rule1
@@ -209,6 +209,10 @@ $scope.load_datatables_cauhinhMuccanhbao = function(){
     $scope.template=dataTables_Template[3];
 };
 
+$scope.signout = function(maNV){  
+    let landingUrl = "http://" + $window.location.host +"/admin"  ;
+    $window.location.href = landingUrl;
+}
 $scope.init = function(maNV){    
     if(maNV=="9999") 
    {
@@ -226,31 +230,30 @@ $scope.init = function(maNV){
     return
 }
     
-  
+
     getRules.save({maNV}, function (result) {
-        // console.log(result)
         if(result[0].control) {
             cancelLoading()
-            alert("lỗi hệ thông" )
+            alert("lỗi không load được mã quyền" )
             return
         }  
-       
             for ( let num of result )   {
-               if(num.MaQuyen=="MQ01") $scope.arrayRules.rule1=true
-               if(num.MaQuyen=="MQ02") $scope.arrayRules.rule2=true
-               if(num.MaQuyen=="MQ03") $scope.arrayRules.rule3=true
-               if(num.MaQuyen=="MQ04") $scope.arrayRules.rule4=true
-               if(num.MaQuyen=="MQ05") $scope.arrayRules.rule5=true
-               if(num.MaQuyen=="MQ06") $scope.arrayRules.rule6=true
-               if(num.MaQuyen=="MQ07") $scope.arrayRules.rule7=true
+               if(num.MaQuyen=="MQ01") {$scope.arrayRules.rule1=true, $scope.template=dataTables_Template[1]}
+               if(num.MaQuyen=="MQ02"){ $scope.arrayRules.rule2=true,$scope.template=dataTables_Template[2]}
+               if(num.MaQuyen=="MQ03") {$scope.arrayRules.rule3=true,$scope.template=dataTables_Template[0]}
+               if(num.MaQuyen=="MQ04") {$scope.arrayRules.rule4=true,$scope.template=dataTables_Template[3]}
+               if(num.MaQuyen=="MQ05") {$scope.arrayRules.rule5=true,$scope.template=dataTables_Template[5]}
+               if(num.MaQuyen=="MQ06") {$scope.arrayRules.rule6=true,$scope.template=dataTables_Template[4]}
+               if(num.MaQuyen=="MQ07") {$scope.arrayRules.rule7=true,$scope.template=dataTables_Template[7]}
             }
-            $scope.template=dataTables_Template[6]
+            // $scope.template=dataTables_Template[6]
 
                          }, function () {
                             alert("lỗi hệ thông" )
                              return
                              }
                  );
+   
 };
 
 

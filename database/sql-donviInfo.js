@@ -29,7 +29,7 @@ class donviInfo {
             name: result.recordset[0].DATABASENAME 
            }
            const selectSql1 =
-           `SELECT SERVICEID,SERVICENAME FROM dbo.SERVICEINFO
+           `SELECT SERVICEID,SERVICENAME,SVcode FROM dbo.SERVICEINFO
            ORDER BY STARTNO`;
        const result1 = await queryDb(selectSql1,database1);
        if (!result1.rowsAffected[0]) throw new Error('không load được dịch vụ của đơn vị được chọn ');

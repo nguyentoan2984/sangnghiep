@@ -38,7 +38,7 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
     
-  <div class="wrapper" ng-controller="admin_Controller">
+  <div class="wrapper" ng-controller="admin_Controller" ng-cloak >
      <strong ng-init="userlogin='<%= maNV %>';init(userlogin);"></strong>
     
      <header class="main-header">
@@ -100,7 +100,7 @@
                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                   </div>
                   <div class="pull-right">
-                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                    <a ng-click="signout()" class="btn btn-default btn-flat">Sign out</a>
                   </div>
                 </li>
               </ul>

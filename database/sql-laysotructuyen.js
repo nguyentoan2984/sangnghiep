@@ -9,7 +9,7 @@ class laysotructuyen {
         let dateNow =new Date();
         dateNow = moment(dateNow).utc().format('DD/MM/YYYY')
         let selectSql =
-        `SELECT IPDATABASE,DATABASENAME,USERNAME,PASSWORD  FROM dbo.OFFICE
+        `SELECT OFFICENAME,ADDRESS,IPDATABASE,DATABASENAME,USERNAME,PASSWORD  FROM dbo.OFFICE
         WHERE  OFFICEID='${OFFICEID}'`;
     let result = await queryDb(selectSql,database);
     if (!result.rowsAffected[0]) throw new Error('không load được dịch vụ của đơn vị được chọn ');
@@ -20,6 +20,8 @@ class laysotructuyen {
         name: result.recordset[0].DATABASENAME 
        }
        let obj={}
+       obj.ADDRESS = ( result.recordset[0].ADDRESS== undefined || result.recordset[0].ADDRESS== null ) ? 0 : result.recordset[0].ADDRESS
+       obj.OFFICENAME = ( result.recordset[0].OFFICENAME== undefined || result.recordset[0].OFFICENAME== null ) ? 0 : result.recordset[0].OFFICENAME
        let returnArray=[]
          selectSql =
        `SELECT		COUNT(CUSTOMERNO) as soluongdangcho
@@ -53,6 +55,7 @@ obj.soluongdangcho = ( result.recordset[0].soluongdangcho== undefined || result.
         return returnArray;
     }
     static async get_showNumber(OFFICEID,SERVICEID,INFOCUSTOMERS) {
+       console.log(INFOCUSTOMERS)
         let database =databaseInfo
         let dateNow =new Date();
         dateNow = moment(dateNow).utc().format('DD/MM/YYYY')
@@ -89,7 +92,7 @@ obj.soluongdangcho = ( result.recordset[0].soluongdangcho== undefined || result.
         // console.log(timeNow,STARTTIME,ENDTIME,STARTTIME2,ENDTIME2)
         if (timeNow < STARTTIME || ENDTIME2 < timeNow ||  (timeNow > ENDTIME && timeNow < STARTTIME2 ))
          {
-            status ="“ngoài thời gian phục vụ, bạn vui lòng liên hệ trực tiếp đơn vị cần đăng ký để được hỗ tr"
+            status ="“ngoài thời gian phục vụ, bạn vui lòng liên hệ trực tiếp đơn vị cần đăng ký để được hỗ trợ"
             number=0
             obj.number=number
             obj.status=status
@@ -169,11 +172,11 @@ obj.soluongdangcho = ( result.recordset[0].soluongdangcho== undefined || result.
                 ,'${INFOCUSTOMERS.email}'
                 ,'${INFOCUSTOMERS.cmnd}'
                 ,'${INFOCUSTOMERS.didong}'
-                ,'Null'
+                ,${INFOCUSTOMERS.FACEBOOK}
                 ,'${obj.number}'
                 , '${obj.serial}'                  
                 ,'${servingtime}'      
-                ,'1')     
+                ,${INFOCUSTOMERS.ISSUEDFROM})     
                                     `;
                 result   = await queryDb(selectSql,database);    
                 if (!result.rowsAffected[0]) throw new Error('không cập nhật được đăng ký số mới vào bảng REGISTRATIONFORM ');
@@ -216,8 +219,27 @@ obj.soluongdangcho = ( result.recordset[0].soluongdangcho== undefined || result.
                                `;
            result   = await queryDb(selectSql,database);    
            if (!result.rowsAffected[0]) throw new Error('không cập nhật được đăng ký số mới vào bảng REGISTRATIONFORMINFO ');       
-
-            }
+           
+    //        if(INFOCUSTOMERS.FACEBOOK !==null)  
+          
+    //            {
+    //             let YID= String(INFOCUSTOMERS.FACEBOOK)
+    //             let MESSAGE= String(INFOCUSTOMERS.MESSAGE)
+    //         selectSql =
+    //         `  
+    //         INSERT INTO dbo.YMLOG
+    //         (YMTIME
+    //         ,YID
+    //         ,MESSAGE)
+    //   VALUES
+    //         (GETDATE()					
+    //         ,'${YID}'					
+    //         ,'${MESSAGE}')		
+          
+    //         `
+    //         result   = await queryDb(selectSql,database1);
+            // }       
+      }
             return returnArray;
     }
 
